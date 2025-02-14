@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "hB3J0/C6Xdo=",
+  "success": true,
+  "projectFilePath": "/home/carlos/Escritorio/EDD/Proyecto/EDD-1S2025_202300625/Fase1/Fase1/Fase1.csproj",
+  "expectedPackageFiles": [
+    "/home/carlos/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.1/microsoft.aspnetcore.app.ref.9.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
