@@ -1,19 +1,24 @@
 using System;
 using System.Runtime.InteropServices;
 
-unsafe struct Nodo
+unsafe struct NodoUsuario
 {
     public int Id;
     public char* Nombre;
     public char* Apellido;
     public char* Email;
     public char* Pwd;
-    public Nodo* Siguiente;
+    public NodoUsuario* Siguiente;
 }
 
 unsafe class UsuariosLista
 {
-    private Nodo* cabeza;
+    private NodoUsuario* cabeza;
+
+    public UsuariosLista()
+    {
+        cabeza = null;
+    }
 
     public void agregarPrimero(int id, string Nombre, string Apellido, string email, string pwd)
     {
@@ -22,22 +27,43 @@ unsafe class UsuariosLista
             throw new ArgumentException("Los campos no pueden ser nulos o vacíos.");
         }
 
-        Nodo* nuevoNodo = (Nodo*)Marshal.AllocHGlobal(sizeof(Nodo));
+        NodoUsuario* nuevoNodoUsuario = (NodoUsuario*)Marshal.AllocHGlobal(sizeof(NodoUsuario));
 
-        nuevoNodo->Id = id;
-        nuevoNodo->Nombre = (char*)Marshal.StringToHGlobalAnsi(Nombre);
-        nuevoNodo->Apellido = (char*)Marshal.StringToHGlobalAnsi(Apellido);
-        nuevoNodo->Email = (char*)Marshal.StringToHGlobalAnsi(email);
-        nuevoNodo->Pwd = (char*)Marshal.StringToHGlobalAnsi(pwd);
-        nuevoNodo->Siguiente = cabeza;
+        if (cabeza == null)
+        {
+            cabeza = nuevoNodoUsuario;
+            cabeza->Id = id;
+            cabeza->Nombre = (char*)Marshal.StringToHGlobalAnsi(Nombre);
+            cabeza->Apellido = (char*)Marshal.StringToHGlobalAnsi(Apellido);
+            cabeza->Email = (char*)Marshal.StringToHGlobalAnsi(email);
+            cabeza->Pwd = (char*)Marshal.StringToHGlobalAnsi(pwd);
+            cabeza->Siguiente = null;
+            return;
+        }
+        else {
+            NodoUsuario* actual = cabeza;
+            while (actual->Siguiente != null)
+            {
+                actual = actual->Siguiente;
+            }
+            nuevoNodoUsuario->Id = id;
+            nuevoNodoUsuario->Nombre = (char*)Marshal.StringToHGlobalAnsi(Nombre);
+            nuevoNodoUsuario->Apellido = (char*)Marshal.StringToHGlobalAnsi(Apellido);
+            nuevoNodoUsuario->Email = (char*)Marshal.StringToHGlobalAnsi(email);
+            nuevoNodoUsuario->Pwd = (char*)Marshal.StringToHGlobalAnsi(pwd);
+            nuevoNodoUsuario->Siguiente = null;
+            actual->Siguiente = nuevoNodoUsuario;
 
-        cabeza = nuevoNodo;
+
+        }
+
+        
     }
 
     
-    public Nodo* Buscar(int id)
+    public NodoUsuario* Buscar(int id)
     {
-        Nodo* actual = cabeza;
+        NodoUsuario* actual = cabeza;
 
         while (actual != null)
         {
@@ -54,8 +80,8 @@ unsafe class UsuariosLista
     
     public void Borrar(int id)
     {
-        Nodo* actual = cabeza;
-        Nodo* previo = null;
+        NodoUsuario* actual = cabeza;
+        NodoUsuario* previo = null;
 
         while (actual != null)
         {
@@ -83,16 +109,16 @@ unsafe class UsuariosLista
             actual = actual->Siguiente;
         }
 
-        throw new InvalidOperationException($"Nodo con ID {id} no encontrado.");
+        throw new InvalidOperationException($"NodoUsuario con ID {id} no encontrado.");
     }
 
     public void LiberarLista()
     {
-        Nodo* actual = cabeza;
+        NodoUsuario* actual = cabeza;
 
         while (actual != null)
         {
-            Nodo* Siguiente = actual->Siguiente;
+            NodoUsuario* Siguiente = actual->Siguiente;
 
             Marshal.FreeHGlobal((IntPtr)actual->Nombre);
             Marshal.FreeHGlobal((IntPtr)actual->Apellido);

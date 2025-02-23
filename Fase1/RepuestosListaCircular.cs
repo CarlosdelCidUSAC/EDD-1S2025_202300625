@@ -1,21 +1,25 @@
 using System;
 using System.Runtime.InteropServices;
 
-unsafe struct Nodo
+unsafe struct NodoRepuestos
 {
     public int Id;
     public char* Repuesto;
     public char* Detalle;
     public char* Costo;
-    public Nodo* Siguiente;
+    public NodoRepuestos* Siguiente;
 }
 
 unsafe class RepuestosListaCircular
 {
-    private Nodo* primero;
-    private Nodo* ultimo;
+    private NodoRepuestos* primero;
 
     public int tamanio
+
+    RepuestosListaCircular()
+    {
+        primero = null;
+    }
 
     public void agregar(int id, string repuesto, string detalle, string costo)
     {
@@ -24,40 +28,44 @@ unsafe class RepuestosListaCircular
             throw new ArgumentException("Los campos no pueden ser nulos o vacíos.");
         }
 
-        Nodo* nuevoNodo = (Nodo*)Marshal.AllocHGlobal(sizeof(Nodo));
-
-        nuevoNodo->Id = id;
-        nuevoNodo->Repuesto = (char*)Marshal.StringToHGlobalAnsi(repuesto);
-        nuevoNodo->Detalle = (char*)Marshal.StringToHGlobalAnsi(detalle);
-        nuevoNodo->Costo = (char*)Marshal.StringToHGlobalAnsi(costo);
-        nuevoNodo->Siguiente = primero;
-
+        NodoRepuestos* nuevoNodoRepuestos = (NodoRepuestos*)Marshal.AllocHGlobal(sizeof(NodoRepuestos));
+        
         if (primero == null)
         {
-            primero = nuevoNodo;
-            ultimo = nuevoNodo;
+            primero = nuevoNodoRepuestos;
+            primero->Id = id;
+            primero->Repuesto = (char*)Marshal.StringToHGlobalAnsi(repuesto);
+            primero->Detalle = (char*)Marshal.StringToHGlobalAnsi(detalle);
+            primero->Costo = (char*)Marshal.StringToHGlobalAnsi(costo);
+            ultimo = primero;
             primero->Siguiente = primero;
-            tamanio = 1;
+            tamanio++;
+
         }
-        else
+        else 
         {
-            primero->Siguiente = nuevoNodo;
-            nuevoNodo->Siguiente = ultimo;
-            primero = nuevoNodo;
+            NodoRepuestos* actual = primero;
+            while (actual->Siguiente != primero)
+            {
+                actual = actual->Siguiente;
+            }
+            nuevoNodoRepuestos->Id = id;
+            nuevoNodoRepuestos->Repuesto = (char*)Marshal.StringToHGlobalAnsi(repuesto);
+            nuevoNodoRepuestos->Detalle = (char*)Marshal.StringToHGlobalAnsi(detalle);
+            nuevoNodoRepuestos->Costo = (char*)Marshal.StringToHGlobalAnsi(costo);
+            nuevoNodoRepuestos->Siguiente = primero;
+            actual->Siguiente = nuevoNodoRepuestos;
+            nuevoNodoRepuestos->Siguiente = primero;
             tamanio++;
         }
-        
-
-        primero = nuevoNodo;
-
         
     }
     }
 
     
-    public Nodo* Buscar(int id)
+    public NodoRepuestos* Buscar(int id)
     {
-        Nodo* actual = primero;
+        NodoRepuestos* actual = primero;
 
         for (int i = 0; i < tamanio; i++)
         {
@@ -74,8 +82,8 @@ unsafe class RepuestosListaCircular
     
     public void Borrar(int id)
     {
-        Nodo* actual = primero;
-        Nodo* previo = null;
+        NodoRepuestos* actual = primero;
+        NodoRepuestos* previo = null;
 
         for (int i = 0; i < tamanio; i++)
         {
@@ -107,7 +115,7 @@ unsafe class RepuestosListaCircular
     
 /*     public void Imprimir()
     {
-        Nodo* actual = cabeza;
+        NodoRepuestos* actual = cabeza;
 
         while (actual != null)
         {
