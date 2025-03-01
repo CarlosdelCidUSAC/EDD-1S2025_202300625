@@ -1,0 +1,38 @@
+[
+    {
+    "ID": 1,
+    "Repuesto": "Filtro de aceite",
+    "Detalles": "Filtro de aceite para motor 1.8L",
+    "Costo": 15.75
+    },
+    {
+    "ID": 2,
+    "Repuesto": "Bujías",
+    "Detalles": "Juego de bujías para motor 2.0L",
+    "Costo": 30.50
+    },
+    {
+    "ID": 3,
+    "Repuesto": "Filtro de aire",
+    "Detalles": "Filtro de aire para motor 1.8L",
+    "Costo": 10.25
+    },
+    {
+    "ID": 4,
+    "Repuesto": "Pastillas de freno",
+    "Detalles": "Pastillas de freno para ruedas delanteras",
+    "Costo": 45.00
+    },
+    {
+    "ID": 5,
+    "Repuesto": "Líquido de frenos",
+    "Detalles": "Líquido de frenos DOT 4",
+    "Costo": 12.75
+    },
+    {
+    "ID": 6,
+    "Repuesto": "Filtro de combustible",
+    "Detalles": "Filtro de combustible para motor 2.0L",
+    "Costo": 20.00
+    }
+    ]

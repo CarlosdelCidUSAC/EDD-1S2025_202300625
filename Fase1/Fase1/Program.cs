@@ -1,16 +1,28 @@
 ﻿using System;
 using Gtk;
 
-namespace Fase1
-{
+ 
+
+
     class Program
 {
+    public static UsuariosLista listaUsuarios = new UsuariosLista();
+    public static VehiculoListaDoble listaVehiculos = new VehiculoListaDoble();
+    public static RepuestosListaCircular listaRepuestos = new RepuestosListaCircular();
+    public static SeviciosCola colaServicios = new SeviciosCola();
+    public static FacturasPila pilaFacturas = new FacturasPila();
+
+    public static BitacoraMatrizDispersa bitacora = new BitacoraMatrizDispersa();
     static void Main()
     {
+
         Application.Init();
         LoginWindow win = new LoginWindow();
         win.ShowAll();
-        //DEsplegue de las ventanas como prueba
+
+        MenuWindow menu = new MenuWindow();
+        menu.ShowAll();
+        /* 
         CargaWindow carga = new CargaWindow();
         carga.ShowAll();
         UsuarioGestionWindow usuario = new UsuarioGestionWindow();
@@ -27,7 +39,7 @@ namespace Fase1
         factura.ShowAll();
         VentanaEmergente ventana = new VentanaEmergente();
         ventana.ShowAll();
-        Application.Run();
+         */
+         Application.Run();
     }
-}
 }

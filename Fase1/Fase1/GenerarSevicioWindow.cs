@@ -7,7 +7,7 @@ using Gtk;
 
         SetDefaultSize(300, 500);
         SetPosition(WindowPosition.Center);
-        DeleteEvent += (o, args) => Application.Quit();
+        DeleteEvent += OnDeleteEvent;
 
         Fixed contenedor = new Fixed();
 
@@ -45,13 +45,74 @@ using Gtk;
             string Id_Vehiculo = entradaId_Vehiculo.Text;
             string Detalles = entradaDetalles.Text;
             string Costo = entradaCosto.Text;
+            float CostoFloat;
+            if (!float.TryParse(Costo, out CostoFloat))
+            {
+                MessageDialog md = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "El costo ingresado no es un número válido");
+                md.Run();
+                md.Destroy();
+                return;
+            }
 
-            
+            int idInt = int.Parse(id);
+            int Id_RepuestoInt = int.Parse(Id_Repuesto);
+            int Id_VehiculoInt = int.Parse(Id_Vehiculo);
 
-            };
+            int idTemp = Program.colaServicios.Buscar(idInt);
+            int idRepuestoTemp = Program.listaRepuestos.Buscar(Id_RepuestoInt);
+            int idVehiculoTemp = Program.listaVehiculos.Buscar(Id_VehiculoInt);
+
+            if (idTemp != idInt)
+            {
+                if(idRepuestoTemp == Id_RepuestoInt)
+                {
+                    if(idVehiculoTemp == Id_VehiculoInt)
+                    {
+                        Program.colaServicios.Encolar(idInt, Id_RepuestoInt, Id_VehiculoInt, Detalles, CostoFloat);
+                        entradaId.Text = "";
+                        entradaId_Repuesto.Text = "";
+                        entradaId_Vehiculo.Text = "";
+                        entradaDetalles.Text = "";
+                        entradaCosto.Text = "";
+                        
+                        float CostoServicio = Program.listaRepuestos.BuscarCosto(Id_RepuestoInt);
+
+                        float CostoTotal = float.Parse(Costo) + CostoServicio;
+                        
+                        
+                        Program.pilaFacturas.enpilar(idInt, Id_RepuestoInt, Id_VehiculoInt, Detalles, CostoTotal); 
+                        Program.bitacora.insertar(Id_RepuestoInt, Id_VehiculoInt, Detalles);
+                    }
+                    else
+                    {
+                        MessageDialog md = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "El vehiculo no existe");
+                        md.Run();
+                        md.Destroy();
+                    }
+                }
+                else
+                {
+                    MessageDialog md = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "El repuesto no existe");
+                    md.Run();
+                    md.Destroy();
+                }
+            }
+            else
+            {
+                MessageDialog md = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "El servicio ya existe");
+                md.Run();
+                md.Destroy();
+            }
+        };
+
             Add(contenedor);
             ShowAll();
     
     
 }
+    public void OnDeleteEvent(object sender, DeleteEventArgs a)
+    {
+        a.RetVal = true;
+        Destroy();
+    }
 }

@@ -6,7 +6,7 @@ class UsuarioGestionWindow : Window
     {
         SetDefaultSize(300, 500);
         SetPosition(WindowPosition.Center);
-        DeleteEvent += (o, args) => Application.Quit();
+        DeleteEvent += OnDeleteEvent;
 
         Fixed contenedor = new Fixed();
 
@@ -23,7 +23,9 @@ class UsuarioGestionWindow : Window
         Label salidaCorreo = new Label();
         Entry entradaCorreo = new Entry();
 
+        
 
+        Button botonBorrar = new Button("Borrar");
         Button botonBuscarId = new Button("Buscar por Id");
         Button botonActualizar = new Button("Actualizar");
 
@@ -38,8 +40,46 @@ class UsuarioGestionWindow : Window
         contenedor.Put(entradaId, 125, 180);
         contenedor.Put(botonBuscarId, 100, 220);
         contenedor.Put(botonActualizar, 100, 260);
+        contenedor.Put(salidaNombre, 30, 300);
+        contenedor.Put(salidaApellido, 30, 340);
+        contenedor.Put(salidaCorreo, 30, 380);
+        contenedor.Put(botonBorrar, 100, 420);
 
-        
+
+        salidaNombre.Visible = true;
+        salidaApellido.Visible = true;
+        salidaCorreo.Visible = true;
+
+        botonBorrar.Clicked += (sender, e) =>
+        {
+            string id = entradaId.Text;
+            if (id != "")
+            {
+                int idInt = int.Parse(id);
+                int idTemp = Program.listaUsuarios.Buscar(int.Parse(id));
+
+                if (idTemp == idInt)
+                {
+                    Program.listaUsuarios.Borrar(int.Parse(id));
+                    MessageDialog mensaje = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Usuario eliminado");
+                    mensaje.Run();
+                    mensaje.Hide();
+                }
+                else
+                {
+                    MessageDialog mensaje = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El usuario no existe");
+                    mensaje.Run();
+                    mensaje.Hide();
+                }
+
+            }
+            else
+            {
+                MessageDialog mensaje = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "Por favor llene el campo Id");
+                mensaje.Run();
+                mensaje.Hide();
+            }
+        };
 
         botonActualizar.Clicked += (sender, e) =>
         {
@@ -48,26 +88,42 @@ class UsuarioGestionWindow : Window
             string correo = entradaCorreo.Text;
             string Idseña = entradaId.Text;
 
+            Program.listaUsuarios.Actualizar(int.Parse(Idseña), nombre, apellido, correo);
+            MessageDialog mensaje = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Usuario actualizado");
+            mensaje.Run();
+            mensaje.Hide();
 
-            if (nombre != "" && apellido != "" && correo != "" && Idseña != "" )
-            {
-                MessageDialog mensaje = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Usuario ingresado correctamente");
-                mensaje.Run();
-                mensaje.Hide();
-            }
-            else
-            {
-                MessageDialog mensaje = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "Por favor llene todos los campos");
-            }
+            salidaApellido.Visible = true;
+            salidaCorreo.Visible = true;
+            salidaNombre.Visible = true;
 };
         botonBuscarId.Clicked += (sender, e) =>
         {
             string id = entradaId.Text;
             if (id != "")
             {
-                salidaNombre.Text = "Nombre: ";
-                salidaApellido.Text = "Apellido: ";
-                salidaCorreo.Text = "Correo: ";
+                int idInt = int.Parse(id);
+                int idTemp = Program.listaUsuarios.Buscar(int.Parse(id));
+
+                if (idTemp == idInt)
+                {
+                    salidaNombre.Text = "Nombre: " + Program.listaUsuarios.BuscarNombre(int.Parse(id));
+                    salidaApellido.Text = "Apellido: " + Program.listaUsuarios.BuscarApellido(int.Parse(id));
+                    salidaCorreo.Text = "Correo: " + Program.listaUsuarios.BuscarCorreo(int.Parse(id));
+                    
+                    
+                    salidaNombre.Visible = true;
+                    salidaApellido.Visible = true;
+                    salidaCorreo.Visible = true;
+
+                }
+                else
+                {
+                    MessageDialog mensaje = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El usuario no existe");
+                    mensaje.Run();
+                    mensaje.Hide();
+                }
+
             }
             else
             {
@@ -79,5 +135,11 @@ class UsuarioGestionWindow : Window
 
         Add(contenedor);
         ShowAll();
+    }
+
+    public void OnDeleteEvent(object sender, DeleteEventArgs a)
+    {
+        a.RetVal = true;
+        Destroy();
     }
 }

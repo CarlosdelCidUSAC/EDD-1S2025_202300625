@@ -1,0 +1,23 @@
+[
+    {
+    "ID": 1,
+    "ID_Usuario": 1,
+    "Marca": "Toyota",
+    "Modelo": "2020",
+    "Placa": "ABC123"
+    },
+    {
+    "ID": 2,
+    "ID_Usuario": 2,
+    "Marca": "Ford",
+    "Modelo": "2021",
+    "Placa": "XYZ456"
+    },
+    {
+    "ID": 3,
+    "ID_Usuario": 3,
+    "Marca": "Chevrolet",
+    "Modelo": "2019",
+    "Placa": "DEF789"
+    }
+]

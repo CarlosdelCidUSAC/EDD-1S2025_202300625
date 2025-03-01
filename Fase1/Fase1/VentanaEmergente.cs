@@ -4,9 +4,9 @@ using Gtk;
 {
     public VentanaEmergente() : base("Ventana Emergente")
     {
-        SetDefaultSize(400, 200);
+        SetDefaultSize(450, 200);
         SetPosition(WindowPosition.Center);
-        DeleteEvent += (o, args) => Application.Quit();
+        DeleteEvent += OnDeleteEvent;
 
         Fixed contenedor = new Fixed();
 
@@ -15,11 +15,13 @@ using Gtk;
         Button botonUsuario = new Button("Usuarios");
         Button botonVehiculo = new Button("Vehiculos");
         Button botonRepuesto = new Button("Repuestos");
+        Button botonSevicio = new Button("Servicios");
 
         contenedor.Put(etiquetaOpciones, 80, 20);
         contenedor.Put(botonUsuario, 50, 100);
         contenedor.Put(botonVehiculo, 150, 100);
         contenedor.Put(botonRepuesto, 250, 100);
+        contenedor.Put(botonSevicio, 350, 100);
 
         botonUsuario.Clicked += (sender, e) =>
         {
@@ -43,8 +45,21 @@ using Gtk;
             repuesto.ShowAll();
             this.Hide();
         }; 
+
+        botonSevicio.Clicked += (sender, e) =>
+        {
+            ServicioIngresoWindow servicio = new ServicioIngresoWindow();
+            servicio.ShowAll();
+            this.Hide();
+        };
         Add(contenedor);
         ShowAll();
+    }
+
+    private void OnDeleteEvent(object sender, DeleteEventArgs args)
+    {
+        args.RetVal = true;
+        Hide();
     }
 
 }

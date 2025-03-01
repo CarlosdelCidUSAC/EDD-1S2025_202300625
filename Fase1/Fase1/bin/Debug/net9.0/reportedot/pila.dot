@@ -1,0 +1,7 @@
+digraph G {
+  rankdir=TB;
+  node [shape=record, height=.1];
+  label="Pila";
+  labelloc="t";
+node0 [label="ID: 6\nID Orden: 1\nCosto: 24.6"];
+}

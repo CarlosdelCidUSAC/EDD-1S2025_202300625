@@ -7,7 +7,7 @@ using Gtk;
 
         SetDefaultSize(300, 500);
         SetPosition(WindowPosition.Center);
-        DeleteEvent += (o, args) => Application.Quit();
+        DeleteEvent += OnDeleteEvent;
 
         Fixed contenedor = new Fixed();
 
@@ -42,12 +42,46 @@ using Gtk;
             string Detalles = entradaDetalles.Text;
             string Costo = entradaCosto.Text;
 
+            if(id != "" && Repuesto != "" && Detalles != "" && Costo != "")
+            {   
+                int idInt = int.Parse(id);
 
+                int idTemp = Program.listaRepuestos.Buscar(idInt);
+
+                float CostoFloat = float.Parse(Costo);
+                
+                if(idTemp != idInt)
+                {
+
+
+                Program.listaRepuestos.Agregar(idInt, Repuesto, Detalles, CostoFloat);
+                Program.listaRepuestos.Imprimir();
+                }
+                else
+                {
+                    MessageDialog md = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "El repuesto ya existe");
+                    md.Run();
+                    md.Destroy();
+                }
+            }
+            else
+            {
+                MessageDialog md = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Faltan datos");
+                md.Run();
+                md.Destroy();
             
 
             };
-
+        };
     Add(contenedor);
     ShowAll();
+
+
 }
+    public void OnDeleteEvent(object sender, DeleteEventArgs a)
+    {
+        a.RetVal = true;
+        Destroy();
+    }
+
 }

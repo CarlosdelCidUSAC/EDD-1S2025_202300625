@@ -1,0 +1,25 @@
+
+[
+{
+"ID": 1,
+"Nombres": "Juan",
+"Apellidos": "Pérez",
+"Correo": "juan.perez@mail.com",
+"Contrasenia": "123456"
+},
+{
+"ID": 2,
+"Nombres": "María",
+"Apellidos": "Gómez",
+"Correo": "juan.perez@mail.com",
+"Contrasenia": "123456"
+},
+{
+"ID": 3, 
+"Nombres": "Carlos",
+"Apellidos": "López",
+"Correo": "juan.perez@mail.com",
+"Contrasenia": "123456"
+}
+
+]

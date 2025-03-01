@@ -1,0 +1,15 @@
+digraph G {
+graph [pad="0.5", nodesep="1", ranksep="1"];
+label="Matriz Dispersa"
+node [shape=box, height=0.8];
+	Fila2[style="filled" label="2" fillcolor="white" group=0];
+	Fila1[style="filled" label="1" fillcolor="white" group=0];
+edge[dir="both"];
+	Fila2 -> Fila1;
+	NodoF2_C1[style="filled" label="ㄳ" fillcolor="white" group=1];
+	Fila2 -> NodoF2_C1[dir=""];
+	NodoF1_C1[style="filled" label="ㄳ" fillcolor="white" group=1];
+	Fila1 -> NodoF1_C1[dir=""];
+	{ rank = same; Fila2; NodoF2_C1; }
+	{ rank = same; Fila1; NodoF1_C1; }
+}

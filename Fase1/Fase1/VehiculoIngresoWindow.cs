@@ -7,7 +7,7 @@ using Gtk;
 
         SetDefaultSize(300, 500);
         SetPosition(WindowPosition.Center);
-        DeleteEvent += (o, args) => Application.Quit();
+        DeleteEvent += OnDeleteEvent;
 
         Fixed contenedor = new Fixed();
 
@@ -46,11 +46,41 @@ using Gtk;
             string Modelo = entradaModelo.Text;
             string Placa = entradaPlaca.Text;
 
-            
+
+
+            if(id != "" && Id_Nombre != "" && Marca != "" && Modelo != "" && Placa != "")
+            {   
+                int idInt = int.Parse(id);
+                int Id_NombreInt = int.Parse(Id_Nombre);
+                int anioInt = int.Parse(Modelo);
+                int idTemp = Program.listaVehiculos.Buscar(idInt);
+                
+                if ( idTemp != idInt)
+                {
+                Program.listaVehiculos.AgregarPrimero(idInt, Id_NombreInt, Marca, anioInt, Placa);
+                Program.listaVehiculos.Imprimir();
+                }
+                else
+                {
+                    MessageDialog md = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "El vehiculo ya existe");
+                    md.Run();
+                    md.Destroy();
+                }
+            }
+            else
+            {
+                MessageDialog md = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Llene todos los campos");
+                md.Run();
+                md.Destroy();
 
             };
-        
+        };
         Add(contenedor);
         ShowAll();
 }
+    public void OnDeleteEvent(object sender, DeleteEventArgs a)
+    {
+        a.RetVal = true;
+        Hide();
+    }
 }

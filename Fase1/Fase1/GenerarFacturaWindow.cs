@@ -1,13 +1,13 @@
 using Gtk;
 
-class GenerarFacturaWindow: Window
+class GenerarFacturaWindow : Window
 {
-    public GenerarFacturaWindow(): base("Generar Factura")
+    public GenerarFacturaWindow() : base("Generar Factura")
     {
-    
+
         SetDefaultSize(400, 300);
         SetPosition(WindowPosition.Center);
-        DeleteEvent += (o, args) => Application.Quit();
+        DeleteEvent += OnDeleteEvent;
 
         Fixed contenedor = new Fixed();
 
@@ -31,7 +31,35 @@ class GenerarFacturaWindow: Window
         Add(contenedor);
         ShowAll();
 
+        if (Program.pilaFacturas.CabezaIsNotNull())
+        {
+            int ID = Program.pilaFacturas.ObtenerID();
+            salidaId.Text = ID.ToString();
+            float total = Program.pilaFacturas.ObtenerCosto();
+            salidaTotal.Text = total.ToString();
+            int idOrden = Program.pilaFacturas.ObtenerIDOrden();
+            salidaId_Orden.Text = idOrden.ToString();
+            unsafe
+            {
+                Program.pilaFacturas.desenpilar();
+            }
 
-        
-}
+        }
+        else
+        {
+            MessageDialog dialog = new MessageDialog(null, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "No hay facturas generadas.");
+            dialog.Run();
+            dialog.Destroy();
+            Hide();
+        }
+
+
+
+    }
+    public void OnDeleteEvent(object sender, DeleteEventArgs a)
+    {
+        a.RetVal = true;
+        Destroy();
+    }
+
 }
