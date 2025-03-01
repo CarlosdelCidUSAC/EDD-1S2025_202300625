@@ -178,7 +178,10 @@ public void insertar(int x, int y, string detalle)
             CeldaX->acceso = null;
             CeldaX->siguiente = null;
             CeldaX->anterior = null;
-            filas.InsertarNodoCabecera(CeldaX);
+            if (filas != null)
+            {
+                filas.InsertarNodoCabecera(CeldaX);
+            }
         }
 
         if (CeldaY == null)
@@ -189,7 +192,10 @@ public void insertar(int x, int y, string detalle)
             CeldaY->acceso = null;
             CeldaY->siguiente = null;
             CeldaY->anterior = null;
-            columnas.InsertarNodoCabecera(CeldaY);
+            if (columnas != null)
+            {
+                columnas.InsertarNodoCabecera(CeldaY);
+            }
         }
 
         if (CeldaX->acceso == null)
@@ -379,7 +385,11 @@ public void insertar(int x, int y, string detalle)
             string rutaReporte = "reportes/matriz.png";
             string codigoDot = codigodot.ToString();
 
-            Directory.CreateDirectory(Path.GetDirectoryName(rutaDot));
+            string directoryPath = Path.GetDirectoryName(rutaDot);
+            if (directoryPath != null)
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
             File.WriteAllText(rutaDot, codigoDot);
 
             Process proceso = new Process();
