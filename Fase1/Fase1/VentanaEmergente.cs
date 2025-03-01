@@ -48,7 +48,7 @@ using Gtk;
 
         botonSevicio.Clicked += (sender, e) =>
         {
-            ServicioIngresoWindow servicio = new ServicioIngresoWindow();
+            GenerarServicioWindow servicio = new GenerarServicioWindow();
             servicio.ShowAll();
             this.Hide();
         };
