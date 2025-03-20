@@ -1,0 +1,13 @@
+digraph G {
+  rankdir=LR;
+  node [shape=record, height=.1];
+  label="Cola";
+  labelloc="t";
+node0 [label="{ID: 1\nID Servicio: 2\nID Vehículo: 2\nDetalles: dasdas\nCosto: 75}"]
+node1 [label="{ID: 4\nID Servicio: 3\nID Vehículo: 3\nDetalles: adfd\nCosto: 100}"]
+node2 [label="{ID: 6\nID Servicio: 12\nID Vehículo: 12\nDetalles: fadfsd\nCosto: 150}"]
+node3 [label="{ID: 9\nID Servicio: 5\nID Vehículo: 12\nDetalles: adsdas\nCosto: 150}"]
+node0 -> node1;
+node1 -> node2;
+node2 -> node3;
+}

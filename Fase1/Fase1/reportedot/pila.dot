@@ -1,0 +1,13 @@
+digraph G {
+  rankdir=TB;
+  node [shape=record, height=.1];
+  label="Pila";
+  labelloc="t";
+node0 [label="ID: 9\nID Orden: 4\nCosto: 245.2"];
+node1 [label="ID: 6\nID Orden: 3\nCosto: 200"];
+node2 [label="ID: 4\nID Orden: 2\nCosto: 160"];
+node3 [label="ID: 1\nID Orden: 1\nCosto: 90.75"];
+node0 -> node1;
+node1 -> node2;
+node2 -> node3;
+}

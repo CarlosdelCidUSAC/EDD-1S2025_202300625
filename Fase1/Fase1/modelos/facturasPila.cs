@@ -69,6 +69,10 @@ unsafe class FacturasPila
         NodoFactura* actual = cabeza;
         cabeza = cabeza->Siguiente;
 
+        Marshal.FreeHGlobal((IntPtr)actual->Id);
+        Marshal.FreeHGlobal((IntPtr)actual->Id_Servicio);
+        Marshal.FreeHGlobal((IntPtr)actual->Id_Vehiculo);
+        Marshal.FreeHGlobal((IntPtr)actual->Costo);
         Marshal.FreeHGlobal((IntPtr)actual->Detalles);
         Marshal.FreeHGlobal((IntPtr)actual);
 

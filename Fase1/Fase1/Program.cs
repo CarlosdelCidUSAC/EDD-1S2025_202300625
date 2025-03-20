@@ -20,8 +20,8 @@ using Gtk;
         LoginWindow win = new LoginWindow();
         win.ShowAll();
 
-        MenuWindow menu = new MenuWindow();
-        menu.ShowAll();
+        
+        
         /* 
         CargaWindow carga = new CargaWindow();
         carga.ShowAll();

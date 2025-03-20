@@ -1,0 +1,50 @@
+digraph G {
+rankdir=LR;
+node [shape=record];
+subgraph cluster_ListaDobleEnlazada {
+label = "Lista Doblemente Enlazada";
+"15" [label="ID: 15\nID Usuario: 10\nMarca: Mazda CX-5\nModelo: 2017\nPlaca: VWL3P0D"];
+"15" -> "14";
+"14" -> "15";
+"14" [label="ID: 14\nID Usuario: 9\nMarca: Chevrolet Spark\nModelo: 2011\nPlaca: XTR9E1Q"];
+"14" -> "13";
+"13" -> "14";
+"13" [label="ID: 13\nID Usuario: 8\nMarca: Toyota Camry\nModelo: 2014\nPlaca: OIJ6R4F"];
+"13" -> "12";
+"12" -> "13";
+"12" [label="ID: 12\nID Usuario: 7\nMarca: Volkswagen Jetta\nModelo: 2012\nPlaca: JXK3L9D"];
+"12" -> "11";
+"11" -> "12";
+"11" [label="ID: 11\nID Usuario: 6\nMarca: BMW X3\nModelo: 2013\nPlaca: BNM8D7Q"];
+"11" -> "10";
+"10" -> "11";
+"10" [label="ID: 10\nID Usuario: 6\nMarca: Subaru Impreza\nModelo: 2016\nPlaca: XZJ3M5P"];
+"10" -> "9";
+"9" -> "10";
+"9" [label="ID: 9\nID Usuario: 5\nMarca: Honda Accord\nModelo: 2009\nPlaca: VBR9P1S"];
+"9" -> "8";
+"8" -> "9";
+"8" [label="ID: 8\nID Usuario: 5\nMarca: Kia Rio\nModelo: 2014\nPlaca: RT5Y4O2"];
+"8" -> "7";
+"7" -> "8";
+"7" [label="ID: 7\nID Usuario: 4\nMarca: Mazda 3\nModelo: 2011\nPlaca: MSD9H8A"];
+"7" -> "6";
+"6" -> "7";
+"6" [label="ID: 6\nID Usuario: 3\nMarca: Hyundai Elantra\nModelo: 2015\nPlaca: QWE3P0F"];
+"6" -> "5";
+"5" -> "6";
+"5" [label="ID: 5\nID Usuario: 3\nMarca: Chevrolet Aveo\nModelo: 2007\nPlaca: BZX5D2L"];
+"5" -> "4";
+"4" -> "5";
+"4" [label="ID: 4\nID Usuario: 3\nMarca: Nissan Altima\nModelo: 2012\nPlaca: FTE6V3R"];
+"4" -> "3";
+"3" -> "4";
+"3" [label="ID: 3\nID Usuario: 2\nMarca: Ford Focus\nModelo: 2008\nPlaca: YT2XG9M"];
+"3" -> "2";
+"2" -> "3";
+"2" [label="ID: 2\nID Usuario: 2\nMarca: Toyota Corolla\nModelo: 2010\nPlaca: JKS8T5A"];
+"2" -> "1";
+"1" -> "2";
+"1" [label="ID: 1\nID Usuario: 1\nMarca: Honda Civic\nModelo: 2005\nPlaca: XZJ7H9K"];
+}
+}

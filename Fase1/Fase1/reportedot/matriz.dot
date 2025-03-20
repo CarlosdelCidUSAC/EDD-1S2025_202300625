@@ -1,0 +1,9 @@
+digraph G {
+graph [pad="0.5", nodesep="1", ranksep="1"];
+label="Matriz Dispersa"
+node [shape=box, height=0.8];
+edge[dir="both"];
+edge[dir="both"];
+
+	{ rank = same; };
+}
