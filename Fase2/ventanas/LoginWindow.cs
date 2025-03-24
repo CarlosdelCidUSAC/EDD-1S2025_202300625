@@ -53,6 +53,6 @@ class LoginWindow : Window
     public void OnDeleteEvent(object sender, DeleteEventArgs a)
     {
         a.RetVal = true;
-        Destroy();
+        Application.Quit();
     }
 }

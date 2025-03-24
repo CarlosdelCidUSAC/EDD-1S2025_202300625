@@ -2,6 +2,34 @@ using Gtk;
 
 class MenuUsuarioWindow : Window
 {
+    private RegistroVehiculoWindow _windowRegistroVehiculo;
+    private VisualizacionServicioWindow _windowVisualizacionServicio;
+    private VisualizacionFacturasWindow _windowVisualizacionFacturas;
+    private CancelarFacturaWindow _windowCancelarFactura;
+
+    public void ShowWindowRegistroVehiculo()
+    {
+        _windowRegistroVehiculo = new RegistroVehiculoWindow();
+        _windowRegistroVehiculo.Show();
+    }
+
+    public void ShowWindowVisualizacionServicio()
+    {
+        _windowVisualizacionServicio = new VisualizacionServicioWindow();
+        _windowVisualizacionServicio.Show();
+    }
+
+    public void ShowWindowVisualizacionFacturas()
+    {
+        _windowVisualizacionFacturas = new VisualizacionFacturasWindow();
+        _windowVisualizacionFacturas.Show();
+    }
+
+    public void ShowWindowCancelarFactura()
+    {
+        _windowCancelarFactura = new CancelarFacturaWindow();
+        _windowCancelarFactura.Show();
+    }
     public MenuUsuarioWindow() : base("Menú Administrador")
     {
         SetDefaultSize(400, 650);
@@ -27,22 +55,22 @@ class MenuUsuarioWindow : Window
 
         botonInsertar.Clicked += (sender, e) =>
         {
-
+           ShowWindowRegistroVehiculo();
         };
 
         botonVisSer.Clicked += (sender, e) =>
         {
-
+            ShowWindowVisualizacionServicio();
         };
 
         botonVisFac.Clicked += (sender, e) =>
         {
-            
+            ShowWindowVisualizacionFacturas();
         };
 
         botonCanFac.Clicked += (sender, e) =>
         {
-        
+            ShowWindowCancelarFactura();
         };
 
 
