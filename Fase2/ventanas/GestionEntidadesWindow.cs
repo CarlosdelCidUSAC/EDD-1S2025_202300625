@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Gtk;
 
 class GestionEntidadesWindow : Window
@@ -48,30 +49,84 @@ class GestionEntidadesWindow : Window
 
         botonBuscarUsuarioId.Clicked += (sender, args) =>
         {
-            salida1.Text = "Usuario encontrado";
-            salida2.Text = "Nombre: Juan";
-            salida3.Text = "Apellido: Perez";
+            string id = entradaId.Text;
+            if(Program.listaUsuarios.Buscar(int.Parse(id)) != null)
+            {
+                salida1.Text = "Nombre:" + Program.listaUsuarios.Buscar(int.Parse(id)).nombre;
+                salida2.Text = "Apellido:" + Program.listaUsuarios.Buscar(int.Parse(id)).apellido;
+                salida3.Text = "Correo:" + Program.listaUsuarios.Buscar(int.Parse(id)).correo;
+                salida4.Text = "Edad:" + Program.listaUsuarios.Buscar(int.Parse(id)).edad;
+            }
+            else
+            {
+                MessageDialog md = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Usuario no encontrado");
+                md.Run();
+                md.Destroy();
+            }
         };
 
         botonBuscarVehiculoId.Clicked += (sender, args) =>
         {
-            salida1.Text = "Vehículo encontrado";
-            salida2.Text = "Marca: Ford";
-            salida3.Text = "Modelo: Fiesta";
+            string id = entradaId.Text;
+            if(Program.listaVehiculos.Buscar(int.Parse(id)) != null)
+            {
+                salida1.Text = "Id_Usuario:" + Program.listaVehiculos.Buscar(int.Parse(id)).id_usuario;
+                salida2.Text = "Marca:" + Program.listaVehiculos.Buscar(int.Parse(id)).marca;
+                salida3.Text = "Modelo:" + Program.listaVehiculos.Buscar(int.Parse(id)).anio;
+                salida4.Text = "Placa:" + Program.listaVehiculos.Buscar(int.Parse(id)).placa;
+            }
+            else
+            {
+                MessageDialog md = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Vehículo no encontrado");
+                md.Run();
+                md.Destroy();
+            }
         };
 
         botonBorrarUsuario.Clicked += (sender, args) =>
         {
-            salida1.Text = "Usuario borrado";
-            salida2.Text = "";
-            salida3.Text = "";
+            string id = entradaId.Text;
+            if (Program.listaUsuarios.Buscar(int.Parse(id)) != null)
+            {
+                Program.listaUsuarios.Eliminar(int.Parse(id));
+                salida1.Text = "";
+                salida2.Text = "";
+                salida3.Text = "";
+                salida4.Text = "";
+
+                MessageDialog md = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Close, "Usuario borrado");
+                md.Run();
+                md.Destroy();
+            }
+            else
+            {
+                MessageDialog md = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Usuario no encontrado");
+                md.Run();
+                md.Destroy();
+            }
         };
 
         botonBorrarVehiculo.Clicked += (sender, args) =>
         {
-            salida1.Text = "Vehículo borrado";
-            salida2.Text = "";
-            salida3.Text = "";
+            string id = entradaId.Text;
+            if (Program.listaVehiculos.Buscar(int.Parse(id)) != null)
+            {
+                Program.listaVehiculos.Eliminar(int.Parse(id));
+                salida1.Text = "";
+                salida2.Text = "";
+                salida3.Text = "";
+                salida4.Text = "";
+
+                MessageDialog md = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Info, ButtonsType.Close, "Vehículo borrado");
+                md.Run();
+                md.Destroy();
+            }
+            else
+            {
+                MessageDialog md = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Vehículo no encontrado");
+                md.Run();
+                md.Destroy();
+            }
         };
 
        

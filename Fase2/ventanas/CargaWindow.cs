@@ -74,7 +74,7 @@ class CargaWindow : Window
 
         foreach (JObject usuario in usuariosArray)
         {
-            if (usuario["ID"] == null || usuario["Nombres"] == null || usuario["Apellidos"] == null || usuario["Correo"] == null || usuario["Contrasenia"] == null){
+            if (usuario["ID"] == null || usuario["Nombres"] == null || usuario["Apellidos"] == null || usuario["Correo"] == null || usuario["Contrasenia"] == null || usuario["Edad"] == null){
                 MessageDialog dialogo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El archivo no tiene el formato correcto");
                 dialogo.Run();
                 dialogo.Hide();
@@ -90,14 +90,13 @@ class CargaWindow : Window
                 string nombres = usuarioT["Nombres"].ToString();
                 string apellidos = usuarioT["Apellidos"].ToString();
                 string correo = usuarioT["Correo"].ToString();
+                string edad = usuarioT["Edad"].ToString();
                 string contrasenia = usuarioT["Contrasenia"].ToString();
 
-                int idInt = int.Parse(id);
-                //Program.listaUsuarios.Agregar(idInt, nombres, apellidos, correo, contrasenia);
-
+                Program.listaUsuarios.Agregar(int.Parse(id), nombres, apellidos, correo, int.Parse(edad), contrasenia);
 
             }
-            //Program.listaUsuarios.Imprimir();
+            Program.listaUsuarios.Imprimir();
 
 
     }
@@ -135,10 +134,11 @@ class CargaWindow : Window
                 int idInt = int.Parse(id);
                 int id_usuarioInt = int.Parse(id_usuario);
                 int anioInt = int.Parse(modelo);
-                //Program.listaVehiculos.AgregarPrimero(idInt, id_usuarioInt, marca, anioInt, placa);
+
+                Program.listaVehiculos.AgregarPrimero(idInt, id_usuarioInt, marca, int.Parse(modelo), placa);
             }
            
-        //Program.listaVehiculos.Imprimir();
+        Program.listaVehiculos.Imprimir();
 
 
     }
@@ -173,12 +173,9 @@ class CargaWindow : Window
             string detalle = repuestoT["Detalles"].ToString();
             string costo = repuestoT["Costo"].ToString();
 
-            float costoFloat = float.Parse(costo);
-
-            int idInt = int.Parse(id);
-            //Program.listaRepuestos.Agregar(idInt, repuesto, detalle, costoFloat);
+            Program.arbolRepuestos.Agregar(int.Parse(id), repuesto, detalle, float.Parse(costo));
         }
-        //Program.listaRepuestos.Imprimir();
+        Program.arbolRepuestos.Imprimir(Program.arbolRepuestos.Raiz);
     
     }
 }

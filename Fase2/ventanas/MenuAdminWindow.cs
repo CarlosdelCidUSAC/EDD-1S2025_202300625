@@ -1,4 +1,5 @@
 using Gtk;
+using System;
 
 class MenuAdminWindow : Window
 {
@@ -42,7 +43,7 @@ class MenuAdminWindow : Window
     {
         SetDefaultSize(400, 650);
         SetPosition(WindowPosition.Center);
-        DeleteEvent += (o, args) => Application.Quit();
+        DeleteEvent += OnDeleteEvent;
 
         Fixed contenedor = new Fixed();
 
@@ -90,16 +91,62 @@ class MenuAdminWindow : Window
         };
 
         botonCtrlLog.Clicked += (sender, e) =>
-        {
-            // Proximamente
+        {   
+            string folderPath = "Reportes";
+            if (!System.IO.Directory.Exists(folderPath))
+            {
+                System.IO.Directory.CreateDirectory(folderPath);
+            }
+
+            string filePath = System.IO.Path.Combine(folderPath, "registroUsuarios.json");
+            var usuarios = Program.registroUsuarios.Select(usuario => new 
+            {
+                Correo = usuario.correo,
+                Entrada = usuario.entrada,
+                Salida = usuario.salida
+            }).ToList();
+
+            string json = System.Text.Json.JsonSerializer.Serialize(usuarios, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+
+            System.IO.File.WriteAllText(filePath, json);
+            MessageDialog dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Registro de usuarios exportado exitosamente.");
+            dialog.Run();
+            dialog.Destroy();
         };
 
         Reporte.Clicked += (sender, e) =>
         {
-            // Proximamente
+            if(!Program.listaUsuarios.EstaVacia())
+            {
+                Program.listaUsuarios.Graficar();
+            }
+            if(!Program.listaVehiculos.EstaVacia())
+            {
+                Program.listaVehiculos.Graficar();
+            }
+            if(!Program.arbolRepuestos.EstaVacio())
+            {
+                Program.arbolRepuestos.Graficar();
+            }
+            if(!Program.arbolServicios.EstaVacio())
+            {
+                Program.arbolServicios.Graficar();
+            }
+            if(!Program.arbolFacturas.EstaVacio())
+            {
+                Program.arbolFacturas.Graficar();
+            }
         };
 
         Add(contenedor);
         ShowAll();
+    }
+
+    public void OnDeleteEvent(object sender, DeleteEventArgs a)
+    {
+        LoginWindow login = new LoginWindow();
+        login.ShowAll();
+        Destroy();
+        a.RetVal = true;
     }
 }

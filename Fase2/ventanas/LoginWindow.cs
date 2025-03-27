@@ -31,11 +31,20 @@ class LoginWindow : Window
             string usuario = entradaUsuario.Text;
             string contraseña = entradaContra.Text;
             
-            if (usuario == "root@gmail.com" && contraseña == "root123")
+            if (usuario == "admin@usac.com" && contraseña == "admin123")
             {
                 MenuAdminWindow carga = new MenuAdminWindow();
                 carga.ShowAll();
                 Destroy();
+                Program.idUsuarioActual = 0;
+            }
+            else if(Program.listaUsuarios.ValidarLogin(usuario, contraseña))
+            {
+                MenuUsuarioWindow carga = new MenuUsuarioWindow();
+                carga.ShowAll();
+                Destroy();
+                Program.idUsuarioActual = Program.listaUsuarios.ObtenerId(usuario);
+
             }
             else
             {

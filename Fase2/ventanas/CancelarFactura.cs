@@ -52,7 +52,38 @@ class CancelarFacturaWindow : Window
 };
         botonBuscarId.Clicked += (sender, e) =>
         {
+            int Id = int.Parse(entradaId.Text);
 
+            if (Program.arbolFacturas.Buscar(Id) != null)
+            {
+                salidaOrden.Text = Program.arbolFacturas.Buscar(Id).IdOrden.ToString();
+                salidaTotal.Text = Program.arbolFacturas.Buscar(Id).Total.ToString();
+            }
+            else
+            {
+                MessageDialog dialog = new MessageDialog(null, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "No se encontro la factura");
+                dialog.Run();
+                dialog.Destroy();
+            }
+        };
+
+        botonPagar.Clicked += (sender, e) =>
+        {
+            int Id = int.Parse(entradaId.Text);
+
+            if (Program.arbolFacturas.Buscar(Id) != null)
+            {
+                Program.arbolFacturas.Eliminar(Id);
+                MessageDialog dialog = new MessageDialog(null, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Factura eliminada");
+                dialog.Run();
+                dialog.Destroy();
+            }
+            else
+            {
+                MessageDialog dialog = new MessageDialog(null, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "No se encontro la factura");
+                dialog.Run();
+                dialog.Destroy();
+            }
         };
 
         Add(contenedor);

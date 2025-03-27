@@ -54,6 +54,14 @@ class VisualizacionFacturasWindow : Window
         Button mostrarTabla = new Button("Mostrar tabla");
         contenedor.Put(mostrarTabla, 200, 60);
 
+        mostrarTabla.Clicked += (sender, e) =>
+        {
+            modelo.Clear();
+            Program.arbolFacturas.RecorrerInOrden(Program.arbolFacturas.Raiz, modelo);
+            tabla.Model = modelo;
+
+        };
+
         Add(contenedor);
         ShowAll();
 

@@ -40,6 +40,21 @@ using Gtk;
             string Marca = entradaMarca.Text;
             string Modelo = entradaModelo.Text;
             string Placa = entradaPlaca.Text;
+
+            if (Program.listaVehiculos.Buscar(int.Parse(id)) != null)
+            {
+                MessageDialog md = new MessageDialog(null, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El vehiculo ya existe");
+                md.Run();
+                md.Destroy();
+                return;
+            }
+            else
+            {
+                Program.listaVehiculos.AgregarPrimero(int.Parse(id), Program.idUsuarioActual, Marca, int.Parse(Modelo), Placa);
+                MessageDialog md = new MessageDialog(null, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Vehiculo guardado");
+                md.Run();
+                md.Destroy();
+            }
  
         };
         Add(contenedor);

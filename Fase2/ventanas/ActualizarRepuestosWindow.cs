@@ -55,11 +55,60 @@ class ActualizarRespuestosWindow : Window
             string Costo = entradaCosto.Text;
             string Idseña = entradaId.Text;
 
+            if (Repuesto == "" || Detalles == "" || Costo == "" || Idseña == "")
+            {
+                MessageDialog md = new MessageDialog(null, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "No se permiten campos vacios");
+                md.Run();
+                md.Destroy();
+            }
+            else
+            {
+                int Id = int.Parse(Idseña);
+                float CostoF = float.Parse(Costo);
+                NodoRepuesto? repuesto = Program.arbolRepuestos.Buscar(Id);
+                if (repuesto != null)
+                {
+                    Program.arbolRepuestos.Actualizar(Id, Repuesto, Detalles, CostoF);
+                    salidaRepuesto.Text = "Repuesto: " + Repuesto;
+                    salidaDetalles.Text = "Detalles: " + Detalles;
+                    salidaCosto.Text = "Costo: " + Costo;
+                }
+                else
+                {
+                    MessageDialog md = new MessageDialog(null, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "No se encontro el repuesto");
+                    md.Run();
+                    md.Destroy();
+                }
+            }
+
            
-};
+        };
         botonBuscarId.Clicked += (sender, e) =>
         {
-
+            string Idseña = entradaId.Text;
+            if (Idseña == "")
+            {
+                MessageDialog md = new MessageDialog(null, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "No se permiten campos vacios");
+                md.Run();
+                md.Destroy();
+            }
+            else
+            {
+                int Id = int.Parse(Idseña);
+                NodoRepuesto? repuesto = Program.arbolRepuestos.Buscar(Id);
+                if (repuesto != null)
+                {
+                    salidaRepuesto.Text = "Repuesto: " + repuesto.Repuesto;
+                    salidaDetalles.Text = "Detalles: " + repuesto.Detalle;
+                    salidaCosto.Text = "Costo: " + repuesto.Costo;
+                }
+                else
+                {
+                    MessageDialog md = new MessageDialog(null, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "No se encontro el repuesto");
+                    md.Run();
+                    md.Destroy();
+                }
+            }
         };
 
         Add(contenedor);

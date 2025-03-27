@@ -64,6 +64,26 @@ class VisualizacionServicioWindow : Window
         Button mostrarTabla = new Button("Mostrar tabla");
         contenedor.Put(mostrarTabla, 200, 60);
 
+        mostrarTabla.Clicked += (sender, e) =>
+        {
+            modelo.Clear();
+            if (comboBox.ActiveText == "Pre-Orden")
+            {
+                Program.arbolServicios.recorrerPreorden(Program.arbolServicios.Raiz, modelo);
+                tabla.Model = modelo;
+            }
+            else if (comboBox.ActiveText == "In-Orden")
+            {
+                Program.arbolServicios.recorrerInorden(Program.arbolServicios.Raiz, modelo);
+                tabla.Model = modelo;
+            }
+            else if (comboBox.ActiveText == "Post-Orden")
+            {
+                Program.arbolServicios.recorrerPostorden(Program.arbolServicios.Raiz, modelo);
+                tabla.Model = modelo;
+            }
+        };
+
         Add(contenedor);
         ShowAll();
 

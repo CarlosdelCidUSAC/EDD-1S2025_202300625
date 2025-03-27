@@ -20,10 +20,10 @@ class VisualizacionRepuestosWindow : Window
 
         TreeView tabla = new TreeView();
 
-        TreeViewColumn columna1 = new TreeViewColumn { Title = "Columna 1" };
-        TreeViewColumn columna2 = new TreeViewColumn { Title = "Columna 2" };
-        TreeViewColumn columna3 = new TreeViewColumn { Title = "Columna 3" };
-        TreeViewColumn columna4 = new TreeViewColumn { Title = "Columna 4" };
+        TreeViewColumn columna1 = new TreeViewColumn { Title = "Id" };
+        TreeViewColumn columna2 = new TreeViewColumn { Title = "Repuesto" };
+        TreeViewColumn columna3 = new TreeViewColumn { Title = "Detalles" };
+        TreeViewColumn columna4 = new TreeViewColumn { Title = "Costo" };
 
         tabla.AppendColumn(columna1);
         tabla.AppendColumn(columna2);
@@ -48,6 +48,8 @@ class VisualizacionRepuestosWindow : Window
         columna3.AddAttribute(celda3, "text", 2);
         columna4.AddAttribute(celda4, "text", 3);
 
+
+
         modelo.AppendValues("Dato 1", "Dato 2", "Dato 3", "Dato 4");
         modelo.AppendValues("Dato 5", "Dato 6", "Dato 7", "Dato 8");
         modelo.AppendValues("Dato 9", "Dato 10", "Dato 11", "Dato 12");
@@ -58,6 +60,26 @@ class VisualizacionRepuestosWindow : Window
 
         Button mostrarTabla = new Button("Mostrar tabla");
         contenedor.Put(mostrarTabla, 200, 60);
+
+        mostrarTabla.Clicked += (sender, e) =>
+        {
+            modelo.Clear();
+            if (comboBox.ActiveText == "Pre-Orden")
+            {
+                Program.arbolRepuestos.recorrerPreorden(Program.arbolRepuestos.Raiz, modelo);
+                tabla.Model = modelo;
+            }
+            else if (comboBox.ActiveText == "In-Orden")
+            {
+                Program.arbolRepuestos.recorrerInorden(Program.arbolRepuestos.Raiz, modelo);
+                tabla.Model = modelo;
+            }
+            else if (comboBox.ActiveText == "Post-Orden")
+            {
+                Program.arbolRepuestos.recorrerPostorden(Program.arbolRepuestos.Raiz, modelo);
+                tabla.Model = modelo;
+            }
+        };
 
         Add(contenedor);
         ShowAll();
