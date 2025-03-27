@@ -1,0 +1,17 @@
+digraph G {
+node [shape=record, fontsize=10];
+"ID: 1 \n Repuesto: Filtro de aceite \n Detalle: Filtra impurezas del aceite del motor. \n Costo: 25.5" -> "ID: 2 \n Repuesto: Bujías \n Detalle: Componente esencial para encender la mezcla de aire y combustible. \n Costo: 15.75";
+"ID: 2 \n Repuesto: Bujías \n Detalle: Componente esencial para encender la mezcla de aire y combustible. \n Costo: 15.75" -> "ID: 3 \n Repuesto: Frenos delanteros \n Detalle: Piezas para frenar el vehículo en la parte delantera. \n Costo: 60";
+"ID: 3 \n Repuesto: Frenos delanteros \n Detalle: Piezas para frenar el vehículo en la parte delantera. \n Costo: 60" -> "ID: 4 \n Repuesto: Pastillas de freno traseras \n Detalle: Piezas para frenar el vehículo en la parte trasera. \n Costo: 45.3";
+"ID: 4 \n Repuesto: Pastillas de freno traseras \n Detalle: Piezas para frenar el vehículo en la parte trasera. \n Costo: 45.3" -> "ID: 5 \n Repuesto: Amortiguadores \n Detalle: Componente de suspensión para absorber impactos. \n Costo: 95.2";
+"ID: 5 \n Repuesto: Amortiguadores \n Detalle: Componente de suspensión para absorber impactos. \n Costo: 95.2" -> "ID: 6 \n Repuesto: Aceite de motor \n Detalle: Lubricante para el motor del vehículo. \n Costo: 18.6";
+"ID: 6 \n Repuesto: Aceite de motor \n Detalle: Lubricante para el motor del vehículo. \n Costo: 18.6" -> "ID: 7 \n Repuesto: Filtro de aire \n Detalle: Filtra el aire que entra al motor para mejorar la combustión. \n Costo: 22.1";
+"ID: 7 \n Repuesto: Filtro de aire \n Detalle: Filtra el aire que entra al motor para mejorar la combustión. \n Costo: 22.1" -> "ID: 8 \n Repuesto: Correa de distribución \n Detalle: Componente que sincroniza el motor. \n Costo: 80";
+"ID: 8 \n Repuesto: Correa de distribución \n Detalle: Componente que sincroniza el motor. \n Costo: 80" -> "ID: 9 \n Repuesto: Radiador \n Detalle: Sistema para mantener el motor a temperatura adecuada. \n Costo: 150";
+"ID: 9 \n Repuesto: Radiador \n Detalle: Sistema para mantener el motor a temperatura adecuada. \n Costo: 150" -> "ID: 10 \n Repuesto: Batería \n Detalle: Fuente de energía para el vehículo. \n Costo: 100.5";
+"ID: 10 \n Repuesto: Batería \n Detalle: Fuente de energía para el vehículo. \n Costo: 100.5" -> "ID: 11 \n Repuesto: Cables de encendido \n Detalle: Conducen energía desde la batería a las bujías. \n Costo: 30.4";
+"ID: 11 \n Repuesto: Cables de encendido \n Detalle: Conducen energía desde la batería a las bujías. \n Costo: 30.4" -> "ID: 12 \n Repuesto: Espejos laterales \n Detalle: Espejos para una mejor visibilidad en el vehículo. \n Costo: 50";
+"ID: 12 \n Repuesto: Espejos laterales \n Detalle: Espejos para una mejor visibilidad en el vehículo. \n Costo: 50" -> "ID: 13 \n Repuesto: Manguera de radiador \n Detalle: Transporta el líquido refrigerante en el sistema de enfriamiento. \n Costo: 20.8";
+"ID: 13 \n Repuesto: Manguera de radiador \n Detalle: Transporta el líquido refrigerante en el sistema de enfriamiento. \n Costo: 20.8" -> "ID: 14 \n Repuesto: Suspensión trasera \n Detalle: Sistema que absorbe impactos en la parte trasera del vehículo. \n Costo: 120";
+"ID: 14 \n Repuesto: Suspensión trasera \n Detalle: Sistema que absorbe impactos en la parte trasera del vehículo. \n Costo: 120" -> "ID: 15 \n Repuesto: Bombas de freno \n Detalle: Componente que genera presión para accionar los frenos. \n Costo: 75";
+}

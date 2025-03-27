@@ -70,7 +70,6 @@ class ArbolBFacturas
             NodoFactura nuevoNodo = new NodoFactura();
             nuevoNodo.Hijos.Add(raiz);
             nuevoNodo.EsHoja = false;
-            raiz = nuevoNodo;
             SepararNodo(nuevoNodo, 0);
             raiz = nuevoNodo;
         }
@@ -87,26 +86,26 @@ class ArbolBFacturas
 
         Contenido contenidoMedio = NodoLleno.Contenidos[mC];
 
-        for (int i = mC + 1; i < MC; i++)
+        for (int i = mC + 1; i < NodoLleno.Contenidos.Count; i++)
         {
             nuevoNodo.Contenidos.Add(NodoLleno.Contenidos[i]);
         }
 
         if (!NodoLleno.EsHoja)
         {
-            for (int i = mC + 1; i < O; i++)
+            for (int i = mC + 1; i < NodoLleno.Hijos.Count; i++)
             {
                 nuevoNodo.Hijos.Add(NodoLleno.Hijos[i]);
             }
-            NodoLleno.Hijos.RemoveRange(mC, O - mC);
+            NodoLleno.Hijos.RemoveRange(mC + 1, NodoLleno.Hijos.Count - (mC + 1));
         }
 
-        NodoLleno.Contenidos.RemoveRange(mC, O - mC);
+        NodoLleno.Contenidos.RemoveRange(mC, NodoLleno.Contenidos.Count - mC);
 
-        padre.Hijos.Insert(posicion+1, nuevoNodo);
+        padre.Hijos.Insert(posicion + 1, nuevoNodo);
 
         int j = 0;
-        while(j < padre.Contenidos.Count && padre.Contenidos[j].Id < contenidoMedio.Id)
+        while (j < padre.Contenidos.Count && padre.Contenidos[j].Id < contenidoMedio.Id)
         {
             j++;
         }
@@ -164,7 +163,7 @@ class ArbolBFacturas
         }
         if(nodo.EsHoja)
         {
-            return null;
+            return new Contenido(-1, -1, 0.0f); 
         }
         else
         {
@@ -310,14 +309,20 @@ class ArbolBFacturas
 
     public ListStore RecorrerInOrden(NodoFactura nodo, ListStore modelo)
     {
-        if(nodo != null)
+        if (nodo != null)
         {
-            for(int i = 0; i < nodo.Contenidos.Count; i++)
+            for (int i = 0; i < nodo.Contenidos.Count; i++)
             {
-                RecorrerInOrden(nodo.Hijos[i], modelo);
+                if (i < nodo.Hijos.Count) // Verifica si el hijo existe
+                {
+                    RecorrerInOrden(nodo.Hijos[i], modelo);
+                }
                 modelo.AppendValues(nodo.Contenidos[i].Id, nodo.Contenidos[i].IdOrden, nodo.Contenidos[i].Total);
             }
-            RecorrerInOrden(nodo.Hijos[nodo.Contenidos.Count], modelo);
+            if (nodo.Contenidos.Count < nodo.Hijos.Count) // Verifica si el último hijo existe
+            {
+                RecorrerInOrden(nodo.Hijos[nodo.Contenidos.Count], modelo);
+            }
         }
         return modelo;
     }
@@ -367,18 +372,18 @@ class ArbolBFacturas
     {
         int nodoId = id;
         dot.Append($"node{nodoId} [label=\"");
-        for(int i = 0; i < nodo.Contenidos.Count; i++)
+        for (int i = 0; i < nodo.Contenidos.Count; i++)
         {
-            dot.Append($"<f{i}> |{nodo.Contenidos[i].Id}|");
-            if(i < nodo.Contenidos.Count - 1)
+            dot.Append($"<f{i}>Id: {nodo.Contenidos[i].Id}\\n---\\nOrden: {nodo.Contenidos[i].IdOrden}\\n---\\nTotal: {nodo.Contenidos[i].Total}");
+            if (i < nodo.Contenidos.Count - 1)
             {
-                dot.Append("|");
+            dot.Append("|");
             }
         }
         dot.Append("\"];\n");
 
         int hijoId = nodoId + 1;
-        for(int i = 0; i < nodo.Hijos.Count; i++)
+        for (int i = 0; i < nodo.Hijos.Count; i++)
         {
             dot.Append($"node{nodoId}:f{i} -> node{hijoId};\n");
             hijoId = GenerarNodos(nodo.Hijos[i], dot, hijoId);

@@ -35,14 +35,14 @@ class LoginWindow : Window
             {
                 MenuAdminWindow carga = new MenuAdminWindow();
                 carga.ShowAll();
-                Destroy();
+                Hide();
                 Program.idUsuarioActual = 0;
             }
             else if(Program.listaUsuarios.ValidarLogin(usuario, contraseña))
             {
                 MenuUsuarioWindow carga = new MenuUsuarioWindow();
                 carga.ShowAll();
-                Destroy();
+                Hide();
                 Program.idUsuarioActual = Program.listaUsuarios.ObtenerId(usuario);
 
             }

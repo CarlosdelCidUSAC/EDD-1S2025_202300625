@@ -9,8 +9,8 @@ class NodoRepuesto {
     public string Repuesto { get; set; }
     public string Detalle { get; set; }
     public float Costo { get; set; }
-    public NodoRepuesto Izquierda { get; set; }
-    public NodoRepuesto Derecha { get; set; }
+    public NodoRepuesto? Izquierda { get; set; }
+    public NodoRepuesto? Derecha { get; set; }
 
     public NodoRepuesto(int id, string repuesto, string detalle, float costo) {
         Id = id;
@@ -23,7 +23,7 @@ class NodoRepuesto {
 }
 
 class ArbolRepuestos {
-    private NodoRepuesto raiz;
+    private NodoRepuesto? raiz;
 
     public ArbolRepuestos() {
         raiz = null;
@@ -49,16 +49,38 @@ class ArbolRepuestos {
             while (true) {
                 padre = actual;
                 if (id < actual.Id) {
-                    actual = actual.Izquierda;
+                    if (actual.Izquierda == null) break;
+                    if (actual.Izquierda != null)
+                    {
+                        if (actual.Izquierda != null)
+                        {
+                            actual = actual.Izquierda;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
                     if (actual == null) {
                         padre.Izquierda = nuevo;
                         return;
                     }
                 } else {
-                    actual = actual.Derecha;
-                    if (actual == null) {
+                    if (actual.Derecha == null) {
                         padre.Derecha = nuevo;
                         return;
+                    }
+                    if (actual.Derecha != null)
+                    {
+                        actual = actual.Derecha;
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
             }
@@ -246,24 +268,22 @@ class ArbolRepuestos {
 
     private void GraficarRecursivo(NodoRepuesto nodo, StringBuilder dot)
     {
-
         if (nodo != null)
         {
-            string etiquetaNodo = $"\"{nodo.Id} \\n {nodo.Repuesto} \\n {nodo.Detalle} \\n {nodo.Costo}\"";
+            string etiquetaNodo = $"\"ID: {nodo.Id} \\n Repuesto: {nodo.Repuesto} \\n Detalle: {nodo.Detalle} \\n Costo: {nodo.Costo}\"";
             if (nodo.Izquierda != null)
             {
-                string etiquetaIzquierda = $"\"{nodo.Izquierda.Id} \\n {nodo.Izquierda.Repuesto} \\n {nodo.Izquierda.Detalle} \\n {nodo.Izquierda.Costo}\"";
+                string etiquetaIzquierda = $"\"ID: {nodo.Izquierda.Id} \\n Repuesto: {nodo.Izquierda.Repuesto} \\n Detalle: {nodo.Izquierda.Detalle} \\n Costo: {nodo.Izquierda.Costo}\"";
                 dot.AppendLine($"{etiquetaNodo} -> {etiquetaIzquierda};");
                 GraficarRecursivo(nodo.Izquierda, dot);
             }
             if (nodo.Derecha != null)
             {
-                string etiquetaDerecha = $"\"{nodo.Derecha.Id} \\n {nodo.Derecha.Repuesto} \\n {nodo.Derecha.Detalle} \\n {nodo.Derecha.Costo}\"";
+                string etiquetaDerecha = $"\"ID: {nodo.Derecha.Id} \\n Repuesto: {nodo.Derecha.Repuesto} \\n Detalle: {nodo.Derecha.Detalle} \\n Costo: {nodo.Derecha.Costo}\"";
                 dot.AppendLine($"{etiquetaNodo} -> {etiquetaDerecha};");
                 GraficarRecursivo(nodo.Derecha, dot);
             }
         }
-
     }
 
     public bool EstaVacio() {

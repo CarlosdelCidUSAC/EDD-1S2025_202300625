@@ -12,11 +12,6 @@ class VisualizacionFacturasWindow : Window
         Fixed contenedor = new Fixed();
 
         Label etiquetaTitulo = new Label("Visualizacion de Facturas");
-        ComboBoxText comboBox = new ComboBoxText();
-        comboBox.AppendText("Pre-Orden");
-        comboBox.AppendText("In-Orden");
-        comboBox.AppendText("Post-Orden");
-        comboBox.Active = 0;
 
         TreeView tabla = new TreeView();
 
@@ -49,7 +44,6 @@ class VisualizacionFacturasWindow : Window
 
         contenedor.Put(tabla, 50, 130);
         contenedor.Put(etiquetaTitulo, 80, 20);
-        contenedor.Put(comboBox, 80, 60);
 
         Button mostrarTabla = new Button("Mostrar tabla");
         contenedor.Put(mostrarTabla, 200, 60);
@@ -70,6 +64,6 @@ class VisualizacionFacturasWindow : Window
     private void OnDeleteEvent(object sender, DeleteEventArgs args)
     {
         args.RetVal = true; 
-        Destroy(); 
+        Hide(); 
     }
-}
+} 

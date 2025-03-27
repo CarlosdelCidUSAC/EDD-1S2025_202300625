@@ -99,6 +99,6 @@ using Gtk;
     public void OnDeleteEvent(object sender, DeleteEventArgs a)
     {
         a.RetVal = true;
-        Destroy();
+        Hide();
     }
 }

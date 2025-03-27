@@ -204,24 +204,23 @@ class AVLServicios {
 
     private void GraficarRecursivo(NodoServicio nodo, StringBuilder dot)
     {
-
         if (nodo != null)
         {
-            string etiquetaNodo = $"\"{nodo.id} \\n {nodo.idRepuesto} \\n {nodo.detalle} \\n {nodo.costo}\"";
+            string etiquetaNodo = $"\"ID: {nodo.id} \\n Repuesto: {nodo.idRepuesto} \\n Detalle: {nodo.detalle} \\n Costo: {nodo.costo}\"";
             if (nodo.Izquierda != null)
             {
-                string etiquetaIzquierda = $"\"{nodo.Izquierda.id} \\n {nodo.Izquierda.idRepuesto} \\n {nodo.Izquierda.detalle} \\n {nodo.Izquierda.costo}\"";
+                string etiquetaIzquierda = $"\"ID: {nodo.Izquierda.id} \\n Repuesto: {nodo.Izquierda.idRepuesto} \\n Detalle: {nodo.Izquierda.detalle} \\n Costo: {nodo.Izquierda.costo}\"";
                 dot.AppendLine($"{etiquetaNodo} -> {etiquetaIzquierda};");
                 GraficarRecursivo(nodo.Izquierda, dot);
             }
             if (nodo.Derecha != null)
             {
-                string etiquetaDerecha = $"\"{nodo.Derecha.id} \\n {nodo.Derecha.idRepuesto} \\n {nodo.Derecha.detalle} \\n {nodo.Derecha.costo}\"";
+                string etiquetaDerecha = $"\"ID: {nodo.Derecha.id} \\n Repuesto: {nodo.Derecha.idRepuesto} \\n Detalle: {nodo.Derecha.detalle} \\n Costo: {nodo.Derecha.costo}\"";
                 dot.AppendLine($"{etiquetaNodo} -> {etiquetaDerecha};");
                 GraficarRecursivo(nodo.Derecha, dot);
             }
-            }
         }
+    }
 
         public bool EstaVacio() {
             return raiz == null;

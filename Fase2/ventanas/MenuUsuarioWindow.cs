@@ -3,10 +3,10 @@ using Gtk;
 class MenuUsuarioWindow : Window
 {
     public NodoUsuario? usuario = Program.listaUsuarios.Buscar(Program.idUsuarioActual);
-    private RegistroVehiculoWindow _windowRegistroVehiculo;
-    private VisualizacionServicioWindow _windowVisualizacionServicio;
-    private VisualizacionFacturasWindow _windowVisualizacionFacturas;
-    private CancelarFacturaWindow _windowCancelarFactura;
+    private RegistroVehiculoWindow? _windowRegistroVehiculo;
+    private VisualizacionServicioWindow? _windowVisualizacionServicio;
+    private VisualizacionFacturasWindow? _windowVisualizacionFacturas;
+    private CancelarFacturaWindow? _windowCancelarFactura;
 
     public void ShowWindowRegistroVehiculo()
     {
@@ -31,7 +31,7 @@ class MenuUsuarioWindow : Window
         _windowCancelarFactura = new CancelarFacturaWindow();
         _windowCancelarFactura.Show();
     }
-    public MenuUsuarioWindow() : base("Menú Administrador")
+    public MenuUsuarioWindow() : base("Menú Usuario")
     {
         SetDefaultSize(400, 650);
         SetPosition(WindowPosition.Center);
@@ -82,13 +82,14 @@ class MenuUsuarioWindow : Window
     public void OnDeleteEvent(object sender, DeleteEventArgs a)
     {
         a.RetVal = true;
+        Hide(); 
         LoginWindow login = new LoginWindow();
         login.ShowAll();  
         if (usuario != null)
         {
             Program.registroUsuarios.Add((usuario.correo, Program.fechaActual, DateTime.Now));
         }
-        Destroy();
+        //Destroy(); 
 
     }
 }

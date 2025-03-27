@@ -1,0 +1,10 @@
+digraph G {
+node [shape=record];
+node0 [label="<f0>Id: 2\n---\nOrden: 2\n---\nTotal: 17.75|<f1>Id: 31\n---\nOrden: 2\n---\nTotal: 17.75"];
+node0:f0 -> node1;
+node1 [label="<f0>Id: 1\n---\nOrden: 1\n---\nTotal: 26.5"];
+node0:f1 -> node2;
+node2 [label="<f0>Id: 5\n---\nOrden: 3\n---\nTotal: 63|<f1>Id: 6\n---\nOrden: 3\n---\nTotal: 72|<f2>Id: 12\n---\nOrden: 5\n---\nTotal: 16.75"];
+node0:f2 -> node3;
+node3 [label="<f0>Id: 41\n---\nOrden: 3\n---\nTotal: 17.75|<f1>Id: 44\n---\nOrden: 4\n---\nTotal: 17.75"];
+}

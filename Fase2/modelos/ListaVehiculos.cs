@@ -40,7 +40,7 @@ class ListaVehiculos {
     }
 
     public void Imprimir() {
-        NodoVehiculo actual = cabeza;
+        NodoVehiculo? actual = cabeza;
         while (actual != null) {
             Console.WriteLine("ID: " + actual.id);
             Console.WriteLine("ID Usuario: " + actual.id_usuario);
@@ -48,12 +48,12 @@ class ListaVehiculos {
             Console.WriteLine("Modelo: " + actual.anio);
             Console.WriteLine("Placa: " + actual.placa);
             Console.WriteLine();
-            actual = actual.siguiente;
+            actual = actual?.siguiente;
         }
     }
 
     public NodoVehiculo? Buscar(int id) {
-        NodoVehiculo actual = cabeza;
+        NodoVehiculo? actual = cabeza;
         while (actual != null) {
             if (actual.id == id) {
                 return actual;
@@ -69,10 +69,12 @@ class ListaVehiculos {
         }
         if (cabeza.id == id) {
             cabeza = cabeza.siguiente;
-            cabeza.anterior = null;
+            if (cabeza != null) {
+                cabeza.anterior = null;
+            }
             return;
         }
-        NodoVehiculo actual = cabeza;
+        NodoVehiculo? actual = cabeza;
         while (actual.siguiente != null) {
             if (actual.siguiente.id == id) {
                 actual.siguiente = actual.siguiente.siguiente;
@@ -93,15 +95,15 @@ class ListaVehiculos {
     codigodot += "subgraph cluster_ListaDobleEnlazada {\n";
     codigodot += "label = \"Lista Doblemente Enlazada\";\n";
 
-    NodoVehiculo actual = cabeza;
+    NodoVehiculo? actual = cabeza;
     while (actual != null)
     {
         string label = $"ID: {actual.id}\\nID Usuario: {actual.id_usuario}\\nMarca: {actual.marca}\\nModelo: {actual.anio}\\nPlaca: {actual.placa}";
         codigodot += $"\"{actual.id}\" [label=\"{label}\"];\n";
         if (actual.siguiente != null)
         {
-            codigodot += $"\"{actual.id}\" . \"{actual.siguiente.id}\";\n";
-            codigodot += $"\"{actual.siguiente.id}\" . \"{actual.id}\";\n";
+            codigodot += $"\"{actual.id}\" -> \"{actual.siguiente.id}\";\n";
+            codigodot += $"\"{actual.siguiente.id}\" -> \"{actual.id}\";\n";
         }
         actual = actual.siguiente;
     }
@@ -110,7 +112,7 @@ class ListaVehiculos {
     codigodot += "}\n";
 
     string rutaDot = "reportedot/lista_doble.dot";
-    string rutaReporte = "reportes/lista_doble.png";
+    string rutaReporte = "Reportes/lista_doble.png";
 
     Directory.CreateDirectory(Path.GetDirectoryName(rutaDot));
     File.WriteAllText(rutaDot, codigodot);

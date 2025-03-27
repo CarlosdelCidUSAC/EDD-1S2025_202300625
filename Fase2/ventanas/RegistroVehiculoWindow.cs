@@ -43,7 +43,7 @@ using Gtk;
 
             if (Program.listaVehiculos.Buscar(int.Parse(id)) != null)
             {
-                MessageDialog md = new MessageDialog(null, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El vehiculo ya existe");
+                MessageDialog md = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El vehiculo ya existe");
                 md.Run();
                 md.Destroy();
                 return;
@@ -51,7 +51,7 @@ using Gtk;
             else
             {
                 Program.listaVehiculos.AgregarPrimero(int.Parse(id), Program.idUsuarioActual, Marca, int.Parse(Modelo), Placa);
-                MessageDialog md = new MessageDialog(null, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Vehiculo guardado");
+                MessageDialog md = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Vehiculo guardado");
                 md.Run();
                 md.Destroy();
             }
@@ -63,6 +63,6 @@ using Gtk;
     public void OnDeleteEvent(object sender, DeleteEventArgs a)
     {
         a.RetVal = true;
-        Destroy();
+        Hide();
     }
 }

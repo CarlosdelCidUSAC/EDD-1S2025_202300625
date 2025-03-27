@@ -4,11 +4,11 @@ using System.IO;
 using System.Runtime.InteropServices;
 class NodoUsuario {
     public int id { get; set; }
-    public string nombre { get; set; }
-    public string apellido { get; set; }
-    public string correo { get; set; }
+    public string? nombre { get; set; }
+    public string? apellido { get; set; }
+    public string? correo { get; set; }
     public int edad { get; set; }
-    public string contrasenia { get; set; }
+    public string? contrasenia { get; set; }
     public NodoUsuario? siguiente { get; set; }
 };
 
@@ -21,7 +21,7 @@ class listaUsuarios {
     }
 
     public void Agregar(int id, string nombre, string apellido, string correo, int edad, string contrasenia) {
-        NodoUsuario actual = cabeza;
+        NodoUsuario actual = cabeza!;
         while (actual != null) {
             if (actual.id == id) {
                 Console.WriteLine("Error: El ID ya ha sido ingresado.");
@@ -31,7 +31,7 @@ class listaUsuarios {
                 Console.WriteLine("Error: El correo ya ha sido ingresado.");
                 return;
             }
-            actual = actual.siguiente;
+            actual = actual.siguiente!;
         }
 
         NodoUsuario nuevo = new NodoUsuario();
@@ -46,9 +46,9 @@ class listaUsuarios {
         if (cabeza == null) {
             cabeza = nuevo;
         } else {
-            actual = cabeza;
+            actual = cabeza!;
             while (actual.siguiente != null) {
-                actual = actual.siguiente;
+                actual = actual.siguiente!;
             }
             actual.siguiente = nuevo;
         }
@@ -62,51 +62,51 @@ class listaUsuarios {
             cabeza = cabeza.siguiente;
             return;
         }
-        NodoUsuario actual = cabeza;
+        NodoUsuario actual = cabeza!;
         while (actual.siguiente != null) {
             if (actual.siguiente.id == id) {
                 actual.siguiente = actual.siguiente.siguiente;
                 return;
             }
-            actual = actual.siguiente;
+            actual = actual.siguiente!;
         }
     }
 
     public NodoUsuario? Buscar(int id) {
-        NodoUsuario actual = cabeza;
+        NodoUsuario? actual = cabeza;
         while (actual != null) {
             if (actual.id == id) {
                 return actual;
             }
-            actual = actual.siguiente;
+            actual = actual.siguiente!;
         }
         return null;
     }
 
     public int ObtenerId(string correo) {
-        NodoUsuario actual = cabeza;
+        NodoUsuario? actual = cabeza;
         while (actual != null) {
             if (actual.correo == correo) {
                 return actual.id;
             }
-            actual = actual.siguiente;
+            actual = actual.siguiente!;
         }
         return -1;
     }
 
     public bool ValidarLogin(string correo, string contrasenia) {
-        NodoUsuario actual = cabeza;
+        NodoUsuario? actual = cabeza;
         while (actual != null) {
             if (actual.correo == correo && actual.contrasenia == contrasenia) {
                 return true;
             }
-            actual = actual.siguiente;
+            actual = actual.siguiente!;
         }
         return false;
     }
 
     public void Imprimir() {
-        NodoUsuario actual = cabeza;
+        NodoUsuario? actual = cabeza;
         while (actual != null) {
             Console.WriteLine("ID: " + actual.id);
             Console.WriteLine("Nombre: " + actual.nombre);
@@ -115,45 +115,53 @@ class listaUsuarios {
             Console.WriteLine("Edad: " + actual.edad);
             Console.WriteLine("Contrasenia: " + actual.contrasenia);
             Console.WriteLine();
-            actual = actual.siguiente;
+            actual = actual.siguiente!;
         }
     }
 
     public void Graficar()
     {
         string rutaDot = "reportedot/lista_simple.dot";
-        string rutaReporte = "reportes/lista_simple.png";
+        string rutaReporte = "Reportes/lista_simple.png";
         string codigoDot = "digraph G {\n  rankdir=LR;\n  node [shape=record, height=.1];\n";
         codigoDot += "  label=\"Lista Simple\";\n  labelloc=top;\n  fontsize=20;\n";
 
-        NodoUsuario actual = cabeza;
+        NodoUsuario actual = cabeza!;
         int contadorNodos = 0;
 
         while (actual != null)
         {
-            string nombre = actual.nombre;
-            string apellido = actual.apellido;
-            string email = actual.correo;
+            string nombre = actual.nombre ?? "Desconocido";
+            string apellido = actual.apellido ?? "Desconocido";
+            string email = actual.correo ?? "Desconocido";
             string edad = actual.edad.ToString();
 
             codigoDot += $"node{contadorNodos} [label=\"{{ID: {actual.id}\\nNombre: {nombre}\\nApellido: {apellido}\\nEmail: {email}\\nPwd: {edad}}}\"]\n";
             contadorNodos++;
-            actual = actual.siguiente;
+            actual = actual.siguiente!;
         }
 
-        actual = cabeza;
+        actual = cabeza!;
         contadorNodos = 0;
 
         while (actual != null && actual.siguiente != null)
         {
-            codigoDot += $"node{contadorNodos} . node{contadorNodos + 1};\n";
+            codigoDot += $"node{contadorNodos} -> node{contadorNodos + 1};\n";
             contadorNodos++;
             actual = actual.siguiente;
         }
 
         codigoDot += "}";
 
-        Directory.CreateDirectory(Path.GetDirectoryName(rutaDot));
+        string? directoryPath = Path.GetDirectoryName(rutaDot);
+        if (directoryPath != null)
+        {
+            Directory.CreateDirectory(directoryPath);
+        }
+        else
+        {
+            Console.WriteLine("Error: Ruta inválida para el archivo DOT.");
+        }
         File.WriteAllText(rutaDot, codigoDot);
 
         Process proceso = new Process();
