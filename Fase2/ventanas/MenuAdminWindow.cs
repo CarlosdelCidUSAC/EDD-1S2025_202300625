@@ -146,7 +146,7 @@ class MenuAdminWindow : Window
     {
         LoginWindow login = new LoginWindow();
         login.ShowAll();
-        Destroy();
+        Hide();
         a.RetVal = true;
     }
 }
