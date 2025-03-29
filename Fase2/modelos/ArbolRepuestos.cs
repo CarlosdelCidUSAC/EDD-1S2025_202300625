@@ -34,58 +34,33 @@ class ArbolRepuestos {
     }
     public void Agregar(int id, string repuesto, string detalle, float costo) {
         if (Buscar(id) != null) {
-            MessageDialog dialog = new MessageDialog(null, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El ID ingresado ya existe.");
-            dialog.Run();
-            dialog.Destroy();
             return;
         }
 
-        NodoRepuesto nuevo = new NodoRepuesto(id, repuesto, detalle, costo);
+        NodoRepuesto nuevo = new(id, repuesto, detalle, costo);
         if (raiz == null) {
             raiz = nuevo;
-        } else {
-            NodoRepuesto actual = raiz;
-            NodoRepuesto padre;
-            while (true) {
-                padre = actual;
-                if (id < actual.Id) {
-                    if (actual.Izquierda == null) break;
-                    if (actual.Izquierda != null)
-                    {
-                        if (actual.Izquierda != null)
-                        {
-                            actual = actual.Izquierda;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        break;
-                    }
-                    if (actual == null) {
-                        padre.Izquierda = nuevo;
-                        return;
-                    }
-                } else {
-                    if (actual.Derecha == null) {
-                        padre.Derecha = nuevo;
-                        return;
-                    }
-                    if (actual.Derecha != null)
-                    {
-                        actual = actual.Derecha;
-                    }
-                    else
-                    {
-                        break;
-                    }
+            return;
+        }
+
+        NodoRepuesto actual = raiz;
+        while (true) {
+            if (id < actual.Id) {
+                if (actual.Izquierda == null) {
+                    actual.Izquierda = nuevo;
+                    return;
                 }
+                actual = actual.Izquierda;
+            } else {
+                if (actual.Derecha == null) {
+                    actual.Derecha = nuevo;
+                    return;
+                }
+                actual = actual.Derecha;
             }
         }
     }
+
 
     public void Eliminar(int id) {
         if (raiz == null) {
