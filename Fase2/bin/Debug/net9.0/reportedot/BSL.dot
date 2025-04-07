@@ -14,4 +14,5 @@ node [shape=record, fontsize=10];
 "ID: 12 \n Repuesto: Espejos laterales \n Detalle: Espejos para una mejor visibilidad en el vehículo. \n Costo: 50" -> "ID: 13 \n Repuesto: Manguera de radiador \n Detalle: Transporta el líquido refrigerante en el sistema de enfriamiento. \n Costo: 20.8";
 "ID: 13 \n Repuesto: Manguera de radiador \n Detalle: Transporta el líquido refrigerante en el sistema de enfriamiento. \n Costo: 20.8" -> "ID: 14 \n Repuesto: Suspensión trasera \n Detalle: Sistema que absorbe impactos en la parte trasera del vehículo. \n Costo: 120";
 "ID: 14 \n Repuesto: Suspensión trasera \n Detalle: Sistema que absorbe impactos en la parte trasera del vehículo. \n Costo: 120" -> "ID: 15 \n Repuesto: Bombas de freno \n Detalle: Componente que genera presión para accionar los frenos. \n Costo: 75";
+"ID: 15 \n Repuesto: Bombas de freno \n Detalle: Componente que genera presión para accionar los frenos. \n Costo: 75" -> "ID: 16 \n Repuesto: Batería \n Detalle: Componente necesario para energia del carro y funcione. \n Costo: 75";
 }

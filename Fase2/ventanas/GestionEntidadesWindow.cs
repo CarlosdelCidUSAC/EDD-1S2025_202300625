@@ -79,7 +79,7 @@ class GestionEntidadesWindow : Window
             {
                 MessageDialog md = new MessageDialog(this, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Close, "Vehículo no encontrado");
                 md.Run();
-                md.Destroy();
+                md.Hide();
             }
         };
 
@@ -138,6 +138,6 @@ class GestionEntidadesWindow : Window
     public void OnDeleteEvent(object sender, DeleteEventArgs a)
     {
         a.RetVal = true;
-        Destroy();
+        Hide();
     }
 }

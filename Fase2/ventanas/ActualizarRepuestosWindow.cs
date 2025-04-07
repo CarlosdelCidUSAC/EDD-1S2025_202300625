@@ -118,6 +118,6 @@ class ActualizarRespuestosWindow : Window
     public void OnDeleteEvent(object sender, DeleteEventArgs a)
     {
         a.RetVal = true;
-        Destroy();
+        Hide();
     }
 }

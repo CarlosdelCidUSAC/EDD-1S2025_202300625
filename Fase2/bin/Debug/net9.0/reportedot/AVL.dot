@@ -1,11 +1,7 @@
 digraph G {
 node [shape=record, fontsize=10];
-"ID: 12 \n Repuesto: 2 \n Detalle: 1 \n Costo: 1" -> "ID: 2 \n Repuesto: 2 \n Detalle: 2 \n Costo: 2";
-"ID: 2 \n Repuesto: 2 \n Detalle: 2 \n Costo: 2" -> "ID: 1 \n Repuesto: 1 \n Detalle: 1 \n Costo: 1";
-"ID: 2 \n Repuesto: 2 \n Detalle: 2 \n Costo: 2" -> "ID: 5 \n Repuesto: 3 \n Detalle: 33 \n Costo: 3";
-"ID: 5 \n Repuesto: 3 \n Detalle: 33 \n Costo: 3" -> "ID: 6 \n Repuesto: 3 \n Detalle: 12 \n Costo: 12";
-"ID: 12 \n Repuesto: 2 \n Detalle: 1 \n Costo: 1" -> "ID: 41 \n Repuesto: 2 \n Detalle: 2 \n Costo: 2";
-"ID: 41 \n Repuesto: 2 \n Detalle: 2 \n Costo: 2" -> "ID: 31 \n Repuesto: 2 \n Detalle: 2 \n Costo: 2";
-"ID: 31 \n Repuesto: 2 \n Detalle: 2 \n Costo: 2" -> "ID: 21 \n Repuesto: 1 \n Detalle: 12 \n Costo: 12";
-"ID: 41 \n Repuesto: 2 \n Detalle: 2 \n Costo: 2" -> "ID: 44 \n Repuesto: 2 \n Detalle: 2 \n Costo: 2";
+"ID: 4 \n Repuesto: 3 \n Detalle: Calificacion servicio 2 \n Costo: 100" -> "ID: 1 \n Repuesto: 2 \n Detalle: Calificacion servicio 2 \n Costo: 150";
+"ID: 4 \n Repuesto: 3 \n Detalle: Calificacion servicio 2 \n Costo: 100" -> "ID: 9 \n Repuesto: 5 \n Detalle: Calificiacion serviocio 3 \n Costo: 150";
+"ID: 9 \n Repuesto: 5 \n Detalle: Calificiacion serviocio 3 \n Costo: 150" -> "ID: 6 \n Repuesto: 12 \n Detalle: Calificacion servioc 2 \n Costo: 150";
+"ID: 9 \n Repuesto: 5 \n Detalle: Calificiacion serviocio 3 \n Costo: 150" -> "ID: 15 \n Repuesto: 5 \n Detalle: Calificiacion servicio 4 \n Costo: 150";
 }

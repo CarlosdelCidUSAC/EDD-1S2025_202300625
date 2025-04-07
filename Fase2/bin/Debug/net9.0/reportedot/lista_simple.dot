@@ -4,16 +4,16 @@ digraph G {
   label="Lista Simple";
   labelloc=top;
   fontsize=20;
-node0 [label="{ID: 1\nNombre: Carlos Alberto\nApellido: Gomez Martinez\nEmail: carlos.alberto@usac.com\nPwd: 30}"]
-node1 [label="{ID: 2\nNombre: Ana Lucia\nApellido: Martinez Lopez\nEmail: ana.lucia@usac.com\nPwd: 25}"]
-node2 [label="{ID: 3\nNombre: Luis Enrique\nApellido: Perez Ramirez\nEmail: luis.enrique@usac.com\nPwd: 28}"]
-node3 [label="{ID: 4\nNombre: Marta Isabel\nApellido: Lopez Perez\nEmail: marta.isabel@usac.com\nPwd: 32}"]
-node4 [label="{ID: 5\nNombre: Juan Carlos\nApellido: Hernandez Lopez\nEmail: juan.carlos@usac.com\nPwd: 27}"]
-node5 [label="{ID: 6\nNombre: Maria Fernanda\nApellido: Garcia Lopez\nEmail: maria.fernanda@usac.com\nPwd: 29}"]
-node6 [label="{ID: 7\nNombre: Pedro Pablo\nApellido: Rodriguez Torres\nEmail: pedro.pablo@usac.com\nPwd: 35}"]
-node7 [label="{ID: 8\nNombre: Laura Isabel\nApellido: Sanchez Morales\nEmail: laura.isabel@usac.com\nPwd: 26}"]
-node8 [label="{ID: 9\nNombre: Rafael Alejandro\nApellido: Ramirez Diaz\nEmail: rafael.alejandro@usac.com\nPwd: 31}"]
-node9 [label="{ID: 10\nNombre: Isabel Cristina\nApellido: Diaz Lopez\nEmail: isabel.cristina@usac.com\nPwd: 24}"]
+node0 [label="{ID: 1\nNombre: Carlos Alberto\nApellido: Gomez Martinez\nEmail: carlos.alberto@usac.com\nPwd: 20}"]
+node1 [label="{ID: 2\nNombre: Ana Lucia\nApellido: Martinez Lopez\nEmail: ana.lucia@usac.com\nPwd: 20}"]
+node2 [label="{ID: 3\nNombre: Luis Enrique\nApellido: Perez Ramirez\nEmail: luis.enrique@usac.com\nPwd: 20}"]
+node3 [label="{ID: 4\nNombre: Marta Isabel\nApellido: Lopez Perez\nEmail: marta.isabel@usac.com\nPwd: 20}"]
+node4 [label="{ID: 5\nNombre: Juan Carlos\nApellido: Hernandez Lopez\nEmail: juan.carlos@usac.com\nPwd: 20}"]
+node5 [label="{ID: 6\nNombre: Maria Fernanda\nApellido: Garcia Lopez\nEmail: maria.fernanda@usac.com\nPwd: 20}"]
+node6 [label="{ID: 7\nNombre: Pedro Pablo\nApellido: Rodriguez Torres\nEmail: pedro.pablo@usac.com\nPwd: 20}"]
+node7 [label="{ID: 8\nNombre: Laura Isabel\nApellido: Sanchez Morales\nEmail: laura.isabel@usac.com\nPwd: 20}"]
+node8 [label="{ID: 9\nNombre: Rafael Alejandro\nApellido: Ramirez Diaz\nEmail: rafael.alejandro@usac.com\nPwd: 20}"]
+node9 [label="{ID: 10\nNombre: Isabel Cristina\nApellido: Diaz Lopez\nEmail: isabel.cristina@usac.com\nPwd: 20}"]
 node0 -> node1;
 node1 -> node2;
 node2 -> node3;

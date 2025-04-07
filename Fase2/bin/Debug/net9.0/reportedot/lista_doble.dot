@@ -3,6 +3,9 @@ rankdir=LR;
 node [shape=record];
 subgraph cluster_ListaDobleEnlazada {
 label = "Lista Doblemente Enlazada";
+"16" [label="ID: 16\nID Usuario: 12\nMarca: Mazda CX-5\nModelo: 2017\nPlaca: VWL3P0D"];
+"16" -> "15";
+"15" -> "16";
 "15" [label="ID: 15\nID Usuario: 10\nMarca: Mazda CX-5\nModelo: 2017\nPlaca: VWL3P0D"];
 "15" -> "14";
 "14" -> "15";

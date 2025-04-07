@@ -92,6 +92,6 @@ class VisualizacionServicioWindow : Window
     private void OnDeleteEvent(object sender, DeleteEventArgs args)
     {
         args.RetVal = true; 
-        Destroy(); 
+        Hide(); 
     }
 }
