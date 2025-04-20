@@ -7,7 +7,7 @@ class MenuAdmin : Window
         SetDefaultSize(300, 400);
         SetPosition(WindowPosition.Center);
         DeleteEvent += delegate { 
-        Program._login = new Login(); // reinitialize the Login window
+        Program._login = new Login(); 
         Program._login.ShowAll(); 
         Hide();};
 
