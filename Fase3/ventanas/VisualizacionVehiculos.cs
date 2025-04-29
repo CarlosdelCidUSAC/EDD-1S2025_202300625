@@ -56,7 +56,23 @@ class VisualizacionVehiculos : Window
         }
         contenedor.Put(tabla, 10, 50);
         tabla.SetSizeRequest(580, 300);
+
+
+        Button botonMostrar = new Button("Mostrar Tabla");
+        botonMostrar.SetSizeRequest(200, 30);
+        if (botonMostrar.Parent != null)
+        {
+            ((Container)botonMostrar.Parent).Remove(botonMostrar);
+        }
+        contenedor.Put(botonMostrar, 200, 10);
         Add(contenedor);
+        botonMostrar.Clicked += (sender, e) =>
+        {
+            modelo.Clear();
+            modelo = Program.vehiculos.mostrarTabla();
+            tabla.Model = modelo;
+            tabla.ShowAll();
+        };
         
     }
 

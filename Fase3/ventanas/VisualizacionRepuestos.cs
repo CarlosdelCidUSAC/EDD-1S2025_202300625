@@ -16,6 +16,9 @@ class VisualizacionRepuestos : Window
         comboBox.AppendText("Post-orden");
         comboBox.Active = 0; 
 
+        Button mostrarTabla = new Button("Mostrar Tabla");
+        mostrarTabla.SetSizeRequest(200, 30);
+
         TreeView tabla = new TreeView();
         TreeViewColumn columna1 = new TreeViewColumn{
             Title = "ID"
@@ -66,12 +69,50 @@ class VisualizacionRepuestos : Window
         {
             ((Container)tabla.Parent).Remove(tabla);
         }
+        if (mostrarTabla.Parent != null)
+        {
+            ((Container)mostrarTabla.Parent).Remove(mostrarTabla);
+        }
+        contenedor.Put(mostrarTabla, 100, 100);
         contenedor.Put(tabla, 20, 100);
         contenedor.SetSizeRequest(400, 300);
         comboBox.SetSizeRequest(200, 30);
         tabla.SetSizeRequest(360, 150);
         contenedor.SetSizeRequest(400, 300);
         Add(contenedor);
+
+        mostrarTabla.Clicked += (sender, e) =>
+        {
+            string ordenSeleccionada = comboBox.ActiveText;
+            if (ordenSeleccionada == "Pre-orden")
+            {
+                modelo.Clear();
+                if (Program.repuestos.Raiz != null)
+                {
+                    Program.repuestos.recorrerPreorden(Program.repuestos.Raiz, modelo);
+                }
+                tabla.Model = modelo;
+            }
+            else if (ordenSeleccionada == "In-orden")
+            {
+                modelo.Clear();
+                if (Program.repuestos.Raiz != null)
+                {
+                    Program.repuestos.recorrerInorden(Program.repuestos.Raiz, modelo);
+                }
+                tabla.Model = modelo;
+            }
+            else if (ordenSeleccionada == "Post-orden")
+            {
+                modelo.Clear();
+                if (Program.repuestos.Raiz != null)
+                {
+                    Program.repuestos.recorrerPostorden(Program.repuestos.Raiz, modelo);
+                }
+                tabla.Model = modelo;
+            }
+        };
+
         
     }
 

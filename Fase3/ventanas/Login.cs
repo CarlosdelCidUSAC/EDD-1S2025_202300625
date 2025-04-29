@@ -78,9 +78,20 @@ class Login : Window
             }
             else
             {
-                MessageDialog dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "Credenciales incorrectas");
-                dialog.Run();
-                dialog.Destroy();
+                if(Program.usuarios.validarCredenciales(usuario, contraseña))
+                {
+                    Program.usuarioActual = usuario;
+                    Program.fechaActual = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    Program._menuUsuario = new MenuUsuario();
+                    Program._menuUsuario.ShowAll();
+                    Hide();
+                }
+                else
+                {
+                    MessageDialog dialogo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "Credenciales incorrectas");
+                    dialogo.Run();
+                    dialogo.Destroy();
+                }
             }
 
         };

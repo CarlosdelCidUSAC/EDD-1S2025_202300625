@@ -26,12 +26,11 @@ class NodoRepuesto {
 class AVLRepuestos {
 
     private NodoRepuesto? raiz;
-    string conexiones = "";
-    string nodos = "";
 
     public AVLRepuestos() {
         raiz = null;
     }
+    
 
     public NodoRepuesto? Raiz {
         get { return raiz; }
@@ -44,7 +43,7 @@ class AVLRepuestos {
         raiz = insertarRecursivo(raiz, id, Repuesto, idVehiculo, detalle, costo);
     }
 
-    private NodoRepuesto? Buscar(NodoRepuesto? nodo, int id) {
+    public NodoRepuesto? Buscar(NodoRepuesto? nodo, int id) {
         if (nodo == null) {
             return null;
         }
@@ -239,4 +238,5 @@ class AVLRepuestos {
             ImprimirRecursivo(nodo.Derecha);
         }
     }
+
 }

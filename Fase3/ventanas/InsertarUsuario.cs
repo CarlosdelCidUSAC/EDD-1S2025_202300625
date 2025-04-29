@@ -115,10 +115,25 @@ class InsertarUsuario : Window
         botonBuscar.Clicked += (sender, e) =>
         {
             string id = entradaId.Text;
-            // Aquí puedes agregar la lógica para buscar el usuario en la base de datos
-            MessageDialog dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Usuario encontrado");
-            dialog.Run();
-            dialog.Destroy();
+
+            Bloque? usuario = Program.usuarios.BuscarBloque(int.Parse(id));
+            if (usuario == null)
+            {
+                MessageDialog dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "Usuario no encontrado");
+                dialog.Run();
+                dialog.Destroy();
+                return;
+            }
+            entradaNombre.Text = usuario.Data.Nombres;
+            entradaApellido.Text = usuario.Data.Apellidos;
+            entradaCorreo.Text = usuario.Data.Correo;
+            entradaEdad.Text = usuario.Data.Edad.ToString();
+            entradaContrasenia.Text = usuario.Data.Contrasena;
+            MessageDialog dialog2 = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Usuario encontrado");
+            dialog2.Run();
+            dialog2.Destroy();
+            Program.usuarios.MostrarCadena();
+
         };
 
         botonInsertar.Clicked += (sender, e) =>
@@ -130,10 +145,19 @@ class InsertarUsuario : Window
             string edad = entradaEdad.Text;
             string contrasenia = entradaContrasenia.Text;
 
-            // Aquí puedes agregar la lógica para insertar el usuario en la base de datos
+            Program.usuarios.AgregarBloque(new Usuario
+            {
+                ID = id,
+                Nombres = nombre,
+                Apellidos = apellido,
+                Correo = correo,
+                Edad = int.Parse(edad),
+                Contrasena = contrasenia
+            });
             MessageDialog dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Usuario insertado correctamente");
             dialog.Run();
             dialog.Destroy();
+            Program.usuarios.MostrarCadena();
         };
 
         Add(contenedor);

@@ -82,8 +82,41 @@ class VisualizacionServicios : Window
         contenedor.Put(tabla, 20, 100);
         contenedor.SetSizeRequest(600, 400);
         comboBox.SetSizeRequest(200, 30);
-        tabla.SetSizeRequest(500, 250); // TablA ajustada a 500x250
+        tabla.SetSizeRequest(500, 250); 
+
+        Button mostrarTabla = new Button("Mostrar Tabla");
+        mostrarTabla.SetSizeRequest(200, 30);
+        if (mostrarTabla.Parent != null)
+        {
+            ((Container)mostrarTabla.Parent).Remove(mostrarTabla);
+        }
+        contenedor.Put(mostrarTabla, 100, 350);
+
         Add(contenedor);
+        mostrarTabla.Clicked += (sender, e) =>
+        {
+            if(comboBox.ActiveText == "Pre-orden")
+            {
+                modelo.Clear();
+                modelo = Program.servicios.recorrerPreorden(Program.servicios.Raiz, modelo);
+                tabla.Model = modelo;
+                tabla.ShowAll();
+            }
+            else if(comboBox.ActiveText == "In-orden")
+            {
+                modelo.Clear();
+                modelo = Program.servicios.recorrerInorden(Program.servicios.Raiz, modelo);
+                tabla.Model = modelo;
+                tabla.ShowAll();
+            }
+            else if(comboBox.ActiveText == "Post-orden")
+            {
+                modelo.Clear();
+                modelo = Program.servicios.recorrerPostorden(Program.servicios.Raiz, modelo);
+                tabla.Model = modelo;
+                tabla.ShowAll();
+            }
+        };
         
 
     }

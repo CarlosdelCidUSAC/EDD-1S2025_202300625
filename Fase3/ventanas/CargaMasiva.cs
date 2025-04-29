@@ -1,5 +1,6 @@
 using Gtk;
-
+using System.IO;
+using Newtonsoft.Json.Linq;
 class CargaMasiva : Window
 {
     public CargaMasiva() : base("Carga Masiva")
@@ -48,21 +49,148 @@ class CargaMasiva : Window
 
         usuariosBoton.Clicked += (sender, e) =>
         {
-            MessageDialog dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Carga de usuarios iniciada");
-            dialog.Run();
-            dialog.Destroy();
+            FileChooserDialog dialogo = new FileChooserDialog("Seleccione un archivo", this, FileChooserAction.Open, "Cancelar", ResponseType.Cancel, "Abrir", ResponseType.Accept);
+            dialogo.Run();
+            carga_JSON_usuarios(dialogo.Filename);
+            dialogo.Destroy();
         };
         vehiculosBoton.Clicked += (sender, e) =>
         {
-            MessageDialog dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Carga de vehículos iniciada");
-            dialog.Run();
-            dialog.Destroy();
+            FileChooserDialog dialogo = new FileChooserDialog("Seleccione un archivo", this, FileChooserAction.Open, "Cancelar", ResponseType.Cancel, "Abrir", ResponseType.Accept);
+            dialogo.Run();
+            carga_JSON_vehiculos(dialogo.Filename);
+            dialogo.Destroy();
         };
         repuestosBoton.Clicked += (sender, e) =>
         {
-            MessageDialog dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Carga de repuestos iniciada");
-            dialog.Run();
-            dialog.Destroy();
+            FileChooserDialog dialogo = new FileChooserDialog("Seleccione un archivo", this, FileChooserAction.Open, "Cancelar", ResponseType.Cancel, "Abrir", ResponseType.Accept);
+            dialogo.Run();
+            cargar_JSON_repuestos(dialogo.Filename);
+            dialogo.Destroy();
         };
+    }
+
+        private void carga_JSON_usuarios(string ruta){
+        if(ruta == null){
+            MessageDialog dialogo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "No se ha seleccionado un archivo");
+            dialogo.Run();
+            dialogo.Hide();
+            return;
+        }
+        string json = File.ReadAllText(ruta);
+        JArray usuariosArray = JArray.Parse(json);
+
+        foreach (JObject usuario in usuariosArray)
+        {
+            if (usuario["ID"] == null || usuario["Nombres"] == null || usuario["Apellidos"] == null || usuario["Correo"] == null || usuario["Contrasenia"] == null || usuario["Edad"] == null){
+                MessageDialog dialogo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El archivo no tiene el formato correcto");
+                dialogo.Run();
+                dialogo.Hide();
+                return;
+            }
+
+           
+        }
+         for (int i = 0; i < usuariosArray.Count; i++)
+            {
+                JToken usuarioT = usuariosArray[i];
+                string id = usuarioT["ID"].ToString();
+                string nombres = usuarioT["Nombres"].ToString();
+                string apellidos = usuarioT["Apellidos"].ToString();
+                string correo = usuarioT["Correo"].ToString();
+                string edad = usuarioT["Edad"].ToString();
+                string contrasenia = usuarioT["Contrasenia"].ToString();
+
+                Program.usuarios.AgregarBloque(new Usuario{
+                    ID = id,
+                    Nombres = nombres,
+                    Apellidos = apellidos,
+                    Correo = correo,
+                    Edad = int.Parse(edad),
+                    Contrasena = contrasenia
+                });
+
+            }
+
+        Program.usuarios.MostrarCadena();
+
+
+    }
+    private void carga_JSON_vehiculos(string ruta)
+    {
+        if (ruta == null)
+        {
+            MessageDialog dialogo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "No se ha seleccionado un archivo");
+            dialogo.Run();
+            dialogo.Hide();
+            return;
+        }
+        string json = File.ReadAllText(ruta);
+        JArray VehiculosArray = JArray.Parse(json);
+
+        foreach (JObject vehiculo in VehiculosArray)
+        {
+            if (vehiculo["ID"]== null|| vehiculo["ID_Usuario"] == null || vehiculo["Marca"] == null || vehiculo["Modelo"] == null || vehiculo["Placa"]== null)
+            {
+                MessageDialog dialogo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El archivo no tiene el formato correcto");
+                dialogo.Run();
+                dialogo.Hide();
+                return;
+            }
+        }
+        for (int i = 0; i < VehiculosArray.Count; i++)
+            {
+                JToken vehiculoT = VehiculosArray[i];
+                string id = vehiculoT["ID"].ToString();
+                string id_usuario = vehiculoT["ID_Usuario"].ToString();
+                string marca = vehiculoT["Marca"].ToString();
+                string modelo = vehiculoT["Modelo"].ToString();
+                string placa = vehiculoT["Placa"].ToString();
+
+                int idInt = int.Parse(id);
+                int id_usuarioInt = int.Parse(id_usuario);
+                int anioInt = int.Parse(modelo);
+
+                Program.vehiculos.AgregarPrimero(idInt, id_usuarioInt, marca, anioInt, placa);
+            }
+           
+        Program.vehiculos.Imprimir();
+
+    }
+
+    public void cargar_JSON_repuestos(string ruta)
+    {
+        if (ruta == null)
+        {
+            MessageDialog dialogo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "No se ha seleccionado un archivo");
+            dialogo.Run();
+            dialogo.Hide();
+            return;
+        }
+        string json = File.ReadAllText(ruta);
+        JArray repuestosArray = JArray.Parse(json);
+
+        foreach (JObject repuesto in repuestosArray)
+        {
+            if (repuesto["ID"] == null || repuesto["Repuesto"] == null || repuesto["Detalles"] == null || repuesto["Costo"] == null)
+            {
+                MessageDialog dialogo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El archivo no tiene el formato correcto");
+                dialogo.Run();
+                dialogo.Hide();
+                return;
+            }
+        }
+        for (int i = 0; i < repuestosArray.Count; i++)
+        {
+            JToken repuestoT = repuestosArray[i];
+            string id = repuestoT["ID"].ToString();
+            string repuesto = repuestoT["Repuesto"].ToString();
+            string detalle = repuestoT["Detalles"].ToString();
+            string costo = repuestoT["Costo"].ToString();
+
+            Program.repuestos.insertar(int.Parse(id), repuesto, 0, detalle, float.Parse(costo));
+        }
+        Program.repuestos.Imprimir();
+    
     }
 }
