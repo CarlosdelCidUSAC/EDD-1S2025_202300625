@@ -58,8 +58,13 @@ class MenuUsuario : Window
         };
         cerrarSesion.Clicked += (sender, e) =>
         {
+            Program.RegistroSesiones.Add((Program.usuarioActual, Program.fechaActual, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+            Program.usuarios.Backup();
             Program._login = new Login();
             Program._login.ShowAll();
+
+
+
             Hide();
         };
         Add(contenedor);

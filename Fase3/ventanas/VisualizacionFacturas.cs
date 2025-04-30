@@ -34,18 +34,25 @@ class VisualizacionFacturas : Window
         columna3.PackStart(celda3, true);
         columna3.AddAttribute(celda3, "text", 2);
 
-        modelo.AppendValues("1", "Orden A", "100");
-        modelo.AppendValues("2", "Orden B", "200");
-        modelo.AppendValues("3", "Orden C", "300");
+        if (Program.merkle != null && Program.merkle.Root != null)
+        {
+            modelo.Clear();
+            modelo = Program.merkle.MostrarTabla();
+            tabla.Model = modelo;
+        }
+        else
+        {
+            modelo.AppendValues("No hay facturas disponibles", "", "");
+        }
 
         if (tabla.Parent != null)
         {
             ((Container)tabla.Parent).Remove(tabla);
         }
         
-        // Ajuste de la posición y tamaño relativo de la tabla dentro de la ventana
         contenedor.Put(tabla, 10, 50);
         tabla.SetSizeRequest(280, 140);
+
 
         Add(contenedor);
         

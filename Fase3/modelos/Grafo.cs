@@ -93,6 +93,18 @@ class ListaDeLista
         ColaVehiculo = null;
     }
 
+    public bool EstaVacia()
+    {
+        if (CabeceraVehiculo == null && CabeceraRepuesto == null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public void AgregarNodo(int id, int valor)
     {
         Nodo? vehiculo = CabeceraVehiculo;

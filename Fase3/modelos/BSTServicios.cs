@@ -24,10 +24,10 @@ class NodoServicio {
     }
 }
 
-class ArbolRepuestos {
+class BSTServicios {
     private NodoServicio? raiz;
 
-    public ArbolRepuestos() {
+    public BSTServicios() {
         raiz = null;
     }
 
@@ -168,6 +168,13 @@ class ArbolRepuestos {
              return null;
          }
          return actual;
+   }
+
+   public int Contar(NodoServicio nodo){
+         if (nodo == null) {
+             return 0;
+         }
+         return 1 + Contar(nodo.Izquierda) + Contar(nodo.Derecha);
    }
 
     public void Imprimir(NodoServicio nodo){

@@ -22,3 +22,4 @@
 /home/carlos/Escritorio/EDD/Proyecto/EDD-1S2025_202300625/Fase3/bin/Debug/net9.0/PangoSharp.dll
 /home/carlos/Escritorio/EDD/Proyecto/EDD-1S2025_202300625/Fase3/obj/Debug/net9.0/Fase3.csproj.AssemblyReference.cache
 /home/carlos/Escritorio/EDD/Proyecto/EDD-1S2025_202300625/Fase3/obj/Debug/net9.0/Fase3.csproj.Up2Date
+/home/carlos/Escritorio/EDD/Proyecto/EDD-1S2025_202300625/Fase3/bin/Debug/net9.0/Newtonsoft.Json.dll

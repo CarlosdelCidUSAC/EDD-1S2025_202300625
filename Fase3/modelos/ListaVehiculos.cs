@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Gtk;
 class NodoVehiculo {
     public int id;
     public int id_usuario;
@@ -16,27 +17,33 @@ class ListaVehiculos {
 
     private NodoVehiculo? cabeza;
 
+    public NodoVehiculo? Cabeza {
+        get { return cabeza; }
+    }
+
     public ListaVehiculos() {
         cabeza = null;
     }
 
-    public void AgregarPrimero(int id, int id_usuario, string marca, int anio, string placa) {
+    public bool AgregarPrimero(int id, int id_usuario, string marca, int anio, string placa) {
         if (Buscar(id) != null) {
             Console.WriteLine($"Error: Ya existe un vehículo con el ID {id}.");
-            return;
+            return false;
         }
-        NodoVehiculo nuevo = new NodoVehiculo();
-        nuevo.id = id;
-        nuevo.id_usuario = id_usuario;
-        nuevo.marca = marca;
-        nuevo.anio = anio;
-        nuevo.placa = placa;
-        nuevo.siguiente = cabeza;
-        nuevo.anterior = null;
+        NodoVehiculo? nuevo = new NodoVehiculo {
+            id = id,
+            id_usuario = id_usuario,
+            marca = marca,
+            anio = anio,
+            placa = placa,
+            siguiente = cabeza,
+            anterior = null
+        };
         if (cabeza != null) {
             cabeza.anterior = nuevo;
         }
         cabeza = nuevo;
+        return true;
     }
 
     public void Imprimir() {
@@ -85,6 +92,16 @@ class ListaVehiculos {
             }
             actual = actual.siguiente;
         }
+    }
+
+    public ListStore mostrarTabla() {
+        ListStore modelo = new ListStore(typeof(int), typeof(int), typeof(string), typeof(int), typeof(string));
+        NodoVehiculo? actual = cabeza;
+        while (actual != null) {
+            modelo.AppendValues(actual.id, actual.id_usuario, actual.marca, actual.anio, actual.placa);
+            actual = actual.siguiente;
+        }
+        return modelo;
     }
 
     public void Graficar()
