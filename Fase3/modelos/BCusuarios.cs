@@ -80,17 +80,23 @@ public class Blockchain
         Usuario usuarioGenesis = new Usuario
         {
             ID = "0",
-            Nombres = "Genesis",
-            Apellidos = "Block",
-            Correo = "genesis@blockchain.com",
+            Nombres = "admin",
+            Apellidos = "admin",
+            Correo = "admin@usac.com",
             Edad = 0,
-            Contrasena = "root"
+            Contrasena = "1234"
         };
         return new Bloque(0, usuarioGenesis, "0000");
     }
 
     public void AgregarBloque(Usuario nuevoUsuario)
     {
+        // Validar si ya existe un usuario con el mismo ID
+        if (Cadena.Any(b => b.Data.ID == nuevoUsuario.ID))
+        {
+            Console.WriteLine($"Error: Ya existe un usuario con el ID '{nuevoUsuario.ID}'.");
+            return;
+        }
         Bloque anterior = Cadena.Last();
         Bloque nuevoBloque = new Bloque(anterior.Index + 1, nuevoUsuario, anterior.Hash);
         Cadena.Add(nuevoBloque);
@@ -167,7 +173,7 @@ public class Blockchain
 
     public void Graficar(){
 
-        StringBuilder dot = new StringBuilder();
+        var dot = new StringBuilder();
         dot.AppendLine("digraph G {");
         dot.AppendLine("node [shape=record, fontsize=10];");
         dot.AppendLine("  graph [rankdir=TB];"); 
@@ -181,14 +187,18 @@ public class Blockchain
             dot.AppendLine($"{bloque.Index} [label={etiquetaNodo}];");
             if (bloque.Index > 0)
             {
-            dot.AppendLine($"{bloque.Index - 1} -> {bloque.Index};");
+                dot.AppendLine($"{bloque.Index - 1} -> {bloque.Index};");
             }
         }
         dot.AppendLine("}");
+        dot.AppendLine("}"); // Cierra el grafo
         string rutaDot = "reportedot/Blockchain.dot";
         string rutaReporte = "Reportes/Blockchain.png";
+        // Ensure the directory exists before writing the file
+        Directory.CreateDirectory(Path.GetDirectoryName(rutaDot));
+        Directory.CreateDirectory(Path.GetDirectoryName(rutaReporte));
         File.WriteAllText(rutaDot, dot.ToString());
-        Process proceso = new Process();
+        var proceso = new Process();
         proceso.StartInfo.FileName = "dot";
         proceso.StartInfo.Arguments = $"-Tpng {rutaDot} -o {rutaReporte}";
         proceso.StartInfo.RedirectStandardOutput = true;

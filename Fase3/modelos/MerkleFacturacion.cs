@@ -118,13 +118,26 @@ public class MerkleTree
         ImprimirRecursivo(Root);
     }
 
+    public bool EstaVacia()
+    {
+        return Root == null;
+    }
     private void ImprimirRecursivo(MerkleNode nodo)
     {
         if (nodo == null)
             return;
 
         ImprimirRecursivo(nodo.Left);
-        Console.WriteLine(nodo.Hash);
+
+        if (nodo.Data != null)
+        {
+            Console.WriteLine($"{nodo.Hash} | ID: {nodo.Data.ID}, Servicio: {nodo.Data.ID_Servicio}, Total: {nodo.Data.Total}, Fecha: {nodo.Data.Fecha}, Pago: {nodo.Data.MetodoPago}");
+        }
+        else
+        {
+            Console.WriteLine(nodo.Hash);
+        }
+
         ImprimirRecursivo(nodo.Right);
     }
 
@@ -205,14 +218,15 @@ public class MerkleTree
 
         if (nodo.Data != null)
         {
-            string label = nodo.Hash + "\\n" +
-                           $"ID:{nodo.Data.ID}, " +
-                           $"Serv:{nodo.Data.ID_Servicio}, " +
-                           $"Total:{nodo.Data.Total}, " +
-                           $"Fecha:{nodo.Data.Fecha}, " +
-                           $"Pago:{nodo.Data.MetodoPago}";
+           
+            string label = $"{nodo.Hash}\\n" +
+                           $"ID: {nodo.Data.ID}\\n" +
+                           $"Servicio: {nodo.Data.ID_Servicio}\\n" +
+                           $"Total: {nodo.Data.Total}\\n" +
+                           $"Fecha: {nodo.Data.Fecha}\\n" +
+                           $"Pago: {nodo.Data.MetodoPago}";
 
-            label = label.Replace("\"", "\\\""); // Escapar comillas dobles si hay
+            label = label.Replace("\"", "\\\""); 
 
             dot.AppendLine($"    {nodoId} [label=\"{label}\"];");
         }

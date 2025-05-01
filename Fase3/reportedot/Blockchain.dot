@@ -1,0 +1,30 @@
+digraph G {
+node [shape=record, fontsize=10];
+  graph [rankdir=TB];
+  subgraph cluster_0 {
+    label="Cadena de Bloques";
+0 [label="Bloque: 0\nTimestamp: 30-04-25::18:50:45\nNonce: 133420\nHash: 00007dfc69b21e0294ae8e8641b0dd33f72407e4adc2b4646fe918f7e7c77c6b\nID: 0\nNombres: admin\nApellidos: admin\nCorreo: admin@usac.com\nEdad: 0"];
+1 [label="Bloque: 1\nTimestamp: 30-04-25::18:51:58\nNonce: 91024\nHash: 000052a9d0f9bf491713f24aef5d86121068c89124c5adedf72b6ac583b709e8\nID: 1\nNombres: Carlos Alberto\nApellidos: Gomez Martinez\nCorreo: carlos.alberto@usac.com\nEdad: 20"];
+0 -> 1;
+2 [label="Bloque: 2\nTimestamp: 30-04-25::18:51:58\nNonce: 36\nHash: 00006919d68346ec257ef551f279c210fa8b74328a7afdf47eb2db2ef2d9bcd1\nID: 2\nNombres: Ana Lucia\nApellidos: Martinez Lopez\nCorreo: ana.lucia@usac.com\nEdad: 20"];
+1 -> 2;
+3 [label="Bloque: 3\nTimestamp: 30-04-25::18:51:58\nNonce: 19565\nHash: 0000f3f3ab45b4068f578ffb0d58fcda09664e34c4d8fd4cc2771d32508da823\nID: 3\nNombres: Luis Enrique\nApellidos: Perez Ramirez\nCorreo: luis.enrique@usac.com\nEdad: 20"];
+2 -> 3;
+4 [label="Bloque: 4\nTimestamp: 30-04-25::18:51:58\nNonce: 217202\nHash: 00007951675fd8af385cf01268edbfa324e3dc1ce7558207aef571d26cbf5909\nID: 4\nNombres: Marta Isabel\nApellidos: Lopez Perez\nCorreo: marta.isabel@usac.com\nEdad: 20"];
+3 -> 4;
+5 [label="Bloque: 5\nTimestamp: 30-04-25::18:51:59\nNonce: 29265\nHash: 00006d6e365d105b794ca8ac26d5f88bbf574fab638ec5beeda7f1949a858795\nID: 5\nNombres: Juan Carlos\nApellidos: Hernandez Lopez\nCorreo: juan.carlos@usac.com\nEdad: 20"];
+4 -> 5;
+6 [label="Bloque: 6\nTimestamp: 30-04-25::18:51:59\nNonce: 55317\nHash: 0000093482ec94135af7b55a5cbae791be358d2a48ef5e08e58375783ff8f7d3\nID: 6\nNombres: Maria Fernanda\nApellidos: Garcia Lopez\nCorreo: maria.fernanda@usac.com\nEdad: 20"];
+5 -> 6;
+7 [label="Bloque: 7\nTimestamp: 30-04-25::18:51:59\nNonce: 74714\nHash: 00002d22cd075fda8672005637302a96622d48436360cba54343cc223b9e20d7\nID: 7\nNombres: Pedro Pablo\nApellidos: Rodriguez Torres\nCorreo: pedro.pablo@usac.com\nEdad: 20"];
+6 -> 7;
+8 [label="Bloque: 8\nTimestamp: 30-04-25::18:51:59\nNonce: 20787\nHash: 00007caba2f25b3d2ef2f020afd409da18b2e8b8c25cf03dea998dc913f85901\nID: 8\nNombres: Laura Isabel\nApellidos: Sanchez Morales\nCorreo: laura.isabel@usac.com\nEdad: 20"];
+7 -> 8;
+9 [label="Bloque: 9\nTimestamp: 30-04-25::18:52:00\nNonce: 97975\nHash: 0000a91bff3089873ab51b368768759801fee317338b869f5f20be58c326befd\nID: 9\nNombres: Rafael Alejandro\nApellidos: Ramirez Diaz\nCorreo: rafael.alejandro@usac.com\nEdad: 20"];
+8 -> 9;
+10 [label="Bloque: 10\nTimestamp: 30-04-25::18:52:00\nNonce: 174368\nHash: 0000d4530217652adaa82f78cf019c52e3b3f62bcacc94cf27a7d6bab61d3def\nID: 10\nNombres: Isabel Cristina\nApellidos: Diaz Lopez\nCorreo: isabel.cristina@usac.com\nEdad: 20"];
+9 -> 10;
+11 [label="Bloque: 11\nTimestamp: 30-04-25::18:52:00\nNonce: 65806\nHash: 0000ab2377e02ed1b6d0cf751b551afd96caab96ef4fd8fe2845feffab12e200\nID: 11\nNombres: Carlos Juan\nApellidos: Garcia Martinez\nCorreo: carlos.alberto@usac.com\nEdad: 20"];
+10 -> 11;
+}
+}

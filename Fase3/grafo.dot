@@ -1,0 +1,8 @@
+graph G {
+node [shape=circle];
+rankdir=LR;
+label="Lista de Listas";
+"R3" [label="R3"];
+"V3" [label="V3"];
+"V3" -- "R3";
+}

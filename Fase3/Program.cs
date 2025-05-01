@@ -2,7 +2,7 @@
 class Program
 {
     public static CargaMasiva _cargaMasiva = new();
-    public static InsertarUsuario _insertarUsuario = new();
+    public static InsertarUsuario? _insertarUsuario = null;
     public static CrearServicio _crearServicio = new();
     public static VisualizacionRepuestos _visualizacionRepuestos = new();
     public static VisualizacionVehiculos _visualizacionVehiculos = new();
@@ -27,13 +27,18 @@ class Program
     
     static void Main()
     {
-
         Application.Init();
-        _login.ShowAll();
-        Application.Run();
         Facturas ??= new();
         merkle = new(Facturas);
         usuarios = Blockchain.Restaurar();
-
+        _login.ShowAll();
+        try
+        {
+            Application.Run();
+        }
+        finally
+        {
+            Application.Quit();
+        }
     }
 }

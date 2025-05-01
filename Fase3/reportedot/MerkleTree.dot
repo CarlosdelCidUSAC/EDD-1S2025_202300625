@@ -1,0 +1,8 @@
+digraph G {
+  node [shape=record, fontsize=10];
+  graph [rankdir=TB];
+  subgraph cluster_0 {
+    label="Facturas";
+    ne5e50c2a [label="e5e50c2adf9dd7576a4dd5f67a62f852c0017bbc45c8616e94ee9d9bd76ef048\nID:20, Serv:14, Total:1272, Fecha:30/04/2025 6:52:42 p. m., Pago:1233123"];
+  }
+}

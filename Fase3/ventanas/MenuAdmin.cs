@@ -70,8 +70,15 @@ class MenuAdmin : Window
         };
         botonInsertarUsuario.Clicked += (sender, e) =>
         {
-            Program._insertarUsuario = new InsertarUsuario();
-            Program._insertarUsuario.ShowAll();
+            if (Program._insertarUsuario == null || !Program._insertarUsuario.Visible)
+            {
+                Program._insertarUsuario = new InsertarUsuario();
+                Program._insertarUsuario.ShowAll();
+            }
+            else
+            {
+                Program._insertarUsuario.Present();
+            }
         };
         botonVisualizarRepuestos.Clicked += (sender, e) =>
         {
@@ -91,6 +98,11 @@ class MenuAdmin : Window
                 if (!Directory.Exists(reportFolderPath))
                 {
                     Directory.CreateDirectory(reportFolderPath);
+                }
+                string dotFolderPath = "reportedot";
+                if (!Directory.Exists(dotFolderPath))
+                {
+                    Directory.CreateDirectory(dotFolderPath);
                 }
                 string filePath = System.IO.Path.Combine(reportFolderPath, "registro_sesion.json");
                 var options = new JsonSerializerOptions { WriteIndented = true };
@@ -126,7 +138,7 @@ class MenuAdmin : Window
             if (!Program.grafo.EstaVacia()){
                 Program.grafo.Graficar();
             }
-            if (Program.Facturas.Count > 0){
+            if (!Program.merkle.EstaVacia()){
                 Program.merkle.Graficar();
             }
             MessageDialog dialogo = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Reportes generados");

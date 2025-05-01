@@ -11,7 +11,7 @@ class MenuUsuario : Window
         Fixed contenedor = new Fixed();
 
         Button visVehiculo = new Button("Visualizar Vehiculos");
-        Button visRepuestos = new Button("Visualizar Repuestos");
+        Button visServicios = new Button("Visualizar Servicios");
         Button visFacturas = new Button("Visualizar Facturas");
         Button cerrarSesion = new Button("Cerrar Sesion");
 
@@ -20,11 +20,11 @@ class MenuUsuario : Window
             ((Container)visVehiculo.Parent).Remove(visVehiculo);
         }
         contenedor.Put(visVehiculo, 100, 60);
-        if (visRepuestos.Parent != null)
+        if (visServicios.Parent != null)
         {
-            ((Container)visRepuestos.Parent).Remove(visRepuestos);
+            ((Container)visServicios.Parent).Remove(visServicios);
         }
-        contenedor.Put(visRepuestos, 100, 110);
+        contenedor.Put(visServicios, 100, 110);
         if (visFacturas.Parent != null)
         {
             ((Container)visFacturas.Parent).Remove(visFacturas);
@@ -37,7 +37,7 @@ class MenuUsuario : Window
         contenedor.Put(cerrarSesion, 100, 210);
         contenedor.SetSizeRequest(400, 300);
         visVehiculo.SetSizeRequest(200, 30);
-        visRepuestos.SetSizeRequest(200, 30);
+        visServicios.SetSizeRequest(200, 30);
         visFacturas.SetSizeRequest(200, 30);
         cerrarSesion.SetSizeRequest(200, 30);
 
@@ -46,10 +46,10 @@ class MenuUsuario : Window
             Program._visualizacionVehiculos = new VisualizacionVehiculos();
             Program._visualizacionVehiculos.ShowAll();
         };
-        visRepuestos.Clicked += (sender, e) =>
+        visServicios.Clicked += (sender, e) =>
         {
-            Program._visualizacionRepuestos = new VisualizacionRepuestos();
-            Program._visualizacionRepuestos.ShowAll();
+            Program._visualizacionServicios = new VisualizacionServicios();
+            Program._visualizacionServicios.ShowAll();
         };
         visFacturas.Clicked += (sender, e) =>
         {
@@ -62,9 +62,6 @@ class MenuUsuario : Window
             Program.usuarios.Backup();
             Program._login = new Login();
             Program._login.ShowAll();
-
-
-
             Hide();
         };
         Add(contenedor);

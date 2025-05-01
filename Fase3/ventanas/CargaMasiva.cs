@@ -88,8 +88,15 @@ class CargaMasiva : Window
 
         
 
-        private void carga_JSON_usuarios(string ruta){
-        if(ruta == null){
+    private void carga_JSON_usuarios(string ruta)
+    {
+        if (Program.usuarios == null)
+        {
+            Program.usuarios = new Blockchain();
+        }
+
+        if (ruta == null)
+        {
             MessageDialog dialogo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "No se ha seleccionado un archivo");
             dialogo.Run();
             dialogo.Hide();
@@ -100,7 +107,8 @@ class CargaMasiva : Window
 
         foreach (JObject usuario in usuariosArray)
         {
-            if (usuario["ID"] == null || usuario["Nombres"] == null || usuario["Apellidos"] == null || usuario["Correo"] == null || usuario["Contrasenia"] == null || usuario["Edad"] == null){
+            if (usuario["ID"] == null || usuario["Nombres"] == null || usuario["Apellidos"] == null || usuario["Correo"] == null || usuario["Contrasenia"] == null || usuario["Edad"] == null)
+            {
                 MessageDialog dialogo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El archivo no tiene el formato correcto");
                 dialogo.Run();
                 dialogo.Hide();
