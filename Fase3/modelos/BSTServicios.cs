@@ -10,10 +10,11 @@ class NodoServicio {
     public int IdVehiculo { get; set; }
     public string Detalle { get; set; }
     public float Costo { get; set; }
+    public string MetodoPago { get; set; }
     public NodoServicio? Izquierda { get; set; }
     public NodoServicio? Derecha { get; set; }
 
-    public NodoServicio(int id, int idRepuesto, int idVehiculo, string detalle, float costo) {
+    public NodoServicio(int id, int idRepuesto, int idVehiculo, string detalle, float costo, string metodoPago) {
         Id = id;
         IdRepuesto = idRepuesto;
         IdVehiculo = idVehiculo;
@@ -21,6 +22,7 @@ class NodoServicio {
         Costo = costo;
         Izquierda = null;
         Derecha = null;
+        MetodoPago = metodoPago;
     }
 }
 
@@ -34,12 +36,16 @@ class BSTServicios {
     public NodoServicio Raiz {
         get { return raiz; }
     }
-    public void Agregar(int id, int idRepuesto, int idVehiculo, string detalle, float costo) {
+    public void Agregar(int id, int idRepuesto, int idVehiculo, string detalle, float costo, string metodoPago) {
+        if (Buscar(id) != null) {
+            Console.WriteLine($"Error: El ID {id} ya ha sido ingresado.");
+            return;
+        }
         if (Buscar(id) != null) {
             return;
         }
 
-        NodoServicio nuevo = new(id, idRepuesto, idVehiculo, detalle, costo);
+        NodoServicio nuevo = new(id, idRepuesto, idVehiculo, detalle, costo, metodoPago);
         if (raiz == null) {
             raiz = nuevo;
             return;

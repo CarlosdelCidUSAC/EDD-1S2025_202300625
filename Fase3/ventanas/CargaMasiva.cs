@@ -24,6 +24,9 @@ class CargaMasiva : Window
         repuestosLabel.SetSizeRequest(100, 30);
         Button repuestosBoton = new Button("Cargar");
         repuestosBoton.SetSizeRequest(200, 30);
+        Label serviciosLabel = new Label("Servicios:");
+        serviciosLabel.SetSizeRequest(100, 30);
+        Button serviciosBoton = new Button("Cargar");
 
       
         if (usuariosLabel.Parent != null)
@@ -44,6 +47,12 @@ class CargaMasiva : Window
         if (repuestosBoton.Parent != null)
             ((Container)repuestosBoton.Parent).Remove(repuestosBoton);
         contenedor.Put(repuestosBoton, 120, 200);
+        if (serviciosLabel.Parent != null)
+            ((Container)serviciosLabel.Parent).Remove(serviciosLabel);
+        contenedor.Put(serviciosLabel, 20, 270);
+        if (serviciosBoton.Parent != null)
+            ((Container)serviciosBoton.Parent).Remove(serviciosBoton);
+        contenedor.Put(serviciosBoton, 120, 270);
         
         Add(contenedor);
 
@@ -68,7 +77,16 @@ class CargaMasiva : Window
             cargar_JSON_repuestos(dialogo.Filename);
             dialogo.Destroy();
         };
+        serviciosBoton.Clicked += (sender, e) =>
+        {
+            FileChooserDialog dialogo = new FileChooserDialog("Seleccione un archivo", this, FileChooserAction.Open, "Cancelar", ResponseType.Cancel, "Abrir", ResponseType.Accept);
+            dialogo.Run();
+            cargar_JSON_servicios(dialogo.Filename);
+            dialogo.Destroy();
+        };
     }
+
+        
 
         private void carga_JSON_usuarios(string ruta){
         if(ruta == null){
@@ -192,5 +210,44 @@ class CargaMasiva : Window
         }
         Program.repuestos.Imprimir();
     
+    }
+
+    private void cargar_JSON_servicios(string ruta)
+    {
+        if (ruta == null)
+        {
+            MessageDialog dialogo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "No se ha seleccionado un archivo");
+            dialogo.Run();
+            dialogo.Hide();
+            return;
+        }
+        string json = File.ReadAllText(ruta);
+        JArray serviciosArray = JArray.Parse(json);
+
+        foreach (JObject servicio in serviciosArray)
+        {
+            if (servicio["Id"] == null || servicio["Id_repuesto"] == null || servicio["Id_vehiculo"] == null || servicio["Detalles"] == null || servicio["Costo"] == null || servicio["MetodoPago"] == null)
+            {
+                MessageDialog dialogo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El archivo no tiene el formato correcto");
+                dialogo.Run();
+                dialogo.Hide();
+                return;
+            }
+        }
+
+            for (int i = 0; i < serviciosArray.Count; i++)
+            {
+                JToken servicioT = serviciosArray[i];
+                string id = servicioT["Id"].ToString();
+                string idRepuesto = servicioT["Id_repuesto"].ToString();
+                string idVehiculo = servicioT["Id_vehiculo"].ToString();
+                string detalles = servicioT["Detalles"].ToString();
+                string costo = servicioT["Costo"].ToString();
+                string metodoPago = servicioT["MetodoPago"].ToString();
+
+                Program.servicios.Agregar(int.Parse(id), int.Parse(idRepuesto), int.Parse(idVehiculo), detalles, float.Parse(costo), metodoPago);
+            }
+            Program.servicios.Imprimir(Program.servicios.Raiz);
+        
     }
 }

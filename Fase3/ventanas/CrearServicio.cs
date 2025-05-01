@@ -116,7 +116,7 @@ class CrearServicio : Window
             if(Program.repuestos.Buscar(Program.repuestos.Raiz,int.Parse(idRepuesto)) != null){
                 if(Program.vehiculos.Buscar(int.Parse(idVehiculo)) != null){
                     Program.grafo.AgregarNodo(int.Parse(idRepuesto), int.Parse(idVehiculo));
-                    Program.servicios.Agregar(int.Parse(id), int.Parse(idRepuesto), int.Parse(idVehiculo), detalles, float.Parse(costo));
+                    Program.servicios.Agregar(int.Parse(id), int.Parse(idRepuesto), int.Parse(idVehiculo), detalles, float.Parse(costo), metodoPago);
                     Program.merkle.AgregarFactura(new Factura{
                         ID = int.Parse(id),
                         ID_Servicio = idServicio,
