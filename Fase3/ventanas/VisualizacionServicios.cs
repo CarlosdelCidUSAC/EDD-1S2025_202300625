@@ -6,7 +6,7 @@ class VisualizacionServicios : Window
     {
         SetDefaultSize(600, 400);
         SetPosition(WindowPosition.Center);
-        DeleteEvent += delegate { Hide(); };
+        DeleteEvent += delegate { Destroy(); };
 
         Fixed contenedor = new Fixed();
 
@@ -74,14 +74,14 @@ class VisualizacionServicios : Window
         {
             ((Container)comboBox.Parent).Remove(comboBox);
         }
-        contenedor.Put(comboBox, 100, 60);
+        contenedor.Put(comboBox, 50, 30);
+        comboBox.SetSizeRequest(200, 30);
+
         if (tabla.Parent != null)
         {
             ((Container)tabla.Parent).Remove(tabla);
         }
-        contenedor.Put(tabla, 20, 100);
-        contenedor.SetSizeRequest(600, 400);
-        comboBox.SetSizeRequest(200, 30);
+        contenedor.Put(tabla, 50, 80);
         tabla.SetSizeRequest(500, 250); 
 
         Button mostrarTabla = new Button("Mostrar Tabla");
@@ -90,29 +90,39 @@ class VisualizacionServicios : Window
         {
             ((Container)mostrarTabla.Parent).Remove(mostrarTabla);
         }
-        contenedor.Put(mostrarTabla, 100, 350);
+        contenedor.Put(mostrarTabla, 350, 30);
 
+        contenedor.SetSizeRequest(600, 400);
         Add(contenedor);
         mostrarTabla.Clicked += (sender, e) =>
         {
             if(comboBox.ActiveText == "Pre-orden")
             {
                 modelo.Clear();
-                modelo = Program.servicios.recorrerPreorden(Program.servicios.Raiz, modelo);
+                if (Program.servicios.Raiz != null)
+                {
+                    modelo = Program.servicios.recorrerPreorden(Program.servicios.Raiz, modelo);
+                }
                 tabla.Model = modelo;
                 tabla.ShowAll();
             }
             else if(comboBox.ActiveText == "In-orden")
             {
                 modelo.Clear();
-                modelo = Program.servicios.recorrerInorden(Program.servicios.Raiz, modelo);
+                if (Program.servicios.Raiz != null)
+                {
+                    modelo = Program.servicios.recorrerInorden(Program.servicios.Raiz, modelo);
+                }
                 tabla.Model = modelo;
                 tabla.ShowAll();
             }
             else if(comboBox.ActiveText == "Post-orden")
             {
                 modelo.Clear();
-                modelo = Program.servicios.recorrerPostorden(Program.servicios.Raiz, modelo);
+                if (Program.servicios.Raiz != null)
+                {
+                    modelo = Program.servicios.recorrerPostorden(Program.servicios.Raiz, modelo);
+                }
                 tabla.Model = modelo;
                 tabla.ShowAll();
             }

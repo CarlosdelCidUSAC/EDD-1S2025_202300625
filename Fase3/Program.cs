@@ -1,4 +1,17 @@
 ﻿using Gtk;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+public class SesionRegistro
+{
+    [JsonPropertyName("usuario")]
+    public string Usuario { get; set; }
+
+    [JsonPropertyName("fechaEntrada")]
+    public string FechaEntrada { get; set; }
+
+    [JsonPropertyName("fechaSalida")]
+    public string FechaSalida { get; set; }
+}
 class Program
 {
     public static CargaMasiva _cargaMasiva = new();
@@ -30,7 +43,7 @@ class Program
         Application.Init();
         Facturas ??= new();
         merkle = new(Facturas);
-        usuarios = Blockchain.Restaurar();
+        usuarios = Blockchain.Restaurar() ?? new Blockchain();
         _login.ShowAll();
         try
         {
@@ -41,4 +54,35 @@ class Program
             Application.Quit();
         }
     }
+    
+    public static void ExportarRegistroSesiones(string rutaArchivo)
+    {
+        // Convertimos la lista de tuplas a lista de SesionRegistro
+        var listaSesiones = RegistroSesiones
+            .Select(t => new SesionRegistro
+            {
+                Usuario     = t.Usuario,
+                FechaEntrada = t.FechaEntrada,
+                FechaSalida  = t.FechaSalida
+            })
+            .ToList();
+
+        // Configuramos opciones de serialización (indentado, camelCase, etc.)
+        var opciones = new JsonSerializerOptions
+        {
+            WriteIndented = true
+        };
+
+        // Serializamos
+        string json = JsonSerializer.Serialize(listaSesiones, opciones);
+
+        // Nos aseguramos de que la carpeta existe
+        var directorio = Path.GetDirectoryName(rutaArchivo);
+        if (!string.IsNullOrEmpty(directorio))
+            Directory.CreateDirectory(directorio);
+
+        // Escribimos el fichero
+        File.WriteAllText(rutaArchivo, json);
+    }
 }
+

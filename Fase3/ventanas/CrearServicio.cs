@@ -6,7 +6,7 @@ class CrearServicio : Window
     {
         SetDefaultSize(350, 400);
         SetPosition(WindowPosition.Center);
-        DeleteEvent += delegate { Hide(); };
+        DeleteEvent += delegate { Destroy(); };
 
         Fixed contenedor = new Fixed();
         contenedor.SetSizeRequest(350, 400);
@@ -115,15 +115,57 @@ class CrearServicio : Window
 
         botonCrear.Clicked += (sender, e) =>
         {
-            string id = entradaId.Text;
-            string idRepuesto = entradaIdRepuesto.Text;
-            string idVehiculo = entradaIdVehiculo.Text;
+            // Validar que todos los campos estén llenos
+            if (string.IsNullOrWhiteSpace(entradaId.Text) ||
+                string.IsNullOrWhiteSpace(entradaIdRepuesto.Text) ||
+                string.IsNullOrWhiteSpace(entradaIdVehiculo.Text) ||
+                string.IsNullOrWhiteSpace(entradaDetalles.Text) ||
+                string.IsNullOrWhiteSpace(entradaCosto.Text) ||
+                string.IsNullOrWhiteSpace(entradaMetodoPago.Text))
+            {
+                MessageDialog dialogCampos = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "Todos los campos son obligatorios.");
+                dialogCampos.Run();
+                dialogCampos.Destroy();
+                return;
+            }
+
+            // Validar tipos de datos
+            int id, idRepuesto, idVehiculo;
+            float costo;
+            if (!int.TryParse(entradaId.Text, out id))
+            {
+                MessageDialog dialogTipo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El ID debe ser un número entero.");
+                dialogTipo.Run();
+                dialogTipo.Destroy();
+                return;
+            }
+            if (!int.TryParse(entradaIdRepuesto.Text, out idRepuesto))
+            {
+                MessageDialog dialogTipo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El ID Repuesto debe ser un número entero.");
+                dialogTipo.Run();
+                dialogTipo.Destroy();
+                return;
+            }
+            if (!int.TryParse(entradaIdVehiculo.Text, out idVehiculo))
+            {
+                MessageDialog dialogTipo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El ID Vehículo debe ser un número entero.");
+                dialogTipo.Run();
+                dialogTipo.Destroy();
+                return;
+            }
+            if (!float.TryParse(entradaCosto.Text, out costo))
+            {
+                MessageDialog dialogTipo = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El costo debe ser un número válido.");
+                dialogTipo.Run();
+                dialogTipo.Destroy();
+                return;
+            }
+
             string detalles = entradaDetalles.Text;
-            string costo = entradaCosto.Text;
             string metodoPago = entradaMetodoPago.Text;
             int idServicio = Program.servicios.Contar(Program.servicios.Raiz);
 
-            if (Program.servicios.Buscar(int.Parse(id)) != null)
+            if (Program.servicios.Buscar(id) != null)
             {
                 MessageDialog dialogExistente = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "Ya existe un servicio con ese ID.");
                 dialogExistente.Run();
@@ -131,25 +173,37 @@ class CrearServicio : Window
                 return;
             }
 
-            if(Program.repuestos.Buscar(Program.repuestos.Raiz,int.Parse(idRepuesto)) != null){
-                if(Program.vehiculos.Buscar(int.Parse(idVehiculo)) != null){
-                    Program.grafo.AgregarNodo(int.Parse(idRepuesto), int.Parse(idVehiculo));
-                    Program.servicios.Agregar(int.Parse(id), int.Parse(idRepuesto), int.Parse(idVehiculo), detalles, float.Parse(costo), metodoPago);
-                    Program.merkle.AgregarFactura(new Factura{
-                        ID = int.Parse(id),
+            if (Program.repuestos.Buscar(Program.repuestos.Raiz, idRepuesto) != null)
+            {
+                if (Program.vehiculos.Buscar(idVehiculo) != null)
+                {
+                    Program.grafo.AgregarNodo(idRepuesto, idVehiculo);
+                    Program.servicios.Agregar(id, idRepuesto, idVehiculo, detalles, costo, metodoPago);
+                    var repuestoEncontrado = Program.repuestos.Buscar(Program.repuestos.Raiz, idRepuesto);
+                    float total = costo;
+                    if (repuestoEncontrado != null)
+                    {
+                        total += repuestoEncontrado.costo;
+                    }
+                    Program.merkle.AgregarFactura(new Factura
+                    {
+                        ID = id,
                         ID_Servicio = idServicio,
-                        Total = Program.repuestos.Buscar(Program.repuestos.Raiz, int.Parse(idRepuesto)).costo + float.Parse(costo),
+                        Total = total,
                         Fecha = DateTime.Now.ToString(),
                         MetodoPago = metodoPago
                     });
                 }
-                else{
+                else
+                {
                     MessageDialog dialog2 = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El vehiculo no existe");
                     dialog2.Run();
                     dialog2.Destroy();
                     return;
                 }
-            } else{
+            }
+            else
+            {
                 MessageDialog dialog2 = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El repuesto no existe");
                 dialog2.Run();
                 dialog2.Destroy();

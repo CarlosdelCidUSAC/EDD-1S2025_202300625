@@ -1,17 +1,5 @@
 digraph G {
 node [shape=record, fontsize=10];
-"ID: 1 \n Repuesto: 2 \n Vehículo: 2 \n Detalle: Calificacion servicio 1 \n Costo: 75" -> "ID: 9 \n Repuesto: 5 \n Vehículo: 12 \n Detalle: Calificacion servicio 2 \n Costo: 100";
-"ID: 9 \n Repuesto: 5 \n Vehículo: 12 \n Detalle: Calificacion servicio 2 \n Costo: 100" -> "ID: 3 \n Repuesto: 4 \n Vehículo: 4 \n Detalle: Calificacion servicio 3 \n Costo: 50";
-"ID: 3 \n Repuesto: 4 \n Vehículo: 4 \n Detalle: Calificacion servicio 3 \n Costo: 50" -> "ID: 4 \n Repuesto: 5 \n Vehículo: 5 \n Detalle: Calificacion servicio 4 \n Costo: 200";
-"ID: 4 \n Repuesto: 5 \n Vehículo: 5 \n Detalle: Calificacion servicio 4 \n Costo: 200" -> "ID: 5 \n Repuesto: 6 \n Vehículo: 6 \n Detalle: Calificacion servicio 5 \n Costo: 150";
-"ID: 5 \n Repuesto: 6 \n Vehículo: 6 \n Detalle: Calificacion servicio 5 \n Costo: 150" -> "ID: 6 \n Repuesto: 7 \n Vehículo: 7 \n Detalle: Calificacion servicio 6 \n Costo: 80";
-"ID: 6 \n Repuesto: 7 \n Vehículo: 7 \n Detalle: Calificacion servicio 6 \n Costo: 80" -> "ID: 7 \n Repuesto: 4 \n Vehículo: 8 \n Detalle: Calificacion servicio 7 \n Costo: 120";
-"ID: 7 \n Repuesto: 4 \n Vehículo: 8 \n Detalle: Calificacion servicio 7 \n Costo: 120" -> "ID: 8 \n Repuesto: 2 \n Vehículo: 9 \n Detalle: Calificacion servicio 8 \n Costo: 90";
-"ID: 9 \n Repuesto: 5 \n Vehículo: 12 \n Detalle: Calificacion servicio 2 \n Costo: 100" -> "ID: 10 \n Repuesto: 3 \n Vehículo: 10 \n Detalle: Calificacion servicio 9 \n Costo: 110";
-"ID: 10 \n Repuesto: 3 \n Vehículo: 10 \n Detalle: Calificacion servicio 9 \n Costo: 110" -> "ID: 11 \n Repuesto: 3 \n Vehículo: 11 \n Detalle: Calificacion servicio 10 \n Costo: 60";
-"ID: 11 \n Repuesto: 3 \n Vehículo: 11 \n Detalle: Calificacion servicio 10 \n Costo: 60" -> "ID: 12 \n Repuesto: 4 \n Vehículo: 12 \n Detalle: Calificacion servicio 11 \n Costo: 130";
-"ID: 12 \n Repuesto: 4 \n Vehículo: 12 \n Detalle: Calificacion servicio 11 \n Costo: 130" -> "ID: 13 \n Repuesto: 2 \n Vehículo: 13 \n Detalle: Calificacion servicio 12 \n Costo: 140";
-"ID: 13 \n Repuesto: 2 \n Vehículo: 13 \n Detalle: Calificacion servicio 12 \n Costo: 140" -> "ID: 14 \n Repuesto: 10 \n Vehículo: 14 \n Detalle: Calificacion servicio 13 \n Costo: 160";
-"ID: 14 \n Repuesto: 10 \n Vehículo: 14 \n Detalle: Calificacion servicio 13 \n Costo: 160" -> "ID: 15 \n Repuesto: 1 \n Vehículo: 15 \n Detalle: Calificacion servicio 14 \n Costo: 170";
-"ID: 15 \n Repuesto: 1 \n Vehículo: 15 \n Detalle: Calificacion servicio 14 \n Costo: 170" -> "ID: 20 \n Repuesto: 3 \n Vehículo: 3 \n Detalle: 12331 \n Costo: 1212";
+"ID: 21 \n Repuesto: 2 \n Vehículo: 5 \n Detalle: 3123 \n Costo: 1231" -> "ID: 56 \n Repuesto: 9 \n Vehículo: 5 \n Detalle: 3123 \n Costo: 1231";
+"ID: 56 \n Repuesto: 9 \n Vehículo: 5 \n Detalle: 3123 \n Costo: 1231" -> "ID: 34 \n Repuesto: 9 \n Vehículo: 7 \n Detalle: 3123 \n Costo: 1231";
 }

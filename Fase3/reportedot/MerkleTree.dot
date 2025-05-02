@@ -1,8 +1,20 @@
 digraph G {
   node [shape=record, fontsize=10];
-  graph [rankdir=TB];
+  graph [rankdir=BT];
   subgraph cluster_0 {
     label="Facturas";
-    ne5e50c2a [label="e5e50c2adf9dd7576a4dd5f67a62f852c0017bbc45c8616e94ee9d9bd76ef048\nID:20, Serv:14, Total:1272, Fecha:30/04/2025 6:52:42 p. m., Pago:1233123"];
+    nf87b13cb [label="f87b13cb58e07d21e8b55739044dd3e033f18b45e2e276c71f02e84ae83d69ed"];
+    nce06a6ec -> nf87b13cb;
+    nce06a6ec [label="ce06a6eca1757f4d3681128635ed7c3f895b45a39a1fa71da4c886e0e141dfa2"];
+    n0d8928b2 -> nce06a6ec;
+    n0d8928b2 [label="0d8928b2cbda83d07bdce2139367e7dea4d7c547793a18a96c9557de015fff29\lID: 21\lServicio: 0\lTotal: 1246.75\lFecha: 1/05/2025 10:43:22 p. m.\lPago: 2131\l"];
+    n85631117 -> nce06a6ec;
+    n85631117 [label="85631117168d0e0a16855b8e10ea9c16223db8748b0044f88bd1ea38773c33bc\lID: 56\lServicio: 1\lTotal: 1381\lFecha: 1/05/2025 10:43:27 p. m.\lPago: 2131\l"];
+    n2a019baf -> nf87b13cb;
+    n2a019baf [label="2a019bafb534d0debcc8061f2f50b0dd1a6209316186012f4c9b600b4303d3cb"];
+    nab51e6d7 -> n2a019baf;
+    nab51e6d7 [label="ab51e6d7fc773c57fdd5829c416e92acbb45c022f337ace66ac8c3b72a9f165f\lID: 34\lServicio: 2\lTotal: 1381\lFecha: 1/05/2025 10:43:32 p. m.\lPago: 2131\l"];
+    nab51e6d7 -> n2a019baf;
+    nab51e6d7 [label="ab51e6d7fc773c57fdd5829c416e92acbb45c022f337ace66ac8c3b72a9f165f\lID: 34\lServicio: 2\lTotal: 1381\lFecha: 1/05/2025 10:43:32 p. m.\lPago: 2131\l"];
   }
 }

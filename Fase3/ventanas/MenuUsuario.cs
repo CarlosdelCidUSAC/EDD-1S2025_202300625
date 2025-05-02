@@ -6,7 +6,7 @@ class MenuUsuario : Window
     {
         SetDefaultSize(400,300);
         SetPosition(WindowPosition.Center);
-        DeleteEvent += delegate { Hide(); Program._login.ShowAll(); };
+        DeleteEvent += delegate {  Program._login.ShowAll(); Destroy(); };
 
         Fixed contenedor = new Fixed();
 
@@ -43,26 +43,55 @@ class MenuUsuario : Window
 
         visVehiculo.Clicked += (sender, e) =>
         {
-            Program._visualizacionVehiculos = new VisualizacionVehiculos();
-            Program._visualizacionVehiculos.ShowAll();
+            if (Program._visualizacionVehiculos == null || !Program._visualizacionVehiculos.Visible)
+            {
+                Program._visualizacionVehiculos = new VisualizacionVehiculos();
+                Program._visualizacionVehiculos.ShowAll();
+            }
+            else
+            {
+                Program._visualizacionVehiculos.Present();
+            }
         };
         visServicios.Clicked += (sender, e) =>
         {
-            Program._visualizacionServicios = new VisualizacionServicios();
-            Program._visualizacionServicios.ShowAll();
+           if (Program._visualizacionServicios == null || !Program._visualizacionServicios.Visible)
+            {
+                Program._visualizacionServicios = new VisualizacionServicios();
+                Program._visualizacionServicios.ShowAll();
+            }
+            else
+            {
+                Program._visualizacionServicios.Present();
+            }
         };
         visFacturas.Clicked += (sender, e) =>
         {
-            Program._visualizacionFacturas = new VisualizacionFacturas();
-            Program._visualizacionFacturas.ShowAll();
+            if (Program._visualizacionFacturas == null || !Program._visualizacionFacturas.Visible)
+            {
+                Program._visualizacionFacturas = new VisualizacionFacturas();
+                Program._visualizacionFacturas.ShowAll();
+            }
+            else
+            {
+                Program._visualizacionFacturas.Present();
+            }
         };
         cerrarSesion.Clicked += (sender, e) =>
         {
-            Program.RegistroSesiones.Add((Program.usuarioActual, Program.fechaActual, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+            Program.ExportarRegistroSesiones("Reportes/RegistroSesiones.json");
             Program.usuarios.Backup();
-            Program._login = new Login();
-            Program._login.ShowAll();
-            Hide();
+            
+            if (Program._login == null || !Program._login.Visible)
+            {
+                Program._login = new Login();
+                Program._login.ShowAll();
+            }
+            else
+            {
+                Program._login.Present();
+            }
+            Destroy();
         };
         Add(contenedor);
     }

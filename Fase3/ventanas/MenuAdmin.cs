@@ -12,10 +12,11 @@ class MenuAdmin : Window
         SetDefaultSize(300, 400);
         SetPosition(WindowPosition.Center);
         DeleteEvent += delegate { 
-        Program.usuarios.Backup();
-        Program._login = new Login(); 
-        Program._login.ShowAll(); 
-        Hide();};
+            Program.usuarios.Backup();
+            Program._login = new Login(); 
+            Program._login.ShowAll(); 
+            Hide(); // Use Hide() instead of Destroy()
+        };
 
         Fixed contenedor = new Fixed();
 
@@ -87,8 +88,15 @@ class MenuAdmin : Window
         };
         botonCrearServicio.Clicked += (sender, e) =>
         {
-            Program._crearServicio = new CrearServicio();
-            Program._crearServicio.ShowAll();
+            if (Program._crearServicio == null || !Program._crearServicio.Visible)
+            {
+                Program._crearServicio = new CrearServicio();
+                Program._crearServicio.ShowAll();
+            }
+            else
+            {
+                Program._crearServicio.Present();
+            }
         };
         botonReportes.Clicked += (sender, e) =>
         {
@@ -108,19 +116,23 @@ class MenuAdmin : Window
                 var options = new JsonSerializerOptions { WriteIndented = true };
                 string json = JsonSerializer.Serialize(Program.RegistroSesiones, options);
                 File.WriteAllText(filePath, json);
-                MessageDialog md = new MessageDialog(this, 
+                using (MessageDialog md = new MessageDialog(this, 
                     DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, 
-                    "Reporte de sesión guardado en " + filePath);
-                md.Run();
-                md.Destroy();
+                    "Reporte de sesión guardado en " + filePath))
+                {
+                    md.Run();
+                    md.Destroy();
+                }
             }
             catch (Exception ex)
             {
-                MessageDialog errorDialog = new MessageDialog(this, 
+                using (MessageDialog errorDialog = new MessageDialog(this, 
                     DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, 
-                    "Error al guardar el reporte: " + ex.Message);
-                errorDialog.Run();
-                errorDialog.Destroy();
+                    "Error al guardar el reporte: " + ex.Message))
+                {
+                    errorDialog.Run();
+                    errorDialog.Destroy();
+                }
             }
 
             if (Program.usuarios.Cadena.Count > 0){
@@ -141,10 +153,11 @@ class MenuAdmin : Window
             if (!Program.merkle.EstaVacia()){
                 Program.merkle.Graficar();
             }
-            MessageDialog dialogo = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Reportes generados");
-            dialogo.Run();
-            dialogo.Destroy();  
-            
+            using (MessageDialog dialogo = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Reportes generados"))
+            {
+                dialogo.Run();
+                dialogo.Destroy();
+            }
         };
         Add(contenedor);
     

@@ -7,7 +7,7 @@ class InsertarUsuario : Window
         SetDefaultSize(300, 400);
         SetPosition(WindowPosition.Center);
         DeleteEvent += delegate { 
-            Hide(); 
+            Destroy(); 
             Program._insertarUsuario = null; 
         };
 
@@ -149,13 +149,30 @@ class InsertarUsuario : Window
             string edad = entradaEdad.Text;
             string contrasenia = entradaContrasenia.Text;
 
+            if (!int.TryParse(id, out int idNum))
+            {
+                using (MessageDialog dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "ID debe ser un número"))
+                {
+                    dialog.Run();
+                }
+                return;
+            }
+            if (!int.TryParse(edad, out int edadNum))
+            {
+                using (MessageDialog dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "Edad debe ser un número"))
+                {
+                    dialog.Run();
+                }
+                return;
+            }
+
             Program.usuarios.AgregarBloque(new Usuario
             {
                 ID = id,
                 Nombres = nombre,
                 Apellidos = apellido,
                 Correo = correo,
-                Edad = int.Parse(edad),
+                Edad = edadNum,
                 Contrasena = contrasenia
             });
             using (MessageDialog dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Usuario insertado correctamente"))

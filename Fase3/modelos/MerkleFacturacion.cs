@@ -11,8 +11,8 @@ public class Factura
     public int ID { get; set; }
     public int ID_Servicio { get; set; }
     public float Total { get; set; }
-    public string Fecha { get; set; }
-    public string MetodoPago { get; set; }
+    public string? Fecha { get; set; }
+    public string? MetodoPago { get; set; }
 
     public override string ToString()
     {
@@ -22,10 +22,10 @@ public class Factura
 
 public class MerkleNode
 {
-    public MerkleNode Left { get; set; }
-    public MerkleNode Right { get; set; }
+    public MerkleNode? Left { get; set; }
+    public MerkleNode? Right { get; set; }
     public string Hash { get; set; }
-    public Factura Data { get; set; }
+    public Factura? Data { get; set; }
 
     public MerkleNode(string hash, Factura data)
     {
@@ -53,69 +53,88 @@ public class MerkleNode
 
 public class MerkleTree
 {
-    public MerkleNode Root { get; private set; }
+    private List<Factura> _facturas;
+    public MerkleNode? Root { get; private set; }
 
-    public MerkleTree(List<Factura> facturas)
+    public MerkleTree(IEnumerable<Factura> facturas)
     {
-        List<MerkleNode> nodes = new List<MerkleNode>();
-        foreach (var factura in facturas)
-        {
-            string hash = MerkleNode.ComputeHash(factura.ToString());
-            nodes.Add(new MerkleNode(hash, factura));
-        }
-
-        while (nodes.Count > 1)
-        {
-            List<MerkleNode> newLevel = new List<MerkleNode>();
-            for (int i = 0; i < nodes.Count; i += 2)
-            {
-                if (i + 1 < nodes.Count)
-                    newLevel.Add(new MerkleNode(nodes[i], nodes[i + 1]));
-                else
-                    newLevel.Add(new MerkleNode(nodes[i], nodes[i])); // Duplicar si hay nodo impar
-            }
-            nodes = newLevel;
-        }
-
-        Root = nodes.Count > 0 ? nodes[0] : null;
-    }
-
-    public string GetRootHash()
-    {
-        return Root != null ? Root.Hash : string.Empty;
+        _facturas = new List<Factura>(facturas);
+        BuildTree();
     }
 
     public void AgregarFactura(Factura factura)
     {
-        if (Root == null)
-        {
-            Root = new MerkleNode(MerkleNode.ComputeHash(factura.ToString()), factura);
-            return;
-        }
+        _facturas.Add(factura);
+        BuildTree();
+    }
 
-        string hash = MerkleNode.ComputeHash(factura.ToString());
-        MerkleNode newNode = new MerkleNode(hash, factura);
-        List<MerkleNode> nodes = new List<MerkleNode> { Root, newNode };
+    private void BuildTree()
+    {
+        var nodes = _facturas
+            .Select(f => new MerkleNode(MerkleNode.ComputeHash(f.ToString()), f))
+            .ToList();
 
         while (nodes.Count > 1)
         {
-            List<MerkleNode> newLevel = new List<MerkleNode>();
+            var next = new List<MerkleNode>();
             for (int i = 0; i < nodes.Count; i += 2)
             {
-                if (i + 1 < nodes.Count)
-                    newLevel.Add(new MerkleNode(nodes[i], nodes[i + 1]));
-                else
-                    newLevel.Add(new MerkleNode(nodes[i], nodes[i]));
+                var left = nodes[i];
+                var right = (i + 1 < nodes.Count) ? nodes[i + 1] : left;
+                next.Add(new MerkleNode(left, right));
             }
-            nodes = newLevel;
+            nodes = next;
         }
 
-        Root = nodes[0];
+        Root = nodes.FirstOrDefault();
     }
+
+        public List<string> GetProof(int index)
+    {
+        var hashes = _facturas
+            .Select(f => MerkleNode.ComputeHash(f.ToString()))
+            .ToList();
+
+        var proof = new List<string>();
+        BuildProof(hashes, index, proof);
+        return proof;
+    }
+
+    private void BuildProof(List<string> levelHashes, int idx, List<string> proof)
+    {
+        if (levelHashes.Count <= 1) return;
+
+        var nextLevel = new List<string>();
+        for (int i = 0; i < levelHashes.Count; i += 2)
+        {
+            var left = levelHashes[i];
+            var right = (i + 1 < levelHashes.Count) ? left : left;
+            nextLevel.Add(MerkleNode.ComputeHash(left + right));
+
+            // Si este par contiene el índice que buscamos, añadimos el hermano al proof
+            if (i == idx || i + 1 == idx)
+            {
+                proof.Add((i == idx) ? right : left);
+                idx = nextLevel.Count - 1;
+            }
+        }
+        BuildProof(nextLevel, idx, proof);
+    }
+
+    // Verifica que una factura y su prueba llevan al rootHash
+    public static bool VerifyProof(string leafHash, List<string> proof, string rootHash)
+    {
+        string computed = leafHash;
+        foreach (var sibling in proof)
+            computed = MerkleNode.ComputeHash(computed + sibling);
+        return computed == rootHash;
+    }
+
+    public string GetRootHash() => Root?.Hash ?? string.Empty;
 
     public void Imprimir()
     {
-        ImprimirRecursivo(Root);
+        ImprimirRecursivo(Root!);
     }
 
     public bool EstaVacia()
@@ -127,7 +146,8 @@ public class MerkleTree
         if (nodo == null)
             return;
 
-        ImprimirRecursivo(nodo.Left);
+        if (nodo.Left != null)
+            ImprimirRecursivo(nodo.Left);
 
         if (nodo.Data != null)
         {
@@ -138,14 +158,25 @@ public class MerkleTree
             Console.WriteLine(nodo.Hash);
         }
 
-        ImprimirRecursivo(nodo.Right);
+        if (nodo.Right != null)
+            ImprimirRecursivo(nodo.Right);
     }
 
-    public ListStore MostrarTabla()
+    public ListStore CrearModeloTabla(MerkleTree tree)
     {
-        ListStore modelo = new ListStore(typeof(string));
-        ImprimirRecursivo(Root, modelo);
-        return modelo;
+        var store = new ListStore(typeof(string), typeof(string), typeof(string));
+        foreach (var node in tree.InOrderNodes())
+        {
+            if (node.Data != null)
+            {
+                store.AppendValues(
+                    node.Data.ID.ToString(),
+                    node.Data.ID_Servicio.ToString(),
+                    node.Data.Total.ToString("F2")
+                );
+            }
+        }
+        return store;
     }
 
     private void ImprimirRecursivo(MerkleNode nodo, ListStore modelo)
@@ -153,9 +184,11 @@ public class MerkleTree
         if (nodo == null)
             return;
 
-        ImprimirRecursivo(nodo.Left, modelo);
+        if (nodo.Left != null)
+            ImprimirRecursivo(nodo.Left, modelo);
         modelo.AppendValues(nodo.Hash);
-        ImprimirRecursivo(nodo.Right, modelo);
+        if (nodo.Right != null)
+            ImprimirRecursivo(nodo.Right, modelo);
     }
 
     public void Graficar()
@@ -163,7 +196,7 @@ public class MerkleTree
         StringBuilder dot = new StringBuilder();
         dot.AppendLine("digraph G {");
         dot.AppendLine("  node [shape=record, fontsize=10];");
-        dot.AppendLine("  graph [rankdir=TB];");
+        dot.AppendLine("  graph [rankdir=BT];"); // Cambiado a BT para invertir la dirección
         dot.AppendLine("  subgraph cluster_0 {");
         dot.AppendLine("    label=\"Facturas\";");
 
@@ -179,28 +212,26 @@ public class MerkleTree
         Directory.CreateDirectory("reportedot");
         Directory.CreateDirectory("Reportes");
 
-        File.WriteAllText(rutaDot, dot.ToString());
-
         try
         {
+            File.WriteAllText(rutaDot, dot.ToString());
             Process proceso = new Process();
             proceso.StartInfo.FileName = "dot";
-            proceso.StartInfo.Arguments = $"-Tpng \"{rutaDot}\" -o \"{rutaReporte}\"";
+            proceso.StartInfo.Arguments = $"-Tpng {rutaDot} -o {rutaReporte}";
             proceso.StartInfo.RedirectStandardOutput = true;
-            proceso.StartInfo.RedirectStandardError = true;
             proceso.StartInfo.UseShellExecute = false;
             proceso.StartInfo.CreateNoWindow = true;
             proceso.Start();
             proceso.WaitForExit();
 
-            if (proceso.ExitCode != 0)
+            if (File.Exists(rutaReporte))
             {
-                Console.WriteLine("[ERROR] Error al generar el gráfico:");
-                Console.WriteLine(proceso.StandardError.ReadToEnd());
+                Console.WriteLine("Reporte generado con éxito");
+                Process.Start(new ProcessStartInfo(rutaReporte) { UseShellExecute = true });
             }
             else
             {
-                Console.WriteLine("[OK] Gráfico generado en " + rutaReporte);
+                Console.WriteLine("Error al generar el reporte");
             }
         }
         catch (Exception ex)
@@ -211,41 +242,55 @@ public class MerkleTree
 
     private void GraficarRecursivo(MerkleNode nodo, StringBuilder dot)
     {
-        if (nodo == null)
-            return;
-
-        string nodoId = "n" + nodo.Hash.Substring(0, 8);
-
+        if (nodo == null) return;
+        string id = $"n{nodo.Hash.Substring(0, 8)}";
+        string label;
         if (nodo.Data != null)
         {
-           
-            string label = $"{nodo.Hash}\\n" +
-                           $"ID: {nodo.Data.ID}\\n" +
-                           $"Servicio: {nodo.Data.ID_Servicio}\\n" +
-                           $"Total: {nodo.Data.Total}\\n" +
-                           $"Fecha: {nodo.Data.Fecha}\\n" +
-                           $"Pago: {nodo.Data.MetodoPago}";
-
-            label = label.Replace("\"", "\\\""); 
-
-            dot.AppendLine($"    {nodoId} [label=\"{label}\"];");
+            // Mejor presentación: cada campo en una línea
+            label = $"{Escape(nodo.Hash)}\\l"
+                  + $"ID: {nodo.Data.ID}\\l"
+                  + $"Servicio: {nodo.Data.ID_Servicio}\\l"
+                  + $"Total: {nodo.Data.Total}\\l"
+                  + $"Fecha: {Escape(nodo.Data.Fecha ?? string.Empty)}\\l"
+                  + $"Pago: {Escape(nodo.Data.MetodoPago ?? string.Empty)}\\l";
         }
         else
         {
-            dot.AppendLine($"    {nodoId} [label=\"{nodo.Hash}\"];");
+            label = Escape(nodo.Hash);
         }
-
+        dot.AppendLine($"    {id} [label=\"{label}\"];");
         if (nodo.Left != null)
         {
-            string leftId = "n" + nodo.Left.Hash.Substring(0, 8);
-            dot.AppendLine($"    {nodoId} -> {leftId};");
+            var lid = $"n{nodo.Left.Hash.Substring(0, 8)}";
+            dot.AppendLine($"    {lid} -> {id};"); // Invertir la flecha
             GraficarRecursivo(nodo.Left, dot);
         }
         if (nodo.Right != null)
         {
-            string rightId = "n" + nodo.Right.Hash.Substring(0, 8);
-            dot.AppendLine($"    {nodoId} -> {rightId};");
+            var rid = $"n{nodo.Right.Hash.Substring(0, 8)}";
+            dot.AppendLine($"    {rid} -> {id};"); // Invertir la flecha
             GraficarRecursivo(nodo.Right, dot);
         }
     }
+
+
+    private string Escape(string s) => s.Replace("\"", "\\\"");
+
+    public IEnumerable<MerkleNode> InOrderNodes()
+    {
+        return TraverseInOrder(Root!);
+    }
+
+    private IEnumerable<MerkleNode> TraverseInOrder(MerkleNode node)
+    {
+        if (node == null) yield break;
+        if (node.Left != null)
+            foreach (var n in TraverseInOrder(node.Left)) yield return n;
+        yield return node;
+        if (node.Right != null)
+            foreach (var n in TraverseInOrder(node.Right)) yield return n;
+    }
+
+
 }

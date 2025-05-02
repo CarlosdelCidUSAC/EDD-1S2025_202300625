@@ -74,7 +74,7 @@ class Login : Window
             {
                 Program._menuAdmin = new MenuAdmin();
                 Program._menuAdmin.ShowAll();
-                Hide();
+                Destroy();
             }
             else
             {
@@ -84,7 +84,7 @@ class Login : Window
                     Program.fechaActual = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     Program._menuUsuario = new MenuUsuario();
                     Program._menuUsuario.ShowAll();
-                    Hide();
+                    Destroy();
                 }
                 else
                 {

@@ -110,6 +110,8 @@ class AVLRepuestos {
     }
 
     public NodoRepuesto RotacionSimpleConHijoIzquierdo(NodoRepuesto k2){
+        if (k2.Izquierda == null)
+            throw new InvalidOperationException("No se puede realizar la rotación: el hijo izquierdo es nulo.");
         NodoRepuesto k1 = k2.Izquierda;
         k2.Izquierda = k1.Derecha;
         k1.Derecha = k2;
@@ -119,6 +121,8 @@ class AVLRepuestos {
     }
 
     public NodoRepuesto RotacionSimpleConHijoDerecho(NodoRepuesto k1){
+        if (k1.Derecha == null)
+            throw new InvalidOperationException("No se puede realizar la rotación: el hijo derecho es nulo.");
         NodoRepuesto k2 = k1.Derecha;
         k1.Derecha = k2.Izquierda;
         k2.Izquierda = k1;
@@ -128,11 +132,15 @@ class AVLRepuestos {
     }
 
     public NodoRepuesto RotacionDobleConHijoIzquierdo(NodoRepuesto k3){
+        if (k3.Izquierda == null)
+            throw new InvalidOperationException("No se puede realizar la rotación doble: el hijo izquierdo es nulo.");
         k3.Izquierda = RotacionSimpleConHijoDerecho(k3.Izquierda);
         return RotacionSimpleConHijoIzquierdo(k3);
     }
 
     public NodoRepuesto RotacionDobleConHijoDerecho(NodoRepuesto k1){
+        if (k1.Derecha == null)
+            throw new InvalidOperationException("No se puede realizar la rotación doble: el hijo derecho es nulo.");
         k1.Derecha = RotacionSimpleConHijoIzquierdo(k1.Derecha);
         return RotacionSimpleConHijoDerecho(k1);
     }
@@ -140,25 +148,25 @@ class AVLRepuestos {
     public ListStore recorrerPreorden(NodoRepuesto nodo, ListStore modelo){
         if (nodo != null) {
             modelo.AppendValues(nodo.id, nodo.Repuesto, nodo.detalle, nodo.costo);
-            recorrerPreorden(nodo.Izquierda, modelo);
-            recorrerPreorden(nodo.Derecha, modelo);
+            recorrerPreorden(nodo.Izquierda!, modelo);
+            recorrerPreorden(nodo.Derecha!, modelo);
         }
         return modelo;
     }
 
     public ListStore recorrerInorden(NodoRepuesto nodo, ListStore modelo){
         if (nodo != null) {
-            recorrerInorden(nodo.Izquierda, modelo);
+            recorrerInorden(nodo.Izquierda!, modelo);
             modelo.AppendValues(nodo.id, nodo.Repuesto, nodo.detalle, nodo.costo);
-            recorrerInorden(nodo.Derecha, modelo);
+            recorrerInorden(nodo.Derecha!, modelo);
         }
         return modelo;
     }
 
     public ListStore recorrerPostorden(NodoRepuesto nodo, ListStore modelo){
         if (nodo != null) {
-            recorrerPostorden(nodo.Izquierda, modelo);
-            recorrerPostorden(nodo.Derecha, modelo);
+            recorrerPostorden(nodo.Izquierda!, modelo);
+            recorrerPostorden(nodo.Derecha!, modelo);
             modelo.AppendValues(nodo.id, nodo.Repuesto, nodo.detalle, nodo.costo);
         }
         return modelo;
@@ -233,9 +241,11 @@ class AVLRepuestos {
     }
     public void ImprimirRecursivo(NodoRepuesto nodo) {
         if (nodo != null) {
-            ImprimirRecursivo(nodo.Izquierda);
+            if (nodo.Izquierda != null)
+                ImprimirRecursivo(nodo.Izquierda);
             Console.WriteLine($"ID: {nodo.id}, Repuesto: {nodo.Repuesto}, Detalle: {nodo.detalle}, Costo: {nodo.costo}");
-            ImprimirRecursivo(nodo.Derecha);
+            if (nodo.Derecha != null)
+                ImprimirRecursivo(nodo.Derecha);
         }
     }
 

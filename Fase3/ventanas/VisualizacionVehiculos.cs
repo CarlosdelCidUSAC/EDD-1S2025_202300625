@@ -6,7 +6,7 @@ class VisualizacionVehiculos : Window
     {
         SetDefaultSize(600, 400);
         SetPosition(WindowPosition.Center);
-        DeleteEvent += delegate { Hide(); };
+        DeleteEvent += delegate { Destroy(); };
 
         Fixed contenedor = new Fixed();
         contenedor.SetSizeRequest(600, 400);

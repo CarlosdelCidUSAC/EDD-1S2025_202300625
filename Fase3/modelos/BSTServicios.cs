@@ -33,7 +33,7 @@ class BSTServicios {
         raiz = null;
     }
 
-    public NodoServicio Raiz {
+    public NodoServicio? Raiz {
         get { return raiz; }
     }
     public void Agregar(int id, int idRepuesto, int idVehiculo, string detalle, float costo, string metodoPago) {
@@ -51,7 +51,7 @@ class BSTServicios {
             return;
         }
 
-        NodoServicio actual = raiz;
+         NodoServicio? actual = raiz;
         while (true) {
             if (id < actual.Id) {
                 if (actual.Izquierda == null) {
@@ -74,10 +74,10 @@ class BSTServicios {
         if (raiz == null) {
             return;
         }
-        NodoServicio actual = raiz;
+        NodoServicio? actual = raiz;
         NodoServicio padre = raiz;
         bool esHijoIzquierdo = true;
-        while (actual.Id != id) {
+        while (actual != null && actual.Id != id) {
             padre = actual;
             if (id < actual.Id) {
                 esHijoIzquierdo = true;
@@ -90,6 +90,10 @@ class BSTServicios {
                 return;
             }
         }
+        if (actual == null) {
+            return;
+        }
+
         if (actual.Izquierda == null && actual.Derecha == null) {
             if (actual == raiz) {
                 raiz = null;
@@ -130,7 +134,7 @@ class BSTServicios {
     private NodoServicio ObtenerNodoReemplazo(NodoServicio nodoReemplazo) {
         NodoServicio reemplazarPadre = nodoReemplazo;
         NodoServicio reemplazo = nodoReemplazo;
-        NodoServicio actual = nodoReemplazo.Derecha;
+        NodoServicio? actual = nodoReemplazo.Derecha;
         while (actual != null) {
             reemplazarPadre = reemplazo;
             reemplazo = actual;
@@ -144,16 +148,16 @@ class BSTServicios {
     }
 
     public void Actualizar(int id, string repuesto, string detalle, float costo) {
-        NodoServicio actual = raiz;
-        while (actual.Id != id) {
+        NodoServicio? actual = raiz;
+        while (actual != null && actual.Id != id) {
             if (id < actual.Id) {
                 actual = actual.Izquierda;
             } else {
                 actual = actual.Derecha;
             }
-            if (actual == null) {
-                return;
-            }
+        }
+        if (actual == null) {
+            return;
         }
         actual.IdRepuesto = id;
         actual.IdVehiculo = id;
@@ -161,8 +165,8 @@ class BSTServicios {
         actual.Costo = costo;
    }
 
-   public NodoServicio Buscar(int id){
-         NodoServicio actual = raiz;
+   public NodoServicio? Buscar(int id){
+         NodoServicio? actual = raiz;
          while (actual != null && actual.Id != id) {
               if (id < actual.Id) {
                 actual = actual.Izquierda;
@@ -176,48 +180,55 @@ class BSTServicios {
          return actual;
    }
 
-   public int Contar(NodoServicio nodo){
+   public int Contar(NodoServicio? nodo){
          if (nodo == null) {
              return 0;
          }
          return 1 + Contar(nodo.Izquierda) + Contar(nodo.Derecha);
    }
 
-    public void Imprimir(NodoServicio nodo){
-          if (nodo != null) {
-                Imprimir(nodo.Izquierda);
-                Console.WriteLine("ID: " + nodo.Id);
-                Console.WriteLine("Repuesto: " + nodo.IdRepuesto);
-                Console.WriteLine("ID Vehículo: " + nodo.IdVehiculo);
-                Console.WriteLine("Detalle: " + nodo.Detalle);
-                Console.WriteLine("Costo: " + nodo.Costo);
-                Console.WriteLine();
-                Imprimir(nodo.Derecha);
+    public void Imprimir(NodoServicio? nodo){
+          if (nodo == null) {
+                return;
           }
+          Imprimir(nodo.Izquierda);
+          Console.WriteLine("ID: " + nodo.Id);
+          Console.WriteLine("Repuesto: " + nodo.IdRepuesto);
+          Console.WriteLine("ID Vehículo: " + nodo.IdVehiculo);
+          Console.WriteLine("Detalle: " + nodo.Detalle);
+          Console.WriteLine("Costo: " + nodo.Costo);
+          Console.WriteLine();
+          Imprimir(nodo.Derecha);
      }
 
      public ListStore recorrerPreorden(NodoServicio nodo, ListStore modelo){
           if (nodo != null) {
                 modelo.AppendValues(nodo.Id, nodo.IdRepuesto, nodo.IdVehiculo, nodo.Detalle, nodo.Costo);
-                recorrerPreorden(nodo.Izquierda, modelo);
-                recorrerPreorden(nodo.Derecha, modelo);
+                if (nodo.Izquierda != null)
+                    recorrerPreorden(nodo.Izquierda, modelo);
+                if (nodo.Derecha != null)
+                    recorrerPreorden(nodo.Derecha, modelo);
           }
             return modelo;
      }
 
      public ListStore recorrerInorden(NodoServicio nodo, ListStore modelo){
           if (nodo != null) {
-                recorrerInorden(nodo.Izquierda, modelo);
+                if (nodo.Izquierda != null)
+                    recorrerInorden(nodo.Izquierda, modelo);
                 modelo.AppendValues(nodo.Id, nodo.IdRepuesto, nodo.IdVehiculo, nodo.Detalle, nodo.Costo);
-                recorrerInorden(nodo.Derecha, modelo);
+                if (nodo.Derecha != null)
+                    recorrerInorden(nodo.Derecha, modelo);
           }
             return modelo;
      }
 
         public ListStore recorrerPostorden(NodoServicio nodo, ListStore modelo){
             if (nodo != null) {
-                    recorrerPostorden(nodo.Izquierda, modelo);
-                    recorrerPostorden(nodo.Derecha, modelo);
+                    if (nodo.Izquierda != null)
+                        recorrerPostorden(nodo.Izquierda, modelo);
+                    if (nodo.Derecha != null)
+                        recorrerPostorden(nodo.Derecha, modelo);
                     modelo.AppendValues(nodo.Id, nodo.IdRepuesto, nodo.IdVehiculo, nodo.Detalle, nodo.Costo);
             }
                 return modelo;

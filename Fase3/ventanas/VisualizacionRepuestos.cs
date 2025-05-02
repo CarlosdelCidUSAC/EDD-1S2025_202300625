@@ -6,7 +6,7 @@ class VisualizacionRepuestos : Window
     {
         SetDefaultSize(400, 300);
         SetPosition(WindowPosition.Center);
-        DeleteEvent += delegate { Hide();};
+        DeleteEvent += delegate { Destroy();};
 
         Fixed contenedor = new Fixed();
 
@@ -64,20 +64,23 @@ class VisualizacionRepuestos : Window
         {
             ((Container)comboBox.Parent).Remove(comboBox);
         }
-        contenedor.Put(comboBox, 100, 60);
-        if (tabla.Parent != null)
-        {
-            ((Container)tabla.Parent).Remove(tabla);
-        }
+        contenedor.Put(comboBox, 100, 30);
+        comboBox.SetSizeRequest(200, 30);
+
         if (mostrarTabla.Parent != null)
         {
             ((Container)mostrarTabla.Parent).Remove(mostrarTabla);
         }
-        contenedor.Put(mostrarTabla, 100, 100);
-        contenedor.Put(tabla, 20, 100);
-        contenedor.SetSizeRequest(400, 300);
-        comboBox.SetSizeRequest(200, 30);
+        contenedor.Put(mostrarTabla, 100, 70);
+        mostrarTabla.SetSizeRequest(200, 30);
+
+        if (tabla.Parent != null)
+        {
+            ((Container)tabla.Parent).Remove(tabla);
+        }
+        contenedor.Put(tabla, 20, 120);
         tabla.SetSizeRequest(360, 150);
+
         contenedor.SetSizeRequest(400, 300);
         Add(contenedor);
 

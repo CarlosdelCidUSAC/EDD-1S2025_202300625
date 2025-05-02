@@ -9,12 +9,12 @@ using System.Diagnostics;
 
 public class Usuario
 {
-    public string ID { get; set; }
-    public string Nombres { get; set; }
-    public string Apellidos { get; set; }
-    public string Correo { get; set; }
+    public string? ID { get; set; }
+    public string?Nombres { get; set; }
+    public string?Apellidos { get; set; }
+    public string?Correo { get; set; }
     public int Edad { get; set; }
-    public string Contrasena { get; set; }
+    public string? Contrasena { get; set; }
     
 
     public override string ToString()
@@ -104,7 +104,12 @@ public class Blockchain
 
     public Bloque BuscarBloque(int index)
     {
-        return Cadena.FirstOrDefault(b => b.Index == index);
+        var bloque = Cadena.FirstOrDefault(b => b.Index == index);
+        if (bloque == null)
+        {
+            throw new InvalidOperationException($"No se encontró un bloque con el índice {index}.");
+        }
+        return bloque;
     }
 
     public void MostrarCadena()
@@ -142,11 +147,15 @@ public class Blockchain
         // Serializa la lista de bloques
         string json = JsonSerializer.Serialize(Cadena, options);
         // Asegura que la carpeta exista
-        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+        var dir = Path.GetDirectoryName(filePath);
+        if (!string.IsNullOrEmpty(dir))
+        {
+            Directory.CreateDirectory(dir);
+        }
         File.WriteAllText(filePath, json);
     }
 
-    public static Blockchain Restaurar()
+    public static Blockchain? Restaurar()
     {
         string filePath = "Backup/backup.json";
 
@@ -161,7 +170,7 @@ public class Blockchain
 
         string json = File.ReadAllText(filePath);
         // Deserializa la lista de Bloque
-        List<Bloque> bloques = JsonSerializer.Deserialize<List<Bloque>>(json);
+        List<Bloque> bloques = JsonSerializer.Deserialize<List<Bloque>>(json) ?? new List<Bloque>();
 
         // Crea una nueva blockchain vacía y asigna directamente la cadena
         var cadenaRestaurada = new Blockchain
@@ -195,8 +204,16 @@ public class Blockchain
         string rutaDot = "reportedot/Blockchain.dot";
         string rutaReporte = "Reportes/Blockchain.png";
         // Ensure the directory exists before writing the file
-        Directory.CreateDirectory(Path.GetDirectoryName(rutaDot));
-        Directory.CreateDirectory(Path.GetDirectoryName(rutaReporte));
+        var dirDot = Path.GetDirectoryName(rutaDot);
+        if (!string.IsNullOrEmpty(dirDot))
+        {
+            Directory.CreateDirectory(dirDot);
+        }
+        var dirReporte = Path.GetDirectoryName(rutaReporte);
+        if (!string.IsNullOrEmpty(dirReporte))
+        {
+            Directory.CreateDirectory(dirReporte);
+        }
         File.WriteAllText(rutaDot, dot.ToString());
         var proceso = new Process();
         proceso.StartInfo.FileName = "dot";

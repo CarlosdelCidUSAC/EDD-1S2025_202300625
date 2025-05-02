@@ -6,7 +6,7 @@ class VisualizacionFacturas : Window
     {
         SetDefaultSize(300, 200);
         SetPosition(WindowPosition.Center);
-        DeleteEvent += delegate { Hide(); };
+        DeleteEvent += delegate { Destroy(); };
 
         Fixed contenedor = new Fixed();
 
@@ -37,7 +37,7 @@ class VisualizacionFacturas : Window
         if (Program.merkle != null && Program.merkle.Root != null)
         {
             modelo.Clear();
-            modelo = Program.merkle.MostrarTabla();
+            modelo = Program.merkle.CrearModeloTabla(Program.merkle);
             tabla.Model = modelo;
         }
         else
