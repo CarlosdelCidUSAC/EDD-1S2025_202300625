@@ -3,6 +3,12 @@ using System;
 using System.IO;
 using System.Diagnostics;
 using System.Text;
+using System.Text.Json;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using System.Runtime.InteropServices;
+using Gtk;
+
 class NodoRepuesto {
     public int id { get; set; }
     public string Repuesto { get; set; }
@@ -38,6 +44,18 @@ class AVLRepuestos {
     public void insertar(int id, string Repuesto, int idVehiculo, string detalle, float costo) {
         if (Buscar(raiz, id) != null) {
             Console.WriteLine($"Error: El ID {id} ya ha sido ingresado.");
+            Application.Init();
+            MessageDialog dialog = new MessageDialog(
+                null,
+                DialogFlags.Modal,
+                MessageType.Error,
+                ButtonsType.Ok,
+                $"El ID {id} ya ha sido ingresado."
+            );
+            dialog.Run();
+            dialog.Destroy();
+            Application.Quit();
+
             return;
         }
         raiz = insertarRecursivo(raiz, id, Repuesto, idVehiculo, detalle, costo);
@@ -249,4 +267,71 @@ class AVLRepuestos {
         }
     }
 
+    public void CrearBackup() {
+        string backupDir = "Backup";
+        Directory.CreateDirectory(backupDir);
+
+        string repuestosEddPath = Path.Combine(backupDir, "Repuestos.edd");
+        string treeFileRepuestos = Path.Combine(backupDir, "huffman_repuesto.json");
+        string paddingFile = Path.Combine(backupDir, "huffman_repuesto.padding");
+
+        // Serializar todos los repuestos a texto plano (JSON)
+        var lista = new List<object>();
+        void AgregarRepuestos(NodoRepuesto? nodo) {
+            if (nodo == null) return;
+            lista.Add(new {
+                id = nodo.id,
+                Repuesto = nodo.Repuesto,
+                detalle = nodo.detalle,
+                costo = nodo.costo
+            });
+            AgregarRepuestos(nodo.Izquierda);
+            AgregarRepuestos(nodo.Derecha);
+        }
+        AgregarRepuestos(raiz);
+        string repuestosData = JsonSerializer.Serialize(lista, new JsonSerializerOptions { WriteIndented = true });
+        byte[] datosBytes = Encoding.UTF8.GetBytes(repuestosData);
+
+        // Comprimir usando Huffman
+        var (repuestosComprimido, repuestosRaiz, padding) = CompresionHuffman.Comprimir(datosBytes);
+
+        File.WriteAllBytes(repuestosEddPath, repuestosComprimido);
+        File.WriteAllText(treeFileRepuestos, JsonSerializer.Serialize(repuestosRaiz));
+        File.WriteAllText(paddingFile, padding.ToString());
+
+        Console.WriteLine($"Backup comprimido de repuestos generado en: {repuestosEddPath}");
+    }
+
+    public void Restaurar() {
+        string backupDir = "Backup";
+        string repuestosEddPath = Path.Combine(backupDir, "Repuestos.edd");
+        string treeFileRepuestos = Path.Combine(backupDir, "huffman_repuesto.json");
+        string paddingFile = Path.Combine(backupDir, "huffman_repuesto.padding");
+
+        if (!File.Exists(repuestosEddPath) || !File.Exists(treeFileRepuestos) || !File.Exists(paddingFile)) {
+            Console.WriteLine("No se encontró el archivo de respaldo.");
+            return;
+        }
+
+        byte[] datosComprimidos = File.ReadAllBytes(repuestosEddPath);
+        string treeJson = File.ReadAllText(treeFileRepuestos);
+        int padding = int.Parse(File.ReadAllText(paddingFile));
+
+        // Descomprimir usando Huffman
+        NodoHuffman raizHuffman = JsonSerializer.Deserialize<NodoHuffman>(treeJson);
+        byte[] datosDescomprimidos = CompresionHuffman.Descomprimir(datosComprimidos, raizHuffman, padding);
+        string repuestosData = Encoding.UTF8.GetString(datosDescomprimidos);
+        var lista = JsonSerializer.Deserialize<List<NodoRepuesto>>(repuestosData);
+        if (lista == null) {
+            Console.WriteLine("Error al deserializar los datos de repuestos.");
+            return;
+        }
+
+        foreach (var repuesto in lista) {
+            insertar(repuesto.id, repuesto.Repuesto, 0, repuesto.detalle, repuesto.costo);
+        }
+        Console.WriteLine("Restauración de repuestos completada.");
+
+    }
 }
+

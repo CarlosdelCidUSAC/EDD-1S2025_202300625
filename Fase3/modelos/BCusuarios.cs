@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Diagnostics;
+using Gtk;
 
 public class Usuario
 {
@@ -109,6 +110,7 @@ public class Blockchain
         if (Cadena.Any(b => b.Data.ID == nuevoUsuario.ID))
         {
             Console.WriteLine($"Error: Ya existe un usuario con el ID '{nuevoUsuario.ID}'.");
+
             return;
         }
 
@@ -254,5 +256,25 @@ private class RegistroIntermedio
             Console.WriteLine("Error al generar el reporte");
         }
 
+    }
+
+    public bool ValidarCadena()
+    {
+        for (int i = 1; i < Cadena.Count; i++)
+        {
+            var bloqueActual = Cadena[i];
+            var bloqueAnterior = Cadena[i - 1];
+
+            if (bloqueActual.PreviousHash != bloqueAnterior.Hash)
+            {
+                return false;
+            }
+
+            if (bloqueActual.Hash != bloqueActual.CalcularHash())
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

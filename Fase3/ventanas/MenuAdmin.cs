@@ -13,6 +13,8 @@ class MenuAdmin : Window
         SetPosition(WindowPosition.Center);
         DeleteEvent += delegate { 
             Program.usuarios.Backup();
+            Program.vehiculos.CrearBackup();
+            Program.repuestos.CrearBackup();
             Program._login = new Login(); 
             Program._login.ShowAll(); 
             Hide(); // Use Hide() instead of Destroy()

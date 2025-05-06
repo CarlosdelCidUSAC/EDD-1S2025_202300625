@@ -4,13 +4,13 @@ using System.Text.Json.Serialization;
 public class SesionRegistro
 {
     [JsonPropertyName("usuario")]
-    public string Usuario { get; set; }
+    public string? Usuario { get; set; }
 
     [JsonPropertyName("fechaEntrada")]
-    public string FechaEntrada { get; set; }
+    public string? FechaEntrada { get; set; }
 
     [JsonPropertyName("fechaSalida")]
-    public string FechaSalida { get; set; }
+    public string? FechaSalida { get; set; }
 }
 class Program
 {
@@ -44,6 +44,25 @@ class Program
         Facturas ??= new();
         merkle = new(Facturas);
         usuarios = Blockchain.Restaurar() ?? new Blockchain();
+        if(usuarios.ValidarCadena())
+        {   
+            MessageDialog dialog = new MessageDialog(null, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, "Cadena de bloques restaurada correctamente.");
+            dialog.Title = "Restauración de cadena de bloques";
+            dialog.Run();
+            dialog.Destroy();
+            Console.WriteLine("Cadena de bloques restaurada correctamente.");
+        }
+        else
+        {
+            MessageDialog dialog = new MessageDialog(null, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "Error al restaurar la cadena de bloques.");
+            dialog.Title = "Error de restauración";
+            dialog.Run();
+            dialog.Destroy();
+            Console.WriteLine("Error al restaurar la cadena de bloques.");
+            usuarios = new Blockchain();
+        }
+        vehiculos.Restaurar();
+        repuestos.Restaurar();
         _login.ShowAll();
         try
         {
@@ -57,7 +76,7 @@ class Program
     
     public static void ExportarRegistroSesiones(string rutaArchivo)
     {
-        // Convertimos la lista de tuplas a lista de SesionRegistro
+
         var listaSesiones = RegistroSesiones
             .Select(t => new SesionRegistro
             {
@@ -67,21 +86,17 @@ class Program
             })
             .ToList();
 
-        // Configuramos opciones de serialización (indentado, camelCase, etc.)
         var opciones = new JsonSerializerOptions
         {
             WriteIndented = true
         };
 
-        // Serializamos
         string json = JsonSerializer.Serialize(listaSesiones, opciones);
 
-        // Nos aseguramos de que la carpeta existe
         var directorio = Path.GetDirectoryName(rutaArchivo);
         if (!string.IsNullOrEmpty(directorio))
             Directory.CreateDirectory(directorio);
 
-        // Escribimos el fichero
         File.WriteAllText(rutaArchivo, json);
     }
 }
