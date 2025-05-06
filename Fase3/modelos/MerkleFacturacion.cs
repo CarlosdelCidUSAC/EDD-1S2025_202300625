@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Gtk;
@@ -89,44 +90,49 @@ public class MerkleTree
         Root = nodes.FirstOrDefault();
     }
 
-        public List<string> GetProof(int index)
+    public List<(string siblingHash, bool isLeft)> GetProof(int index)
     {
-        var hashes = _facturas
+        var leafHashes = _facturas
             .Select(f => MerkleNode.ComputeHash(f.ToString()))
             .ToList();
 
-        var proof = new List<string>();
-        BuildProof(hashes, index, proof);
+        var proof = new List<(string siblingHash, bool isLeft)>();
+        BuildProof(leafHashes, index, proof);
         return proof;
     }
 
-    private void BuildProof(List<string> levelHashes, int idx, List<string> proof)
+    private void BuildProof(List<string> levelHashes, int idx, List<(string siblingHash, bool isLeft)> proof)
     {
         if (levelHashes.Count <= 1) return;
 
         var nextLevel = new List<string>();
         for (int i = 0; i < levelHashes.Count; i += 2)
         {
-            var left = levelHashes[i];
-            var right = (i + 1 < levelHashes.Count) ? left : left;
+            string left = levelHashes[i];
+            string right = (i + 1 < levelHashes.Count) ? levelHashes[i + 1] : left;
             nextLevel.Add(MerkleNode.ComputeHash(left + right));
 
-            // Si este par contiene el índice que buscamos, añadimos el hermano al proof
+            // Si el índice se encuentra en este par, agregamos el hermano y su posición
             if (i == idx || i + 1 == idx)
             {
-                proof.Add((i == idx) ? right : left);
+                bool isLeft = (i != idx);
+                string siblingHash = isLeft ? left : right;
+                proof.Add((siblingHash, isLeft));
                 idx = nextLevel.Count - 1;
             }
         }
         BuildProof(nextLevel, idx, proof);
     }
 
-    // Verifica que una factura y su prueba llevan al rootHash
-    public static bool VerifyProof(string leafHash, List<string> proof, string rootHash)
+    public static bool VerifyProof(string leafHash, List<(string siblingHash, bool isLeft)> proof, string rootHash)
     {
         string computed = leafHash;
-        foreach (var sibling in proof)
-            computed = MerkleNode.ComputeHash(computed + sibling);
+        foreach (var (sibling, isLeft) in proof)
+        {
+            computed = isLeft
+                ? MerkleNode.ComputeHash(sibling + computed)
+                : MerkleNode.ComputeHash(computed + sibling);
+        }
         return computed == rootHash;
     }
 

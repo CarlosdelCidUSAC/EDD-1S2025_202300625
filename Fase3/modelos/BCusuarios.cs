@@ -26,7 +26,7 @@ public class Usuario
 public class Bloque
 {
     public int Index { get; set; }
-    public string Timestamp { get; set; }
+    public string? Timestamp { get; set; }
     public Usuario Data { get; set; }
     public int Nonce { get; set; }
     public string PreviousHash { get; set; }
@@ -69,38 +69,57 @@ public class Blockchain
 {
     public List<Bloque> Cadena { get; set; }
 
-    public Blockchain()
+    public Blockchain(List<Bloque>? bloquesExistentes = null)
     {
-        Cadena = new List<Bloque>();
-        Cadena.Add(CrearBloqueGenesis());
+        if (bloquesExistentes is null)
+        {
+            Cadena = new List<Bloque> { CrearBloqueGenesis() };
+        }
+        else
+        {
+            Cadena = bloquesExistentes;
+        }
     }
-
+    
+    private static string HashSHA256(string input)
+    {
+        using (var sha256 = SHA256.Create())
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(input);
+            byte[] hash = sha256.ComputeHash(bytes);
+            return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+        }
+    }
     private Bloque CrearBloqueGenesis()
     {
-        Usuario usuarioGenesis = new Usuario
+        var usuarioGenesis = new Usuario
         {
             ID = "0",
             Nombres = "admin",
             Apellidos = "admin",
             Correo = "admin@usac.com",
             Edad = 0,
-            Contrasena = "1234"
+            Contrasena = HashSHA256("1234")
         };
         return new Bloque(0, usuarioGenesis, "0000");
     }
 
-    public void AgregarBloque(Usuario nuevoUsuario)
+   public void AgregarBloque(Usuario nuevoUsuario)
     {
-        // Validar si ya existe un usuario con el mismo ID
         if (Cadena.Any(b => b.Data.ID == nuevoUsuario.ID))
         {
             Console.WriteLine($"Error: Ya existe un usuario con el ID '{nuevoUsuario.ID}'.");
             return;
         }
-        Bloque anterior = Cadena.Last();
-        Bloque nuevoBloque = new Bloque(anterior.Index + 1, nuevoUsuario, anterior.Hash);
+
+        // Hasehar la contraseña del nuevo usuario
+        nuevoUsuario.Contrasena = HashSHA256(nuevoUsuario.Contrasena);
+
+        var anterior = Cadena.Last();
+        var nuevoBloque = new Bloque(anterior.Index + 1, nuevoUsuario, anterior.Hash);
         Cadena.Add(nuevoBloque);
     }
+
 
     public Bloque BuscarBloque(int index)
     {
@@ -127,14 +146,11 @@ public class Blockchain
 
     public bool validarCredenciales(string correo, string contrasena)
     {
-        foreach (var bloque in Cadena)
-        {
-            if (bloque.Data.Correo == correo && bloque.Data.Contrasena == contrasena)
-            {
-                return true;
-            }
-        }
-        return false;
+        string hashEntrada = HashSHA256(contrasena);
+        return Cadena.Any(b =>
+            b.Data.Correo == correo &&
+            b.Data.Contrasena == hashEntrada
+        );
     }
 
     public void Backup()
@@ -170,16 +186,21 @@ public class Blockchain
 
         string json = File.ReadAllText(filePath);
         // Deserializa la lista de Bloque
-        List<Bloque> bloques = JsonSerializer.Deserialize<List<Bloque>>(json) ?? new List<Bloque>();
-
-        // Crea una nueva blockchain vacía y asigna directamente la cadena
-        var cadenaRestaurada = new Blockchain
-        {
-            Cadena = bloques
-        };
-        return cadenaRestaurada;
+       var bloques = JsonSerializer.Deserialize<List<Bloque>>(json) ?? new List<Bloque>();
+        return new Blockchain(bloques);
     }
 
+
+// Clase auxiliar para la deserialización intermedia
+private class RegistroIntermedio
+{
+    public int Index { get; set; }
+    public string? Timestamp { get; set; }
+    public Usuario? Data { get; set; }
+    public int Nonce { get; set; }
+    public string? PreviousHash { get; set; }
+    public string? Hash { get; set; }
+}
     public void Graficar(){
 
         var dot = new StringBuilder();

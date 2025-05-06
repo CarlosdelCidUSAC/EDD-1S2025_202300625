@@ -1,6 +1,8 @@
 using Gtk;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using System.Security.Cryptography;
+using System.Text;
 class CargaMasiva : Window
 {
     public CargaMasiva() : base("Carga Masiva")
@@ -118,6 +120,7 @@ class CargaMasiva : Window
                 string correo = usuarioT["Correo"].ToString();
                 string edad = usuarioT["Edad"].ToString();
                 string contrasenia = usuarioT["Contrasenia"].ToString();
+
 
                 Program.usuarios.AgregarBloque(new Usuario{
                     ID = id,
@@ -238,16 +241,68 @@ class CargaMasiva : Window
             for (int i = 0; i < serviciosArray.Count; i++)
             {
                 JToken servicioT = serviciosArray[i];
-                string id = servicioT["Id"].ToString();
-                string idRepuesto = servicioT["Id_repuesto"].ToString();
-                string idVehiculo = servicioT["Id_vehiculo"].ToString();
+                string idServicioS = servicioT["Id"].ToString();
+                string idRepuestoS = servicioT["Id_repuesto"].ToString();
+                string idVehiculoS = servicioT["Id_vehiculo"].ToString();
                 string detalles = servicioT["Detalles"].ToString();
-                string costo = servicioT["Costo"].ToString();
+                string costoS = servicioT["Costo"].ToString();
                 string metodoPago = servicioT["MetodoPago"].ToString();
 
-                Program.servicios.Agregar(int.Parse(id), int.Parse(idRepuesto), int.Parse(idVehiculo), detalles, float.Parse(costo), metodoPago);
-            }
-            Program.servicios.Imprimir(Program.servicios.Raiz);
+                int idServicio = int.Parse(idServicioS);
+                int idRepuesto = int.Parse(idRepuestoS);
+                int idVehiculo = int.Parse(idVehiculoS);
+                float costo = float.Parse(costoS);
+
+                if (Program.servicios.Buscar(idServicio) != null)
+                {
+                    MessageDialog dialogExistente = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "Ya existe un servicio con ese ID.");
+                    dialogExistente.Run();
+                    dialogExistente.Destroy();
+                    return;
+                }
+
+                if (Program.repuestos.Buscar(Program.repuestos.Raiz, idRepuesto) != null)
+                {
+                    if (Program.vehiculos.Buscar(idVehiculo) != null)
+                    {
+                        Program.grafo.AgregarNodo(idRepuesto, idVehiculo);
+                        Program.servicios.Agregar(idServicio, idRepuesto, idVehiculo, detalles, costo, metodoPago);
+                        var repuestoEncontrado = Program.repuestos.Buscar(Program.repuestos.Raiz, idRepuesto);
+                        float total = costo;
+                        if (repuestoEncontrado != null)
+                        {
+                            total += repuestoEncontrado.costo;
+                        }
+                        Program.merkle.AgregarFactura(new Factura
+                        {
+                            ID = idServicio,
+                            ID_Servicio = idServicio,
+                            Total = total,
+                            Fecha = DateTime.Now.ToString(),
+                            MetodoPago = metodoPago
+                        });
+                    }
+                    else
+                    {
+                        MessageDialog dialog2 = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El vehiculo no existe");
+                        dialog2.Run();
+                        dialog2.Destroy();
+                        return;
+                    }
+                }
+                else
+                {
+                    MessageDialog dialog2 = new MessageDialog(this, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, "El repuesto no existe");
+                    dialog2.Run();
+                    dialog2.Destroy();
+                    return;
+                }
+            
+                }
+
+                Program.grafo.ImprimirLista();
+                Program.merkle.Imprimir();
+                Program.servicios.Imprimir(Program.servicios.Raiz);
         
     }
 }

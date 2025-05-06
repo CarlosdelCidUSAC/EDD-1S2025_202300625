@@ -100,40 +100,6 @@ class MenuAdmin : Window
         };
         botonReportes.Clicked += (sender, e) =>
         {
-            try
-            {
-                string reportFolderPath = "Reportes";
-                if (!Directory.Exists(reportFolderPath))
-                {
-                    Directory.CreateDirectory(reportFolderPath);
-                }
-                string dotFolderPath = "reportedot";
-                if (!Directory.Exists(dotFolderPath))
-                {
-                    Directory.CreateDirectory(dotFolderPath);
-                }
-                string filePath = System.IO.Path.Combine(reportFolderPath, "registro_sesion.json");
-                var options = new JsonSerializerOptions { WriteIndented = true };
-                string json = JsonSerializer.Serialize(Program.RegistroSesiones, options);
-                File.WriteAllText(filePath, json);
-                using (MessageDialog md = new MessageDialog(this, 
-                    DialogFlags.Modal, MessageType.Info, ButtonsType.Ok, 
-                    "Reporte de sesión guardado en " + filePath))
-                {
-                    md.Run();
-                    md.Destroy();
-                }
-            }
-            catch (Exception ex)
-            {
-                using (MessageDialog errorDialog = new MessageDialog(this, 
-                    DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, 
-                    "Error al guardar el reporte: " + ex.Message))
-                {
-                    errorDialog.Run();
-                    errorDialog.Destroy();
-                }
-            }
 
             if (Program.usuarios.Cadena.Count > 0){
                 Program.usuarios.Graficar();

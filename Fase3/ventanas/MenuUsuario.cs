@@ -78,7 +78,8 @@ class MenuUsuario : Window
             }
         };
         cerrarSesion.Clicked += (sender, e) =>
-        {
+        {   
+            Program.RegistroSesiones.Add((Program.usuarioActual, Program.fechaActual, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
             Program.ExportarRegistroSesiones("Reportes/RegistroSesiones.json");
             Program.usuarios.Backup();
             
